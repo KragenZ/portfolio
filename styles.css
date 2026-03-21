@@ -65,6 +65,19 @@ header, main, footer {
     background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
 }
 
+#neural-spine {
+    position: fixed;
+    top: 0; left: 50%;
+    width: 2px;
+    height: 0%;
+    background: var(--accent-1);
+    box-shadow: 0 0 15px var(--accent-1), 0 0 30px var(--accent-2);
+    z-index: 0;
+    pointer-events: none;
+    transform: translateX(-50%);
+    opacity: 0.6;
+}
+
 h1, h2, h3, .logo {
     font-family: 'Playfair Display', serif;
     letter-spacing: -0.02em;
@@ -411,14 +424,15 @@ section {
     padding: 3rem 3rem 0 3rem;
     border-bottom: 1px solid var(--border-color);
     background: rgba(0,0,0,0.3);
+    position: relative;
 }
-.placeholder-img {
+.glsl-img {
     height: 350px;
     width: 100%;
+    object-fit: cover;
     border-radius: 16px 16px 0 0;
     box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
-    background-size: cover !important;
-    background-position: center !important;
+    pointer-events: auto; /* Required for Shery mouse mapping */
 }
 .project-info {
     padding: 3rem;

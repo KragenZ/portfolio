@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Srijit Kumar Roy | ML Engineer</title>
     <meta name="description" content="Srijit Kumar Roy - AI/ML Engineer Portfolio">
-    <link rel="stylesheet" href="styles.css?v=5">
+    <link rel="stylesheet" href="styles.css?v=6">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sheryjs/dist/Shery.css" />
+    <style>
+        /* Specific override for WebGL canvas z-banding issues */
+        .sy-canvas { z-index: 5 !important; border-radius: 16px 16px 0 0 !important; }
+    </style>
 </head>
 <body>
     <!-- Cinematic Neural Net Preloader -->
@@ -20,6 +25,9 @@
     <!-- Background Ambient Soul -->
     <div class="bg-glow glow-1"></div>
     <div class="bg-glow glow-2"></div>
+
+    <!-- Active Vector Neural Spine -->
+    <div id="neural-spine"></div>
 
     <!-- Custom Cursor -->
     <div class="cursor-dot"></div>
@@ -125,7 +133,7 @@
                 <!-- Project 1 -->
                 <div class="project-card glass-card hover-target">
                     <div class="project-image" style="padding: 0;">
-                        <div class="placeholder-img" style="background-image: url('assets/ai_property.png'); height: 350px; background-position: top !important;"></div>
+                        <img src="assets/ai_property.png" class="glsl-img" alt="AI Property Assistant">
                     </div>
                     <div class="project-info">
                         <h3>AI Property Assistant</h3>
@@ -146,7 +154,7 @@
                 <!-- Project 2 -->
                 <div class="project-card glass-card hover-target">
                     <div class="project-image" style="padding: 0;">
-                        <div class="placeholder-img" style="background-image: url('assets/house_price.png'); height: 350px; background-position: top !important;"></div>
+                        <img src="assets/house_price.png" class="glsl-img" alt="House Price Predictor">
                     </div>
                     <div class="project-info">
                         <h3>House Price Predictor ML</h3>
@@ -243,8 +251,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sheryjs/dist/Shery.js"></script>
     
     <!-- Custom Application Logic -->
-    <script src="script.js?v=6"></script>
+    <script src="script.js?v=7"></script>
 </body>
 </html>
