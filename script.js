@@ -6,11 +6,9 @@ window.addEventListener('mousemove', (e) => {
     const posX = e.clientX;
     const posY = e.clientY;
 
-    // Dot follows exactly
     cursorDot.style.left = `${posX}px`;
     cursorDot.style.top = `${posY}px`;
 
-    // Outline follows with a slight delay using animation/transition
     cursorOutline.animate({
         left: `${posX}px`,
         top: `${posY}px`
@@ -18,17 +16,13 @@ window.addEventListener('mousemove', (e) => {
 });
 
 // Enlarge cursor on interactive elements
-const interactives = document.querySelectorAll('a, .btn, .skill-card, .project-card');
+const interactives = document.querySelectorAll('.hover-target, a, .glass-card');
 interactives.forEach(el => {
     el.addEventListener('mouseenter', () => {
-        cursorOutline.style.width = '50px';
-        cursorOutline.style.height = '50px';
-        cursorOutline.style.background = 'rgba(0, 240, 255, 0.1)';
+        cursorOutline.classList.add('cursor-hover');
     });
     el.addEventListener('mouseleave', () => {
-        cursorOutline.style.width = '30px';
-        cursorOutline.style.height = '30px';
-        cursorOutline.style.background = 'transparent';
+        cursorOutline.classList.remove('cursor-hover');
     });
 });
 
@@ -56,7 +50,6 @@ const ctx = canvas.getContext('2d');
 
 let particlesArray;
 
-// Resize canvas
 function setCanvasSize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -64,16 +57,15 @@ function setCanvasSize() {
 setCanvasSize();
 window.addEventListener('resize', setCanvasSize);
 
-// Particle class
 class Particle {
     constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 1;
-        this.speedX = Math.random() * 1 - 0.5;
-        this.speedY = Math.random() * 1 - 0.5;
-        // Cyan and purple variations
-        const colors = ['rgba(0, 240, 255, 0.8)', 'rgba(112, 0, 255, 0.8)', 'rgba(255, 0, 85, 0.6)'];
+        this.size = Math.random() * 1.5 + 0.5;
+        this.speedX = Math.random() * 0.5 - 0.25;
+        this.speedY = Math.random() * 0.5 - 0.25;
+        // Subtle blue and purple nodes
+        const colors = ['rgba(139, 92, 246, 0.4)', 'rgba(59, 130, 246, 0.4)', 'rgba(255, 255, 255, 0.2)'];
         this.color = colors[Math.floor(Math.random() * colors.length)];
     }
 
@@ -81,7 +73,6 @@ class Particle {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        // Bounce on edges
         if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
         if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
     }
@@ -94,21 +85,15 @@ class Particle {
     }
 }
 
-// Initialize particles
 function initParticles() {
     particlesArray = [];
-    const numParticles = (canvas.width * canvas.height) / 15000; // Density
+    const numParticles = (canvas.width * canvas.height) / 12000;
     for (let i = 0; i < numParticles; i++) {
         particlesArray.push(new Particle());
     }
 }
 
-// Check distance and draw lines between particles and mouse
-let mouse = {
-    x: null,
-    y: null,
-    radius: 150
-}
+let mouse = { x: null, y: null, radius: 200 }
 window.addEventListener('mousemove', function(event) {
     mouse.x = event.x;
     mouse.y = event.y;
@@ -118,20 +103,18 @@ window.addEventListener('mouseout', function() {
     mouse.y = null;
 });
 
-// Connect particles
 function connect() {
-    for (let i = 0; i < particlesArray.length; i++) {
+    for (let i = 0; i < particlesArray., length; i++) {
         for (let j = i; j < particlesArray.length; j++) {
             const dx = particlesArray[i].x - particlesArray[j].x;
             const dy = particlesArray[i].y - particlesArray[j].y;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
-            // Network connections
             if (distance < 120) {
                 const opacity = 1 - (distance / 120);
-                // subtle blue line
-                ctx.strokeStyle = `rgba(0, 240, 255, ${opacity * 0.2})`;
-                ctx.lineWidth = 1;
+                // Ultra subtle line
+                ctx.strokeStyle = `rgba(139, 92, 246, ${opacity * 0.1})`;
+                ctx.lineWidth = 0.5;
                 ctx.beginPath();
                 ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
                 ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
@@ -139,7 +122,6 @@ function connect() {
             }
         }
         
-        // Connect to mouse
         if (mouse.x && mouse.y) {
             const dx = particlesArray[i].x - mouse.x;
             const dy = particlesArray[i].y - mouse.y;
@@ -147,8 +129,9 @@ function connect() {
             
             if (distance < mouse.radius) {
                 const opacity = 1 - (distance / mouse.radius);
-                ctx.strokeStyle = `rgba(112, 0, 255, ${opacity * 0.5})`;
-                ctx.lineWidth = 1.5;
+                // Magnetic lines to mouse
+                ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.3})`;
+                ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
                 ctx.lineTo(mouse.x, mouse.y);
@@ -158,7 +141,6 @@ function connect() {
     }
 }
 
-// Animation loop
 function animate() {
     requestAnimationFrame(animate);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -170,9 +152,7 @@ function animate() {
     connect();
 }
 
-// Start
 initParticles();
 animate();
 
-// Re-init on resize
 window.addEventListener('resize', initParticles);

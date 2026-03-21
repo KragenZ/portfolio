@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI/ML Portfolio | 2nd Year CSE</title>
-    <meta name="description" content="AI/ML Developer Portfolio highlighting machine learning models, deployment, and data science projects.">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Srijit Kumar Roy | ML Engineer</title>
+    <meta name="description" content="Srijit Kumar Roy - AI/ML Engineer Portfolio">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Background Globs -->
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+
     <!-- Custom Cursor -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
@@ -20,13 +20,13 @@
     <canvas id="network-canvas"></canvas>
 
     <header class="glass-header">
-        <div class="logo">AI<span>.</span>ML</div>
+        <a href="#" class="logo">SRIJIT<span>.</span></a>
         <nav>
             <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#about" class="hover-target">About</a></li>
+                <li><a href="#skills" class="hover-target">Expertise</a></li>
+                <li><a href="#projects" class="hover-target">Work</a></li>
+                <li><a href="#contact" class="hover-target">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -35,132 +35,132 @@
         <!-- Hero Section -->
         <section id="hero" class="hero-section">
             <div class="hero-content reveal">
-                <p class="greeting">Hi, I'm Srijit Kumar Roy</p>
-                <h1 class="title">Machine Learning <span>Engineer</span></h1>
-                <p class="subtitle">2nd Year CSE(AIML) Student building intelligent systems.</p>
+                <span class="greeting">System Online //</span>
+                <h1 class="title">Machine Learning<br><span class="gradient-text">Engineer.</span></h1>
+                <p class="subtitle">Hi, I'm Srijit. I'm a 2nd Year CSE(AIML) student architecting scalable AI infrastructure and building intelligent analytical systems.</p>
                 <div class="hero-buttons">
-                    <a href="#projects" class="btn primary">View Projects</a>
-                    <a href="#contact" class="btn secondary">Get In Touch</a>
+                    <a href="#projects" class="btn primary hover-target">View Projects</a>
+                    <a href="#about" class="btn secondary hover-target">Learn More</a>
                 </div>
-            </div>
-            <!-- Interactive 3D/Hover element placeholder -->
-            <div class="hero-visual">
-                <div class="glowing-orb"></div>
             </div>
         </section>
 
         <!-- About Section -->
-        <section id="about" class="about-section">
-            <h2 class="section-title reveal">About Me</h2>
+        <section id="about">
+            <h2 class="section-title reveal">Who am I?</h2>
             <div class="about-container reveal">
-                <div class="about-text">
-                    <p>I am a passionate 2nd-year Computer Science engineering student specializing in <strong>Artificial Intelligence and Machine Learning</strong>. My goal is to bridge the gap between complex algorithms and real-world applications.</p>
-                    <p>When I'm not training models or debugging neural networks, I enjoy exploring the latest research in deep learning, natural language processing, and computer vision.</p>
+                <div class="about-text glass-card" style="padding: 3rem;">
+                    <p>I am a passionate computer science undergraduate specializing in <strong>Artificial Intelligence and Machine Learning</strong>. My focus lies in traversing the gap between complex mathematical algorithms and tangible real-world solutions.</p>
+                    <p>When I'm not designing neural networks or fine-tuning language models, I immerse myself in the latest research across deep learning, computer vision, and high-performance computing.</p>
                 </div>
                 <div class="about-stats">
-                    <div class="stat">
-                        <h3>2+</h3>
-                        <p>Years Coding</p>
+                    <div class="stat glass-card hover-target">
+                        <h3 class="gradient-text">2+</h3>
+                        <p>Years Dev Experience</p>
                     </div>
-                    <div class="stat">
-                        <h3>10+</h3>
-                        <p>Projects</p>
+                    <div class="stat glass-card hover-target">
+                        <h3 class="gradient-text">10+</h3>
+                        <p>Projects Shipped</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Skills Section -->
-        <section id="skills" class="skills-section">
-            <h2 class="section-title reveal">AI/ML Arsenal</h2>
+        <section id="skills">
+            <h2 class="section-title reveal">Technical Arsenal</h2>
             <div class="skills-grid">
-                <div class="skill-card reveal">
-                    <div class="skill-icon">🐍</div>
-                    <h3>Languages</h3>
+                <div class="skill-card glass-card hover-target reveal">
+                    <span class="skill-icon">⚡</span>
+                    <h3>Core Languages</h3>
                     <p>Python, C++, SQL, JavaScript</p>
                 </div>
-                <div class="skill-card reveal" style="transition-delay: 100ms;">
-                    <div class="skill-icon">🧠</div>
-                    <h3>Frameworks</h3>
+                <div class="skill-card glass-card hover-target reveal" style="transition-delay: 100ms;">
+                    <span class="skill-icon">🧠</span>
+                    <h3>ML Architecture</h3>
                     <p>TensorFlow, PyTorch, Scikit-learn</p>
                 </div>
-                <div class="skill-card reveal" style="transition-delay: 200ms;">
-                    <div class="skill-icon">📊</div>
+                <div class="skill-card glass-card hover-target reveal" style="transition-delay: 200ms;">
+                    <span class="skill-icon">📊</span>
                     <h3>Data Science</h3>
                     <p>Pandas, NumPy, Matplotlib, Seaborn</p>
                 </div>
-                <div class="skill-card reveal" style="transition-delay: 300ms;">
-                    <div class="skill-icon">🚀</div>
-                    <h3>Deployment</h3>
-                    <p>Streamlit, FastAPI, Docker, Git</p>
+                <div class="skill-card glass-card hover-target reveal" style="transition-delay: 300ms;">
+                    <span class="skill-icon">☁️</span>
+                    <h3>Infrastructure</h3>
+                    <p>Docker, Git, Streamlit, FastAPI, AWS</p>
                 </div>
             </div>
         </section>
 
         <!-- Projects Section -->
-        <section id="projects" class="projects-section">
-            <h2 class="section-title reveal">Featured Work</h2>
+        <section id="projects">
+            <h2 class="section-title reveal">Select Work</h2>
             <div class="projects-grid">
+                
                 <!-- Project 1 -->
-                <div class="project-card reveal">
+                <div class="project-card glass-card hover-target reveal">
                     <div class="project-image">
-                        <div class="placeholder-img" style="background: linear-gradient(45deg, #FF0055, #0000FF);"></div>
+                        <div class="placeholder-img" style="background: linear-gradient(135deg, #1e1e2f, #2a2a40);"></div>
                     </div>
                     <div class="project-info">
                         <h3>AI Property Assistant</h3>
-                        <p>An intelligent RAG-based assistant that helps users query property listings using Gemini API and FAISS vector database. Fully deployed on Streamlit Cloud.</p>
+                        <p>An intelligent RAG-based assistant that enables users to query property listings using the Gemini API and FAISS vector database. Deployed with blazing inference speeds on Streamlit Cloud.</p>
                         <div class="tags">
                             <span>Python</span>
                             <span>Streamlit</span>
                             <span>FAISS</span>
-                            <span>Gemini AI</span>
+                            <span>Gemini</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://ai-property-assistant-rag-8za8yz32sjafid8qigpxdc.streamlit.app/" target="_blank" rel="noopener noreferrer" class="btn-sm">Live Demo</a>
-                            <a href="https://github.com/KragenZ/ai-property-assistant-rag" target="_blank" rel="noopener noreferrer" class="btn-sm outline">Source Code</a>
+                            <a href="https://ai-property-assistant-rag-8za8yz32sjafid8qigpxdc.streamlit.app/" target="_blank" rel="noopener" class="btn link-primary hover-target">Deploy Demo</a>
+                            <a href="https://github.com/KragenZ/ai-property-assistant-rag" target="_blank" rel="noopener" class="btn link-secondary hover-target">Source</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Project 2 -->
-                <div class="project-card reveal" style="transition-delay: 100ms;">
+                <div class="project-card glass-card hover-target reveal" style="transition-delay: 150ms;">
                     <div class="project-image">
-                        <div class="placeholder-img" style="background: linear-gradient(45deg, #00FF88, #00BFFF);"></div>
+                        <div class="placeholder-img" style="background: linear-gradient(135deg, #1a202c, #2d3748);"></div>
                     </div>
                     <div class="project-info">
                         <h3>House Price Predictor ML</h3>
-                        <p>A ML web application predicting house prices based on various features. Employs robust regression models and interactive visual analytics.</p>
+                        <p>A sophisticated web application predicting real estate valuation through multidimensional features. Utilizes robust regression models paired with interactive visual analytics.</p>
                         <div class="tags">
                             <span>Scikit-Learn</span>
                             <span>Pandas</span>
                             <span>Streamlit</span>
+                            <span>Regression</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://house-price-predictor-ml-nh9zrtguvhpmhwsys9qexr.streamlit.app/" target="_blank" rel="noopener noreferrer" class="btn-sm">Live Demo</a>
-                            <a href="https://github.com/KragenZ/house-price-predictor-ml" target="_blank" rel="noopener noreferrer" class="btn-sm outline">Source Code</a>
+                            <a href="https://house-price-predictor-ml-nh9zrtguvhpmhwsys9qexr.streamlit.app/" target="_blank" rel="noopener" class="btn link-primary hover-target">Deploy Demo</a>
+                            <a href="https://github.com/KragenZ/house-price-predictor-ml" target="_blank" rel="noopener" class="btn link-secondary hover-target">Source</a>
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
 
         <!-- Contact Section -->
         <section id="contact" class="contact-section">
-            <div class="contact-card glass reveal">
-                <h2>Let's Collaborate</h2>
-                <p>Always open for interesting ML/AI projects and learning opportunities.</p>
-                <a href="mailto:natesonbell@gmail.com" class="btn primary">Send an Email</a>
+            <div class="contact-content reveal">
+                <h2>Let's build the future.</h2>
+                <p>I am perpetually exploring new domains in artificial intelligence. Whether you have a project or just want to discuss ML architectures, my inbox is open.</p>
+                <a href="mailto:natesonbell@gmail.com" class="btn primary hover-target">natesonbell@gmail.com</a>
+                
                 <div class="social-links">
-                    <a href="https://github.com/KragenZ" target="_blank" rel="noopener noreferrer">GitHub</a>
-                    <a href="https://www.linkedin.com/in/srijit-roy-7840043b8/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                    <a href="#">Kaggle</a>
+                    <a href="https://github.com/KragenZ" target="_blank" rel="noopener" class="hover-target">GitHub</a>
+                    <a href="https://www.linkedin.com/in/srijit-roy-7840043b8/" target="_blank" rel="noopener" class="hover-target">LinkedIn</a>
+                    <a href="#" class="hover-target">Kaggle</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2026 AI/ML Portfolio. Crafted with passion.</p>
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.05); color: #64748b; font-size: 0.85rem;">
+        <p>Architected & Built by Srijit Kumar Roy &copy; 2026</p>
     </footer>
 
     <script src="script.js"></script>
