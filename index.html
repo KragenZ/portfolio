@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
+    <!-- Cinematic Neural Net Preloader -->
+    <div id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-text">INITIALIZING CORE...</div>
+            <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
+            <div class="preloader-progress">0%</div>
+        </div>
+    </div>
+
     <!-- Background Ambient Soul -->
     <div class="bg-glow glow-1"></div>
     <div class="bg-glow glow-2"></div>
@@ -176,6 +185,22 @@
     <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.05); color: #64748b; font-size: 0.85rem; position: relative; z-index: 10;">
         <p>Architected & Built by Srijit Kumar Roy &copy; 2026</p>
     </footer>
+
+    <!-- Terminal Easter Egg -->
+    <div class="terminal-btn hover-target">&gt;_</div>
+    <div id="terminal-modal" class="terminal-hidden">
+        <div class="terminal-header">
+            <div class="terminal-dots"><span></span><span></span><span></span></div>
+            <div class="terminal-title">srijit@ai-core: ~</div>
+        </div>
+        <div class="terminal-body" id="terminal-output">
+            <p>SrijitOS (v1.0.0) - Type 'help' to see available commands.</p>
+        </div>
+        <div class="terminal-input-line">
+            <span class="prompt">guest@portfolio:~$ </span>
+            <input type="text" id="terminal-input" autocomplete="off" spellcheck="false">
+        </div>
+    </div>
 
     <!-- Core Physics & Animation Plugins -->
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>

@@ -21,6 +21,48 @@ gsap.ticker.add((time)=>{
 });
 gsap.ticker.lagSmoothing(0, 0);
 
+lenis.stop(); // Freeze scrolling until preloader validates!
+
+// --- Cinematic Neural Preloader ---
+const loaderTexts = ["INITIALIZING NEURAL NET", "ALLOCATING TENSORS", "LOADING VECTOR DECK", "BYPASSING MAINFRAME", "BOOTING AI CORE"];
+const loaderTextEl = document.querySelector('.preloader-text');
+const loaderProgressEl = document.querySelector('.preloader-progress');
+const loaderFillEl = document.querySelector('.preloader-bar-fill');
+
+let loaderState = { val: 0 };
+gsap.to(loaderState, {
+    val: 100,
+    duration: 2.2,
+    ease: "power1.inOut",
+    onUpdate: () => {
+        if(loaderProgressEl) {
+            loaderProgressEl.innerText = Math.round(loaderState.val) + "%";
+            loaderFillEl.style.width = loaderState.val + "%";
+            if(Math.round(loaderState.val) % 20 === 0) {
+                loaderTextEl.innerText = loaderTexts[Math.floor(Math.random() * loaderTexts.length)];
+            }
+        }
+    },
+    onComplete: () => {
+        if(loaderTextEl) {
+            loaderTextEl.innerText = "SYSTEM ONLINE";
+            gsap.to('#preloader', {
+                y: "-100%", 
+                duration: 1,
+                ease: "expo.inOut",
+                delay: 0.3,
+                onComplete: () => {
+                    lenis.start(); 
+                    // Trigger Hero instantly upon wipe completion, mathematically un-locked
+                    gsap.from(".hero-content > *", {
+                        y: 80, opacity: 0, duration: 1.8, stagger: 0.15, ease: "expo.out"
+                    });
+                }
+            });
+        }
+    }
+});
+
 // --- Custom Cursor ---
 const cursorDot = document.querySelector('.cursor-dot');
 const cursorOutline = document.querySelector('.cursor-outline');
@@ -449,15 +491,8 @@ window.addEventListener('resize', () => {
 
 // --- GSAP Standard Vertical Section Reveals ---
 
-// 1. Hero Reveal
-gsap.from(".hero-content > *", {
-    y: 80,
-    opacity: 0,
-    duration: 1.8,
-    stagger: 0.15,
-    ease: "expo.out",
-    delay: 0.2
-});
+// 1. Hero Reveal (Triggered Dynamically by Preloader completion array now)
+// Kept blank gracefully without firing twice.
 
 // 2. About - Scrambler text
 const aboutTitle = document.querySelector('#about .section-title');
@@ -558,3 +593,66 @@ gsap.from('.contact-content p, .contact-content .btn, .social-links', {
     stagger: 0.2,
     ease: "power3.out"
 });
+
+// --- UNIX Terminal Easter Egg ---
+const termBtn = document.querySelector('.terminal-btn');
+const termModal = document.getElementById('terminal-modal');
+const termInput = document.getElementById('terminal-input');
+const termOutput = document.getElementById('terminal-output');
+
+if(termBtn && termModal) {
+    termBtn.addEventListener('click', () => {
+        termModal.classList.toggle('terminal-hidden');
+        if(!termModal.classList.contains('terminal-hidden')) {
+            setTimeout(() => termInput.focus(), 100);
+        }
+    });
+
+    termInput.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter') {
+            const cmd = termInput.value.trim().toLowerCase();
+            if(!cmd) return;
+            
+            const echoLine = document.createElement('p');
+            echoLine.innerHTML = `<span class="prompt">guest@portfolio:~$</span> ${cmd}`;
+            termOutput.appendChild(echoLine);
+            
+            const responseLine = document.createElement('p');
+            responseLine.style.color = "var(--text-secondary)";
+            
+            switch(cmd) {
+                case 'help':
+                    responseLine.innerHTML = "commands:<br>whoami - Print current user<br>ls - List directory contents<br>cat resume.pdf - Display resume<br>clear - Clear terminal<br>exit - Close terminal";
+                    break;
+                case 'whoami':
+                    responseLine.innerText = "Srijit Kumar Roy - ML/AI Engineer & Architect.";
+                    break;
+                case 'ls':
+                    responseLine.innerHTML = "<span style='color: var(--accent-1);'>projects/</span>  <span style='color: var(--accent-1);'>skills/</span>  resume.pdf  core.sh";
+                    break;
+                case 'cat resume.pdf':
+                    responseLine.innerText = "Mock download triggered. Accessing secure credential blocks...";
+                    break;
+                case 'sudo rm -rf /':
+                    responseLine.style.color = "#ef4444";
+                    responseLine.innerText = "Permission denied. Nice try.";
+                    break;
+                case 'clear':
+                    termOutput.innerHTML = '';
+                    termInput.value = '';
+                    return;
+                case 'exit':
+                    termModal.classList.add('terminal-hidden');
+                    termInput.value = '';
+                    return;
+                default:
+                    responseLine.style.color = "#ef4444";
+                    responseLine.innerText = `Command not found: ${cmd}`;
+            }
+            
+            termOutput.appendChild(responseLine);
+            termInput.value = '';
+            termOutput.scrollTop = termOutput.scrollHeight;
+        }
+    });
+}

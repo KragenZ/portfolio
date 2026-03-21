@@ -501,7 +501,7 @@ section {
     position: fixed;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 99999;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 20px rgba(192, 132, 252, 0.8);
 }
@@ -511,7 +511,7 @@ section {
     position: fixed;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 9998;
+    z-index: 99998;
     transform: translate(-50%, -50%);
     transition: width 0.3s, height 0.3s, background-color 0.3s;
 }
@@ -520,6 +520,110 @@ section {
     height: 90px !important;
     background-color: rgba(192, 132, 252, 0.1) !important;
     border-color: rgba(192, 132, 252, 0.3) !important;
+}
+
+/* --- Preloader --- */
+#preloader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000000;
+    z-index: 30000;
+    display: flex; justify-content: center; align-items: center;
+    font-family: 'Space Grotesk', monospace;
+    font-weight: 600; font-size: 1.2rem;
+    color: var(--accent-1);
+    letter-spacing: 2px;
+}
+.preloader-content {
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    width: 300px;
+}
+.preloader-text {
+    font-size: 0.9rem; text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.preloader-bar {
+    width: 100%; height: 2px; background: rgba(255,255,255,0.1);
+    position: relative; overflow: hidden;
+}
+.preloader-bar-fill {
+    position: absolute; top: 0; left: 0; height: 100%; width: 0%;
+    background: var(--text-primary);
+    box-shadow: 0 0 15px var(--text-primary);
+}
+.preloader-progress {
+    font-size: 2rem; color: var(--text-primary); margin-top: 0.5rem;
+}
+
+/* --- Terminal Easter Egg --- */
+.terminal-btn {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    width: 55px; height: 55px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 50%;
+    z-index: 15000;
+    display: flex; justify-content: center; align-items: center;
+    font-family: 'Space Grotesk', monospace; font-size: 1.2rem; font-weight: bold;
+    transition: background 0.3s, transform 0.3s;
+    backdrop-filter: blur(10px);
+}
+.terminal-btn:hover { background: rgba(192, 132, 252, 0.2); transform: scale(1.1); }
+
+#terminal-modal {
+    position: fixed;
+    bottom: 6rem; right: 2rem;
+    width: 500px; height: 350px;
+    background: rgba(10, 10, 10, 0.85);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    z-index: 15000;
+    display: flex; flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    backdrop-filter: blur(25px);
+    transition: opacity 0.3s, transform 0.3s;
+    transform-origin: bottom right;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.9rem;
+}
+.terminal-hidden {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+}
+.terminal-header {
+    background: rgba(255,255,255,0.05);
+    padding: 0.8rem 1rem;
+    display: flex; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.terminal-dots { display: flex; gap: 7px; }
+.terminal-dots span { width: 11px; height: 11px; border-radius: 50%; background: #4b5563; }
+.terminal-dots span:nth-child(1) { background: #ef4444; }
+.terminal-dots span:nth-child(2) { background: #eab308; }
+.terminal-dots span:nth-child(3) { background: #22c55e; }
+.terminal-title { margin-left: auto; margin-right: auto; color: var(--text-secondary); font-size: 0.8rem; }
+.terminal-body {
+    padding: 1rem;
+    flex-grow: 1;
+    overflow-y: auto;
+    color: var(--text-primary);
+    display: flex; flex-direction: column; gap: 0.5rem;
+}
+.terminal-input-line {
+    display: flex;
+    padding: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    background: rgba(0,0,0,0.4);
+}
+.prompt { color: var(--accent-1); margin-right: 0.5rem; }
+#terminal-input {
+    background: transparent;
+    border: none; outline: none;
+    color: var(--text-primary);
+    font-family: inherit; font-size: inherit;
+    flex-grow: 1;
+    cursor: none;
 }
 
 /* Animations */
