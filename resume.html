@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Srijit Roy - ML Engineer Resume</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #111827;
+            --secondary: #4b5563;
+            --accent: #2563eb; /* Professional blue for ATS */
+            --light-gray: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f3f4f6; /* Gray background outside A4 */
+            color: var(--primary);
+            line-height: 1.5;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* FAANG/Harvard Standard A4 Container */
+        .resume-container {
+            width: 8.5in; 
+            min-height: 11in; 
+            background: white;
+            padding: 0.8in;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+            letter-spacing: -0.03em;
+            color: #0f172a;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.2rem;
+            margin-top: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-style: italic;
+        }
+
+        .date {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        p, li {
+            font-size: 0.95rem;
+            color: #334155;
+            margin-bottom: 0.4rem;
+        }
+
+        /* Header Layout */
+        .header-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .header-info a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .header-info a:hover {
+            color: #1e40af;
+            text-decoration: underline;
+        }
+
+        .section-content {
+            margin-bottom: 1rem;
+        }
+
+        /* Lists */
+        ul {
+            padding-left: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        li {
+            margin-bottom: 0.25rem;
+        }
+
+        /* Skills Layout */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 0.25rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .skill-category {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .skill-list {
+            color: #334155;
+            font-size: 0.95rem;
+        }
+
+        /* Print formatting */
+        @media print {
+            @page { margin: 0; }
+            body { background: white; padding: 0; -webkit-print-color-adjust: exact; }
+            .resume-container { box-shadow: none; padding: 0.8in; width: 100%; min-height: auto; }
+            a { text-decoration: none !important; color: black !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="resume-container">
+    <header>
+        <h1>Srijit Roy</h1>
+        <div class="subtitle" style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #475569; font-style: normal; font-weight: 500;">
+            AI & ML Undergraduate | KIIT University
+        </div>
+        <div class="header-info">
+            <span>natesonbell@gmail.com</span>
+            <span>+91 8878805690</span>
+            <span><a href="https://github.com/KragenZ" target="_blank">github.com/KragenZ</a></span>
+            <span><a href="https://kragenz.github.io/portfolio/" target="_blank">kragenz.github.io/portfolio</a></span>
+        </div>
+    </header>
+
+    <section>
+        <h2>Profile</h2>
+        <p>Second-year Computer Science (AI & ML) student with hands-on experience in building end-to-end machine learning and LLM-powered systems. Strong focus on real-world problem solving, operational deployment, and AI product architecture. Proven ability to translate complex data infrastructures into scalable, user-facing intelligence applications.</p>
+    </section>
+
+    <section>
+        <h2>Technical Skills</h2>
+        <div class="section-content">
+            <div class="skills-grid">
+                <div class="skill-category">Languages:</div>
+                <div class="skill-list">Python, JavaScript, TypeScript, HTML, CSS</div>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">AI / ML:</div>
+                <div class="skill-list">Machine Learning Pipelines, NLP, RAG, LLM Evaluation</div>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">Frameworks:</div>
+                <div class="skill-list">Scikit-learn, XGBoost, LangChain, GSAP, WebGL (Three.js)</div>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">Tools & Tech:</div>
+                <div class="skill-list">FAISS, Streamlit, Git, GitHub, API Orchestration</div>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">Data Libraries:</div>
+                <div class="skill-list">Pandas, NumPy, Matplotlib, Seaborn</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Projects</h2>
+        
+        <div class="section-content">
+            <h3>AI Property Assistant (LLM + RAG) <a href="https://github.com/KragenZ/portfolio" target="_blank" style="font-size:0.85rem; font-weight:normal; margin-left:10px;">[Live Application]</a></h3>
+            <div class="subtitle">Conversational Real Estate Search Engine</div>
+            <ul>
+                <li>Architected an end-to-end conversational AI system utilizing <strong>LangChain</strong>, <strong>FAISS</strong> vector databases, and the <strong>Gemini LLM</strong> for natural language property parsing.</li>
+                <li>Implemented a robust <strong>Retrieval-Augmented Generation (RAG)</strong> pipeline combining dense embeddings with top-k semantic retrieval to guarantee highly context-aware property recommendations.</li>
+                <li>Engineered conversation memory management arrays and rigorously evaluated inference metrics to ensure exceptionally low latency and high query relevance.</li>
+                <li>Designed a production-ready interactive <strong>Streamlit</strong> interface featuring pipeline telemetry visualization and dynamically generated contextual example queries.</li>
+            </ul>
+        </div>
+
+        <div class="section-content">
+            <h3>House Price Prediction System (ML) <a href="https://github.com/KragenZ/portfolio" target="_blank" style="font-size:0.85rem; font-weight:normal; margin-left:10px;">[Live Application]</a></h3>
+            <div class="subtitle">End-to-End Predictive Analytics Pipeline</div>
+            <ul>
+                <li>Developed a comprehensive Machine Learning pipeline orchestrating advanced data preprocessing, missing value imputation, and complex feature engineering to prepare structured housing datasets.</li>
+                <li>Benchmarked multiple algorithmic models including Ridge Regression, Random Forest, and <strong>XGBoost</strong>, ultimately achieving an outstanding <strong>R² score > 0.90</strong> with heavily proven generalization capabilities.</li>
+                <li>Deployed an active scalable <strong>Streamlit</strong> web application that handles real-time market predictions paired directly with integrated Explainable AI (XAI) feature correlations.</li>
+                <li>Built a fully interactive analytics dashboard rendering automated feature importance charts and advanced statistical distribution visualizations using Seaborn.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Education</h2>
+        <div class="section-content">
+            <h3>BTech in Computer Science (AI & ML) <span class="date">2024 – 2028</span></h3>
+            <div class="subtitle">KIIT University <span class="date" style="font-style: normal;">Current status: Second-year undergraduate</span></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Activities & Engagement</h2>
+        <div class="section-content">
+            <ul>
+                <li>Actively participate in competitive hackathons, continuously conceptualizing and rapidly prototyping custom AI-driven applications leveraging cutting-edge API orchestration.</li>
+                <li>Consistently evaluate and integrate state-of-the-art AI developer tooling (Copilot, autonomous IDE agents) to mathematically accelerate system problem-solving and deployment workflows.</li>
+                <li>Competed in competitive chess and structured football tournaments at high levels, cultivating proven strategic decision-making, adaptive execution, and cross-functional team communication logic.</li>
+            </ul>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>

@@ -631,7 +631,8 @@ if(termBtn && termModal) {
                     responseLine.innerHTML = "<span style='color: var(--accent-1);'>projects/</span>  <span style='color: var(--accent-1);'>skills/</span>  resume.pdf  core.sh";
                     break;
                 case 'cat resume.pdf':
-                    responseLine.innerText = "Mock download triggered. Accessing secure credential blocks...";
+                    responseLine.innerText = "Mock download triggered. Accessing secure credential blocks... Opening resume.";
+                    setTimeout(() => window.open('resume.html', '_blank'), 600);
                     break;
                 case 'sudo rm -rf /':
                     responseLine.style.color = "#ef4444";
