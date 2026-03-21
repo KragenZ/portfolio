@@ -714,3 +714,25 @@ if(sliderSqft) {
     sliderAge.addEventListener('input', executeMLInference);
     executeMLInference(); // Init Default State
 }
+
+// --- Background Audio Logic ---
+const musicBtn = document.getElementById('music-toggle');
+const bgMusic = document.getElementById('bg-music');
+let isMusicPlaying = false;
+
+if(musicBtn && bgMusic) {
+    bgMusic.volume = 0.4; // 40% volume default
+    
+    musicBtn.addEventListener('click', () => {
+        if(isMusicPlaying) {
+            bgMusic.pause();
+            musicBtn.innerText = '🔈 Play Audio';
+            isMusicPlaying = false;
+        } else {
+            bgMusic.play().then(() => {
+                musicBtn.innerText = '🔊 Pause Audio';
+                isMusicPlaying = true;
+            }).catch(e => console.warn("Audio play blocked by browser array:", e));
+        }
+    });
+}
