@@ -5,9 +5,6 @@ const lenis = new Lenis({
     direction: 'vertical',
     gestureDirection: 'vertical',
     smooth: true,
-    mouseMultiplier: 1,
-    smoothTouch: false,
-    touchMultiplier: 2,
 });
 
 function raf(time) {
@@ -68,6 +65,159 @@ try {
 } catch (e) {
     console.warn("VanillaTilt failed:", e);
 }
+
+
+// --- Global Ambient AI Core (The SOUL of the site) ---
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+
+// Inject safely at the back of the DOM
+document.body.insertBefore(renderer.domElement, document.body.firstChild);
+renderer.domElement.style.position = 'fixed';
+renderer.domElement.style.top = '0';
+renderer.domElement.style.left = '0';
+renderer.domElement.style.zIndex = '-1';
+renderer.domElement.style.pointerEvents = 'none';
+
+// A massive, intricate Wireframe Torus Knot as the "AI Brain"
+const coreGeometry = new THREE.TorusKnotGeometry(14, 2.5, 300, 20, 3, 5);
+const coreMaterial = new THREE.MeshBasicMaterial({ 
+    color: 0xc084fc, // Lavender Purple Accent
+    wireframe: true, 
+    transparent: true, 
+    opacity: 0.15
+});
+const aiCore = new THREE.Mesh(coreGeometry, coreMaterial);
+scene.add(aiCore);
+camera.position.z = 35;
+
+// Floating ambient particles for extra cyber-soul
+const ambientParticleGeometry = new THREE.BufferGeometry();
+const ambientParticleCount = 1500;
+const ambientPosArray = new Float32Array(ambientParticleCount * 3);
+for(let i=0; i<ambientParticleCount*3; i++){
+    ambientPosArray[i] = (Math.random() - 0.5) * 120;
+}
+ambientParticleGeometry.setAttribute('position', new THREE.BufferAttribute(ambientPosArray, 3));
+const ambientParticleMaterial = new THREE.PointsMaterial({
+    size: 0.08,
+    color: 0x8b5cf6, // Deep violet
+    transparent: true,
+    opacity: 0.4,
+    blending: THREE.AdditiveBlending
+});
+const ambientParticles = new THREE.Points(ambientParticleGeometry, ambientParticleMaterial);
+scene.add(ambientParticles);
+
+let scrollY = window.scrollY;
+lenis.on('scroll', (e) => { scrollY = e.targetScroll; });
+
+let globalMouseX = 0;
+let globalMouseY = 0;
+window.addEventListener('mousemove', (e) => {
+    globalMouseX = (e.clientX / window.innerWidth) * 2 - 1;
+    globalMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+});
+
+function animateCore() {
+    requestAnimationFrame(animateCore);
+    
+    // Core auto-spin
+    aiCore.rotation.x += 0.001;
+    aiCore.rotation.y += 0.002;
+    aiCore.rotation.z += 0.0005;
+
+    // Subtle ambient particle spin
+    ambientParticles.rotation.y += 0.0005;
+
+    // React deeply to mouse dragging globally
+    aiCore.rotation.x += globalMouseY * 0.01;
+    aiCore.rotation.y += globalMouseX * 0.01;
+    
+    // Core reacts heavily to timeline scrolling (moves up rapidly as you scroll down)
+    aiCore.position.y = -scrollY * 0.01;
+    
+    // Subtle breathing pulse
+    const time = Date.now() * 0.001;
+    aiCore.scale.setScalar(1 + Math.sin(time) * 0.03);
+
+    renderer.render(scene, camera);
+}
+animateCore();
+
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+
+// --- GSAP Horizontal Timeline & BOOM BAM Effects ---
+const horizontalContainer = document.querySelector('.horizontal-container');
+if(horizontalContainer) {
+    const scrollTween = gsap.to(horizontalContainer, {
+        x: () => -(horizontalContainer.scrollWidth - window.innerWidth),
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".horizontal-section",
+            start: "top top",
+            end: () => "+=" + horizontalContainer.scrollWidth,
+            scrub: 1, 
+            pin: true
+        }
+    });
+
+    // Animate the tracking line fill
+    gsap.to('.timeline-progress-fill', {
+        width: "100%",
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".horizontal-section",
+            start: "top top",
+            end: () => "+=" + horizontalContainer.scrollWidth,
+            scrub: 1
+        }
+    });
+
+    // Roll tracking ball seamlessly
+    gsap.to('.timeline-rolling-ball', {
+        left: "100%",
+        rotation: 1080, 
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".horizontal-section",
+            start: "top top",
+            end: () => "+=" + horizontalContainer.scrollWidth,
+            scrub: 1
+        }
+    });
+
+    // THE BOOM BAM Container Animations!
+    // Triggers insanely heavy 3D skewed entry animations when scrolling *horizontally*
+    gsap.utils.toArray('.timeline-panel').forEach((panel, i) => {
+        gsap.from(panel, {
+            scrollTrigger: {
+                trigger: panel,
+                containerAnimation: scrollTween, // Magic GSAP sub-trigger
+                start: "left 90%", // Trigger exactly as it slides into view horizontally
+                toggleActions: "play none none reverse"
+            },
+            z: 800, // Absolute 3D popout towards the camera
+            rotationY: -60, // Slams into place like a heavy 3D vault door
+            rotationX: 30, // Skewed perspective
+            scale: 0.1,
+            opacity: 0,
+            duration: 2.5,
+            ease: "elastic.out(1, 0.3)", // Explosive rubber-band wobble
+            boxShadow: "0 0 150px rgba(192, 132, 252, 1)" // Giant neon flash on entry that fades
+        });
+    });
+}
+// ----------------------------------------
+
 
 // --- Text Scramble & Typewriter Classes ---
 class TextScramble {
@@ -150,48 +300,7 @@ class Typewriter {
     }
 }
 
-// --- GSAP Horizontal Timeline Animation ---
-const horizontalContainer = document.querySelector('.horizontal-container');
-if(horizontalContainer) {
-    gsap.to(horizontalContainer, {
-        x: () => -(horizontalContainer.scrollWidth - window.innerWidth),
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".horizontal-section",
-            start: "top top",
-            end: () => "+=" + horizontalContainer.scrollWidth,
-            scrub: 1, 
-            pin: true
-        }
-    });
-
-    // Animate the tracking line fill
-    gsap.to('.timeline-progress-fill', {
-        width: "100%",
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".horizontal-section",
-            start: "top top",
-            end: () => "+=" + horizontalContainer.scrollWidth,
-            scrub: 1
-        }
-    });
-
-    // Roll tracking ball identically
-    gsap.to('.timeline-rolling-ball', {
-        left: "100%",
-        rotation: 1080, 
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".horizontal-section",
-            start: "top top",
-            end: () => "+=" + horizontalContainer.scrollWidth,
-            scrub: 1
-        }
-    });
-}
-
-// --- Matter.js Physics Invisible Jar & Hover Repulsion ---
+// --- Matter.js Physics Invisible Jar & Intense Magnetic Scatter ---
 const Engine = Matter.Engine,
       Render = Matter.Render,
       Runner = Matter.Runner,
@@ -201,7 +310,7 @@ const Engine = Matter.Engine,
       Bodies = Matter.Bodies;
 
 const engine = Engine.create();
-engine.world.gravity.y = 0.8; // Slightly floatier feeling
+engine.world.gravity.y = 0.8; // Heavy but realistic float
 
 const container = document.getElementById('physics-canvas-container');
 let cWidth = container.clientWidth;
@@ -219,10 +328,10 @@ const render = Render.create({
     }
 });
 
-// The Invisible Jar Walls
+// The Invisible Vault Walls
 const wallOptions = { isStatic: true, render: { visible: false } };
 let ground = Bodies.rectangle(cWidth / 2, cHeight + 50, cWidth + 200, 100, wallOptions);
-let ceiling = Bodies.rectangle(cWidth / 2, -50, cWidth + 200, 100, wallOptions); // The LID
+let ceiling = Bodies.rectangle(cWidth / 2, -50, cWidth + 200, 100, wallOptions); // The LID locking them in
 let leftWall = Bodies.rectangle(-50, cHeight / 2, 100, cHeight * 2, wallOptions);
 let rightWall = Bodies.rectangle(cWidth + 50, cHeight / 2, 100, cHeight * 2, wallOptions);
 World.add(engine.world, [ground, ceiling, leftWall, rightWall]);
@@ -231,7 +340,7 @@ World.add(engine.world, [ground, ceiling, leftWall, rightWall]);
 const rawSkills = ['Python', 'C++', 'SQL', 'TensorFlow', 'PyTorch', 'Scikit', 'Docker', 'AWS', 'FastAPI', 'Pandas', 'NumPy', 'Git'];
 const skillBodies = [];
 
-// Create Balls
+// Create Hyper-Realistic Glass Balls
 rawSkills.forEach((skill, i) => {
     const radius = 45 + Math.random() * 20;
     const x = Math.random() * (cWidth - 100) + 50;
@@ -239,14 +348,14 @@ rawSkills.forEach((skill, i) => {
     
     // Create physical body layer
     const body = Bodies.circle(x, y, radius, {
-        restitution: 0.9, // Very Bouncy!
+        restitution: 1.05, // OVER 1.0! This makes them EXTREMELY explosive when bouncing
         friction: 0.001,
         frictionAir: 0.01,
-        density: 0.05,
+        density: 0.03,
         render: { visible: false } 
     });
     
-    // Create DOM element overlay
+    // Create DOM element overlay mapped to physics
     const ballDiv = document.createElement('div');
     ballDiv.classList.add('skill-ball');
     ballDiv.innerText = skill;
@@ -256,7 +365,7 @@ rawSkills.forEach((skill, i) => {
     World.add(engine.world, body);
 });
 
-// Add Hover Repulsion (Invisible magnetic field from mouse)
+// Add Intense Magnetic Scrambling Field from the user's cursor
 let hoverMouseX = null;
 let hoverMouseY = null;
 container.addEventListener('mousemove', (e) => {
@@ -276,10 +385,10 @@ Matter.Events.on(engine, 'beforeUpdate', function() {
             const dy = body.position.y - hoverMouseY;
             const distSq = dx * dx + dy * dy;
             
-            // If mouse is near the ball (approx 200px radius)
-            if (distSq < 40000) {
-                // Apply a powerful repulsion force outward
-                const forceMagnitude = 0.0004 * (40000 - distSq);
+            // If mouse triggers massive field (Radius of 250px)
+            if (distSq < 60000) {
+                // Apply a MASSIVE repulsion force outward
+                const forceMagnitude = 0.0006 * (60000 - distSq);
                 Matter.Body.applyForce(body, body.position, {
                     x: (dx / Math.sqrt(distSq)) * forceMagnitude,
                     y: (dy / Math.sqrt(distSq)) * forceMagnitude
@@ -289,7 +398,7 @@ Matter.Events.on(engine, 'beforeUpdate', function() {
     }
 });
 
-// Add pure physical dragging as fallback!
+// Fallback to allow pure dragging physics
 const mouse = Mouse.create(render.canvas);
 const mouseConstraint = MouseConstraint.create(engine, {
     mouse: mouse,
@@ -313,7 +422,7 @@ Matter.Events.on(engine, 'afterUpdate', function() {
     });
 });
 
-// Resizing Canvas physics bounds dynamically
+// React to window resizes properly
 window.addEventListener('resize', () => {
     cWidth = container.clientWidth;
     cHeight = container.clientHeight;
@@ -325,7 +434,7 @@ window.addEventListener('resize', () => {
 });
 
 
-// --- GSAP Individual Section Reveals ---
+// --- GSAP Standard Vertical Section Reveals ---
 
 // 1. Hero Reveal
 gsap.from(".hero-content > *", {

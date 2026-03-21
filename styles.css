@@ -4,14 +4,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
 
 :root {
-    --bg-dark: #000000; /* Pure Pitch Black */
+    --bg-dark: #000000; 
     --bg-card: rgba(255, 255, 255, 0.03);
     --border-color: rgba(255, 255, 255, 0.08);
     --text-primary: #ffffff;
     --text-secondary: #94A3B8;
     
-    --accent-1: #c084fc; /* Lavender Purple */
-    --accent-2: #facc15; /* Golden Yellow */
+    --accent-1: #c084fc; 
+    --accent-2: #facc15; 
     --accent-gradient: linear-gradient(135deg, #c084fc, #818cf8);
     
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -21,7 +21,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* Lenis assumes native browser scroll */
 }
 
 body {
@@ -40,7 +39,27 @@ header, main, footer {
     z-index: 10;
 }
 
-/* Typography refinements */
+/* Ambient Deep WebGL Background Glows */
+.bg-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: -1;
+    opacity: 0.6;
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+.glow-1 {
+    top: -10%; left: -10%;
+    width: 60vw; height: 60vw;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%);
+}
+.glow-2 {
+    bottom: -10%; right: -10%;
+    width: 70vw; height: 70vw;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
+}
+
 h1, h2, h3, .logo {
     font-family: 'Playfair Display', serif;
     letter-spacing: -0.02em;
@@ -134,7 +153,7 @@ section {
     display: block;
 }
 .title {
-    font-size: clamp(4rem, 11vw, 9rem); /* Massive Scale */
+    font-size: clamp(4rem, 11vw, 9rem);
     line-height: 0.95;
     margin-bottom: 2.5rem;
     font-weight: 600;
@@ -187,7 +206,7 @@ section {
     gap: 1.5rem;
 }
 
-/* Glass Cards & Spotlights */
+/* Glass Cards */
 .glass-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -233,10 +252,6 @@ section {
     line-height: 1.8;
     font-weight: 300;
 }
-.about-text strong {
-    color: var(--text-primary);
-    font-weight: 500;
-}
 .about-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -255,17 +270,10 @@ section {
     margin-bottom: 0.5rem;
     font-weight: 600;
 }
-.stat p {
-    font-family: 'Space Grotesk', sans-serif;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
 
 /* GSAP Horizontal Timeline */
 .horizontal-section {
-    height: 300vh; /* Scroll length */
+    height: 300vh; 
     padding: 0 !important; 
     display: block;
 }
@@ -275,7 +283,6 @@ section {
     height: 100vh;
     width: 100%;
     overflow: hidden;
-    background: #000;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -287,9 +294,14 @@ section {
     align-items: center;
 }
 .timeline-panel {
-    width: 100vw;
-    padding: 0 5vw;
+    width: 70vw;
+    margin: 0 5vw;
+    padding: 6rem 4rem;
     position: relative;
+    border-radius: 40px;
+    background: rgba(10,10,10,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
 }
 .timeline-year {
     font-size: clamp(8rem, 20vw, 15rem);
@@ -297,24 +309,24 @@ section {
     color: rgba(255,255,255,0.03);
     font-weight: 700;
     position: absolute;
-    top: -50%;    
-    left: 5%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 0;
 }
+.timeline-content-wrapper {
+    position: relative;
+    z-index: 5;
+}
 .timeline-title {
-    font-size: 3.5rem;
+    font-size: 4rem;
     color: var(--accent-1);
     margin-bottom: 1.5rem;
-    position: relative;
-    z-index: 1;
 }
 .timeline-panel p {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     color: var(--text-secondary);
-    max-width: 500px;
+    max-width: 600px;
     line-height: 1.8;
-    position: relative;
-    z-index: 1;
 }
 
 .timeline-progress-track {
@@ -342,7 +354,7 @@ section {
     box-shadow: 0 0 20px rgba(192, 132, 252, 0.8), inset 2px 2px 5px rgba(255,255,255,0.5);
 }
 
-/* Physics Settings */
+/* Hyper-Realistic 3D Physics Balls */
 #physics-canvas-container {
     width: 100%;
     height: 65vh;
@@ -356,19 +368,20 @@ section {
     position: absolute;
     top: 0; left: 0;
     border-radius: 50%;
-    background: #050505;
-    border: 1px solid rgba(255,255,255,0.2);
+    background: radial-gradient(circle at 30% 30%, #ffffff 0%, var(--accent-1) 20%, #000000 80%);
     color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 500;
-    font-size: 1.1rem;
+    font-weight: 700;
+    font-size: 1.15rem;
     font-family: 'Inter', sans-serif;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.8), 0 0 20px rgba(192, 132, 252, 0.4);
+    text-shadow: 0 0 10px rgba(0,0,0,0.8);
     user-select: none;
-    pointer-events: none; /* Crucial: lets mouse interact with the matter.js canvas directly underneath */
+    pointer-events: none; /* Mouse ignores marble to hit canvas */
     letter-spacing: -0.02em;
+    z-index: 10;
 }
 
 /* Projects */
@@ -437,7 +450,6 @@ section {
     font-size: 0.9rem;
     font-family: 'Space Grotesk', sans-serif;
     text-transform: uppercase;
-    letter-spacing: 1px;
     font-weight: 600;
     padding: 1rem 2rem;
     border-radius: 100px;
@@ -447,16 +459,12 @@ section {
     background: var(--text-primary);
     color: var(--bg-dark);
 }
-.link-primary:hover {
-    background: var(--text-secondary);
-}
+.link-primary:hover { background: var(--text-secondary); }
 .link-secondary {
     border: 1px solid var(--border-color);
     color: var(--text-primary);
 }
-.link-secondary:hover {
-    background: var(--bg-card);
-}
+.link-secondary:hover { background: var(--bg-card); }
 
 /* Contact */
 .contact-section {
@@ -464,9 +472,7 @@ section {
     text-align: center;
     padding-bottom: 200px;
 }
-.contact-content {
-    max-width: 800px;
-}
+.contact-content { max-width: 800px; }
 .contact-content h2 {
     font-size: clamp(3rem, 7vw, 6rem);
     margin-bottom: 2rem;
@@ -476,7 +482,6 @@ section {
     font-size: 1.25rem;
     margin-bottom: 4rem;
     line-height: 1.8;
-    font-weight: 300;
 }
 .social-links {
     display: flex;
@@ -491,9 +496,7 @@ section {
     font-size: 1.1rem;
     transition: color 0.3s;
 }
-.social-links a:hover {
-    color: var(--accent-2);
-}
+.social-links a:hover { color: var(--accent-2); }
 
 /* Custom Cursor */
 .cursor-dot {
@@ -523,20 +526,11 @@ section {
     border-color: rgba(192, 132, 252, 0.3) !important;
 }
 
-/* Special Text Animation Classes */
-.dud {
-    color: var(--text-secondary);
-    opacity: 0.5;
-}
-.cursor {
-    animation: blink 1s step-end infinite;
-    color: var(--accent-2);
-}
-@keyframes blink {
-    50% { opacity: 0; }
-}
+/* Animations */
+.dud { color: var(--text-secondary); opacity: 0.5; }
+.cursor { animation: blink 1s step-end infinite; color: var(--accent-2); }
+@keyframes blink { 50% { opacity: 0; } }
 
-/* Responsive */
 @media (max-width: 1024px) {
     .about-container { grid-template-columns: 1fr; }
     .projects-grid { grid-template-columns: 1fr; }
