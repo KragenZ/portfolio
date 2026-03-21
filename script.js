@@ -1,3 +1,29 @@
+// --- Lenis Super Smooth Scroll Engine ---
+const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smooth: true,
+    mouseMultiplier: 1,
+    smoothTouch: false,
+    touchMultiplier: 2,
+});
+
+function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+// Sync GSAP with Lenis
+gsap.registerPlugin(ScrollTrigger);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time)=>{
+  lenis.raf(time * 1000)
+});
+gsap.ticker.lagSmoothing(0, 0);
+
 // --- Custom Cursor ---
 const cursorDot = document.querySelector('.cursor-dot');
 const cursorOutline = document.querySelector('.cursor-outline');
@@ -14,13 +40,13 @@ window.addEventListener('mousemove', (e) => {
     }, { duration: 500, fill: "forwards" });
 });
 
-const interactives = document.querySelectorAll('.hover-target, a, .glass-card, button');
+const interactives = document.querySelectorAll('.hover-target, a, button, #physics-canvas-container');
 interactives.forEach(el => {
     el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-hover'));
     el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-hover'));
 });
 
-// --- Mouse Spotlight on Cards ---
+// --- Mouse Internal Spotlight on Cards ---
 document.querySelectorAll('.glass-card').forEach(card => {
     card.addEventListener('mousemove', e => {
         const rect = card.getBoundingClientRect();
@@ -32,18 +58,18 @@ document.querySelectorAll('.glass-card').forEach(card => {
 // --- 3D Vanilla Tilt Cards ---
 try {
     VanillaTilt.init(document.querySelectorAll(".glass-card"), {
-        max: 8,
-        speed: 400,
+        max: 5, // Subtle for elegance
+        speed: 600,
         glare: true,
-        "max-glare": 0.2,
-        perspective: 1000,
-        scale: 1.02
+        "max-glare": 0.1,
+        perspective: 1500,
+        scale: 1.01
     });
 } catch (e) {
     console.warn("VanillaTilt failed:", e);
 }
 
-// --- Text Scramble Cryptography Effect ---
+// --- Hacker Text Scramble Effect ---
 class TextScramble {
     constructor(el) {
         this.el = el;
@@ -106,206 +132,143 @@ class Typewriter {
         this.el.innerHTML = '';
         this.str = '';
         this.i = 0;
+        this.running = false;
     }
     start() {
+        if(this.running) return;
+        this.running = true;
+        this.type();
+    }
+    type() {
         if (this.i < this.text.length) {
             this.str += this.text.charAt(this.i);
             this.el.innerHTML = this.str + '<span class="cursor">_</span>';
             this.i++;
-            setTimeout(() => this.start(), 20 + Math.random() * 70);
+            setTimeout(() => this.type(), 30 + Math.random() * 80);
         } else {
-            this.el.innerHTML = this.str; // Clean up
+            this.el.innerHTML = this.str; // Clean up cursor
         }
     }
 }
 
-// --- Split Text Bounce Effect ---
-function splitTextBounce(el) {
-    const text = el.innerText;
-    el.innerHTML = '';
-    text.split('').forEach((char, i) => {
-        const span = document.createElement('span');
-        span.innerText = char === ' ' ? '\u00A0' : char;
-        span.style.display = 'inline-block';
-        span.style.opacity = '0';
-        span.style.transform = 'translateY(-50px)';
-        el.appendChild(span);
-        
-        gsap.to(span, {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "bounce.out",
-            delay: i * 0.05
-        });
+// --- Matter.js Physics Container ---
+const Engine = Matter.Engine,
+      Render = Matter.Render,
+      Runner = Matter.Runner,
+      MouseConstraint = Matter.MouseConstraint,
+      Mouse = Matter.Mouse,
+      World = Matter.World,
+      Bodies = Matter.Bodies;
+
+const engine = Engine.create();
+engine.world.gravity.y = 1;
+
+const container = document.getElementById('physics-canvas-container');
+let cWidth = container.clientWidth;
+let cHeight = container.clientHeight;
+
+const render = Render.create({
+    element: container,
+    engine: engine,
+    options: {
+        width: cWidth,
+        height: cHeight,
+        background: 'transparent',
+        wireframes: false,
+        pixelRatio: window.devicePixelRatio
+    }
+});
+
+// Walls
+const wallOptions = { isStatic: true, render: { visible: false } };
+let ground = Bodies.rectangle(cWidth / 2, cHeight + 50, cWidth + 200, 100, wallOptions);
+let leftWall = Bodies.rectangle(-50, cHeight / 2, 100, cHeight * 2, wallOptions);
+let rightWall = Bodies.rectangle(cWidth + 50, cHeight / 2, 100, cHeight * 2, wallOptions);
+World.add(engine.world, [ground, leftWall, rightWall]);
+
+// Skill Balls Data
+const rawSkills = ['Python', 'C++', 'SQL', 'TensorFlow', 'PyTorch', 'Scikit', 'Docker', 'AWS', 'FastAPI', 'Pandas', 'NumPy', 'Git'];
+const skillBodies = [];
+
+// Create Balls
+rawSkills.forEach((skill, i) => {
+    const radius = 45 + Math.random() * 20;
+    const x = Math.random() * (cWidth - 100) + 50;
+    // Start them way high up off screen so they drop beautifully when activated
+    const y = -200 - (i * 120); 
+    
+    // Create physical body layer
+    const body = Bodies.circle(x, y, radius, {
+        restitution: 0.8, // Bouncy
+        friction: 0.005,
+        density: 0.04,
+        isStatic: true, // Freeze until scrolled to
+        render: { visible: false } // We use DOM elements instead
     });
-}
-
-// --- Three.js 3D Particle Sphere ---
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-// Insert renderer cleanly into the DOM
-document.body.insertBefore(renderer.domElement, document.body.firstChild);
-renderer.domElement.style.position = 'fixed';
-renderer.domElement.style.top = '0';
-renderer.domElement.style.left = '0';
-renderer.domElement.style.zIndex = '0';
-renderer.domElement.style.pointerEvents = 'none';
-
-// Physics & Rendering Arrays
-const particlesCount = 5000;
-const particlesGeometry = new THREE.BufferGeometry();
-const posArray = new Float32Array(particlesCount * 3);
-const colorArray = new Float32Array(particlesCount * 3);
-
-// Interactive Physics States
-const basePositions = new Float32Array(particlesCount * 3);
-const velocities = new Float32Array(particlesCount * 3);
-
-let particleConfig = {
-    color1: '#06b6d4', // Cyan
-    color2: '#8b5cf6', // Violet
-    spread: 8
-};
-
-function generateParticles() {
-    const c1 = new THREE.Color(particleConfig.color1);
-    const c2 = new THREE.Color(particleConfig.color2);
-
-    for(let i = 0; i < particlesCount * 3; i+=3) {
-        // Spherical distribution
-        const r = particleConfig.spread * Math.cbrt(Math.random()); 
-        const theta = Math.random() * 2 * Math.PI;
-        const phi = Math.acos(2 * Math.random() - 1);
-        
-        posArray[i] = r * Math.sin(phi) * Math.cos(theta);
-        posArray[i+1] = r * Math.sin(phi) * Math.sin(theta);
-        posArray[i+2] = r * Math.cos(phi);
-
-        basePositions[i] = posArray[i];
-        basePositions[i+1] = posArray[i+1];
-        basePositions[i+2] = posArray[i+2];
-
-        // Mix colors randomly
-        const mixedColor = c1.clone().lerp(c2, Math.random());
-        colorArray[i] = mixedColor.r;
-        colorArray[i+1] = mixedColor.g;
-        colorArray[i+2] = mixedColor.b;
-        
-        // Zero out velocities
-        velocities[i] = 0;
-        velocities[i+1] = 0;
-        velocities[i+2] = 0;
-    }
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
-}
-generateParticles();
-
-const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.045,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.9,
-    blending: THREE.AdditiveBlending
-});
-
-const particleMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-scene.add(particleMesh);
-camera.position.z = 12;
-
-let mouseX = 0;
-let mouseY = 0;
-let targetX = 0;
-let targetY = 0;
-const windowHalfX = window.innerWidth / 2;
-const windowHalfY = window.innerHeight / 2;
-
-document.addEventListener('mousemove', (event) => {
-    mouseX = (event.clientX - windowHalfX);
-    mouseY = (event.clientY - windowHalfY);
-});
-
-// MASSIVE INTERACTIVITY: Repulsion Physics Shockwave on Click
-window.addEventListener('click', () => {
-    for(let i = 0; i < particlesCount * 3; i+=3) {
-        // Explode violently outward from the central 3D core
-        const px = basePositions[i];
-        const py = basePositions[i+1];
-        const pz = basePositions[i+2];
-        const magnitude = Math.sqrt(px*px + py*py + pz*pz) + 0.1;
-        
-        // Massive physical shockwave
-        velocities[i] += (px / magnitude) * (Math.random() * 4 + 4);
-        velocities[i+1] += (py / magnitude) * (Math.random() * 4 + 4);
-        velocities[i+2] += (pz / magnitude) * (Math.random() * 4 + 4);
-    }
-});
-
-let scrollY = window.scrollY;
-window.addEventListener('scroll', () => { scrollY = window.scrollY; });
-
-const clock = new THREE.Clock();
-function animate() {
-    requestAnimationFrame(animate);
-    const elapsedTime = clock.getElapsedTime();
-
-    targetX = mouseX * 0.001;
-    targetY = mouseY * 0.001;
-
-    // Smooth rotation based on mouse movement
-    particleMesh.rotation.y += 0.08 * (targetX - particleMesh.rotation.y);
-    particleMesh.rotation.x += 0.08 * (targetY - particleMesh.rotation.x);
     
-    // Constant slow rotation over time
-    particleMesh.rotation.z = elapsedTime * 0.08;
-    particleMesh.rotation.y += 0.003;
-
-    // Camera scroll parallax
-    camera.position.y = -scrollY * 0.006;
+    // Create DOM element overlay
+    const ballDiv = document.createElement('div');
+    ballDiv.classList.add('skill-ball');
+    ballDiv.innerText = skill;
+    container.appendChild(ballDiv);
     
-    // WebGL Spring Physics Computation per frame
-    const positions = particlesGeometry.attributes.position.array;
-    for(let i = 0; i < particlesCount * 3; i+=3) {
-        // Calculate tension towards original base position
-        const dx = basePositions[i] - positions[i];
-        const dy = basePositions[i+1] - positions[i+1];
-        const dz = basePositions[i+2] - positions[i+2];
+    skillBodies.push({ body, elem: ballDiv, radius });
+    World.add(engine.world, body);
+});
 
-        // Apple spring force
-        velocities[i] += dx * 0.04;
-        velocities[i+1] += dy * 0.04;
-        velocities[i+2] += dz * 0.04;
+// Mouse Interaction constraints
+const mouse = Mouse.create(render.canvas);
+const mouseConstraint = MouseConstraint.create(engine, {
+    mouse: mouse,
+    constraint: { stiffness: 0.2, render: { visible: false } }
+});
+World.add(engine.world, mouseConstraint);
+render.mouse = mouse; 
 
-        // Apply friction dampening
-        velocities[i] *= 0.88;
-        velocities[i+1] *= 0.88;
-        velocities[i+2] *= 0.88;
+// Make sure scrolling through the canvas works without getting stuck on it
+mouseConstraint.mouse.element.removeEventListener("mousewheel", mouseConstraint.mouse.mousewheel);
+mouseConstraint.mouse.element.removeEventListener("DOMMouseScroll", mouseConstraint.mouse.mousewheel);
 
-        // Apply velocities back to positions
-        positions[i] += velocities[i];
-        positions[i+1] += velocities[i+1];
-        positions[i+2] += velocities[i+2];
-    }
-    particlesGeometry.attributes.position.needsUpdate = true;
+Matter.Runner.run(engine);
 
-    renderer.render(scene, camera);
-}
-animate();
+// Synchronize DOM elements to Physics Engine every tick
+Matter.Events.on(engine, 'afterUpdate', function() {
+    skillBodies.forEach(({ body, elem, radius }) => {
+        // Clamp bounds just in case they fly off screen out of walls
+        if(body.position.y > cHeight + 200) {
+            Matter.Body.setPosition(body, { x: cWidth/2, y: -100 });
+            Matter.Body.setVelocity(body, { x: 0, y: 0 });
+        }
 
+        elem.style.width = `${radius * 2}px`;
+        elem.style.height = `${radius * 2}px`;
+        elem.style.transform = `translate(${body.position.x - radius}px, ${body.position.y - radius}px) rotate(${body.angle}rad)`;
+    });
+});
+
+// Resizing
 window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    cWidth = container.clientWidth;
+    cHeight = container.clientHeight;
+    render.canvas.width = cWidth;
+    render.canvas.height = cHeight;
+    Matter.Body.setPosition(ground, { x: cWidth / 2, y: cHeight + 50 });
+    Matter.Body.setPosition(rightWall, { x: cWidth + 50, y: cHeight / 2 });
 });
 
-// --- GSAP Advanced Scroll Animations & Section Triggers ---
-gsap.registerPlugin(ScrollTrigger);
+// --- GSAP Unique Section Animations ---
 
-// 1. UNIQUE: Hacker Text Scramble on About
+// 1. Hero Reveal
+gsap.from(".hero-content > *", {
+    y: 80,
+    opacity: 0,
+    duration: 1.8,
+    stagger: 0.15,
+    ease: "expo.out",
+    delay: 0.2
+});
+
+// 2. About - Scrambler text
 const aboutTitle = document.querySelector('#about .section-title');
 aboutTitle.style.opacity = 0;
 aboutTitle.dataset.text = aboutTitle.innerText;
@@ -320,129 +283,75 @@ ScrollTrigger.create({
     }
 });
 
-// 2. UNIQUE: Typewriter effect on Skills
+// 3. Skills - Physics Ball Drop trigger & Typewriter heading
 const skillsTitle = document.querySelector('#skills .section-title');
 skillsTitle.style.opacity = 0;
 const typer = new Typewriter(skillsTitle);
+
 ScrollTrigger.create({
-    trigger: skillsTitle,
-    start: "top 85%",
+    trigger: '#skills',
+    start: "top 60%", // Triggers when container is somewhat centralized
     once: true,
     onEnter: () => {
         skillsTitle.style.opacity = 1;
         typer.start();
+        
+        // UNFREEZE gravity so they pour into the container!
+        skillBodies.forEach((sb, i) => {
+            setTimeout(() => {
+                Matter.Body.setStatic(sb.body, false);
+            }, i * 100); // Stagger drop
+        });
     }
 });
 
-// 3. UNIQUE: Individual Split Bounce on Projects
+// 4. Projects - Giant Fade Up with Skew
 const projectsTitle = document.querySelector('#projects .section-title');
-projectsTitle.style.opacity = 0;
-ScrollTrigger.create({
-    trigger: projectsTitle,
-    start: "top 85%",
-    once: true,
-    onEnter: () => {
-        projectsTitle.style.opacity = 1;
-        splitTextBounce(projectsTitle);
-    }
-});
-
-// 4. UNIQUE: Elastic Overshoot Scale on Contact
-const contactTitle = document.querySelector('#contact h2');
-gsap.from(contactTitle, {
-    scrollTrigger: { trigger: contactTitle, start: "top 85%", once: true },
-    scale: 0,
+gsap.from(projectsTitle, {
+    scrollTrigger: { trigger: projectsTitle, start: "top 85%", once: true },
+    y: 100,
     opacity: 0,
-    ease: "elastic.out(1, 0.3)",
-    duration: 1.5
+    rotationX: -45,
+    duration: 1.5,
+    ease: "power3.out"
 });
 
-// --- Ambient Background Glow Morphs & 3D Environment Shift ---
-const glow1 = document.querySelector('.glow-1');
-const glow2 = document.querySelector('.glow-2');
-
-ScrollTrigger.create({
-    trigger: "#skills",
-    start: "top center",
-    onEnter: () => {
-        gsap.to(glow1, { background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(glow2, { background: 'radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(particleMesh.scale, { x: 2.5, y: 2.5, z: 2.5, duration: 2.5, ease: "power3.out" });
-        gsap.to(particleMesh.rotation, { x: Math.PI / 1.5, duration: 2.5, ease: "power2.out" });
-    },
-    onLeaveBack: () => {
-        gsap.to(glow1, { background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(glow2, { background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(particleMesh.scale, { x: 1, y: 1, z: 1, duration: 2.5, ease: "power3.inOut" });
-        gsap.to(particleMesh.rotation, { x: 0, duration: 2.5 });
-    }
-});
-
-ScrollTrigger.create({
-    trigger: "#projects",
-    start: "top center",
-    onEnter: () => {
-        gsap.to(glow1, { background: 'radial-gradient(circle, rgba(217, 70, 239, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(glow2, { background: 'radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(camera.position, { z: 18, duration: 3, ease: "power4.out" });
-        gsap.to(particleMesh.rotation, { y: "+=3.14", duration: 3, ease: "expo.out" });
-        gsap.to(particleMesh.scale, { x: 1.5, y: 1.5, z: 1.5, duration: 3 });
-    },
-    onLeaveBack: () => {
-        gsap.to(glow1, { background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(glow2, { background: 'radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(camera.position, { z: 12, duration: 2.5 });
-        gsap.to(particleMesh.scale, { x: 2.5, y: 2.5, z: 2.5, duration: 2.5 });
-    }
-});
-
-ScrollTrigger.create({
-    trigger: "#contact",
-    start: "top center",
-    onEnter: () => {
-        gsap.to(glow1, { background: 'radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(glow2, { background: 'radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(camera.position, { z: 5, duration: 3, ease: "power3.inOut" });
-    },
-    onLeaveBack: () => {
-        gsap.to(glow1, { background: 'radial-gradient(circle, rgba(217, 70, 239, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(glow2, { background: 'radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 70%)', duration: 1.5 });
-        gsap.to(camera.position, { z: 18, duration: 2.5 });
-    }
-});
-
-// Stagger skills
-gsap.utils.toArray('.skills-grid .skill-card').forEach((card, i) => {
+document.querySelectorAll('.project-card').forEach((card, i) => {
     gsap.from(card, {
-        scrollTrigger: { trigger: card, start: "top bottom-=50", once: true },
-        y: 60, opacity: 0, duration: 1, ease: "power3.out", delay: (i % 4) * 0.15
+        scrollTrigger: { trigger: card, start: "top 85%", once: true },
+        y: 100, 
+        opacity: 0, 
+        duration: 1.5, 
+        ease: "power4.out", 
+        delay: i * 0.2
     });
 });
 
-// Projects
-gsap.utils.toArray('.projects-grid .project-card').forEach((card, i) => {
-    gsap.from(card, {
-        scrollTrigger: { trigger: card, start: "top bottom-=100", once: true },
-        y: 80, opacity: 0, duration: 1.2, ease: "power3.out", delay: (i % 2) * 0.2
-    });
+// 5. Contact - Slow Letter by Letter fade
+const contactTitle = document.querySelector('.contact-content h2');
+const contactText = contactTitle.innerText;
+contactTitle.innerHTML = '';
+contactText.split('').forEach(char => {
+    const span = document.createElement('span');
+    span.innerText = char === ' ' ? '\u00A0' : char;
+    contactTitle.appendChild(span);
 });
 
-// Left/Right split for About
-gsap.from('.about-text', {
-    scrollTrigger: { trigger: '.about-container', start: "top bottom-=100", once: true },
-    x: -50, opacity: 0, duration: 1.2, ease: "power3.out"
-});
-gsap.from('.about-stats', {
-    scrollTrigger: { trigger: '.about-container', start: "top bottom-=100", once: true },
-    x: 50, opacity: 0, duration: 1.2, ease: "power3.out", delay: 0.2
+gsap.from('.contact-content h2 span', {
+    scrollTrigger: { trigger: contactTitle, start: "top 85%", once: true },
+    opacity: 0,
+    y: 20,
+    filter: "blur(10px)",
+    duration: 1,
+    stagger: 0.05,
+    ease: "power2.out"
 });
 
-// Hero intro
-gsap.from(".hero-content > *", {
+gsap.from('.contact-content p, .contact-content .btn, .social-links', {
+    scrollTrigger: { trigger: contactTitle, start: "top 70%", once: true },
     y: 50,
     opacity: 0,
     duration: 1.5,
     stagger: 0.2,
-    ease: "power4.out",
-    delay: 0.5
+    ease: "power3.out"
 });
