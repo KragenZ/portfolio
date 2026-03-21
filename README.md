@@ -15,8 +15,8 @@
 - **Cinematic Dark WebGL Aesthetic:** Ultra-premium glassmorphic containers mapped over Torus 3D glows and global fractal noise film grain overlays.
 
 ## 🚀 Live Demo
-You can experience the live WebGL portfolio deployed directly to Netlify here: 
-👉 **[View Live Portfolio](https://srijitroy-portfolio.netlify.app/)**
+You can view the live portfolio deployed on GitHub Pages here: 
+👉 **[View Live Portfolio](https://KragenZ.github.io/portfolio/)**
 
 ## 💻 Local Setup
 Since this project uses vanilla web technologies, there are zero complex build steps or missing dependencies. 
