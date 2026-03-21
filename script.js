@@ -1,6 +1,23 @@
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
+window.scrollTo(0, 0);
+
+// --- Theme Toggle (Dark / Light) ---
+const themeToggleBtn = document.getElementById('theme-toggle');
+const savedTheme = localStorage.getItem('portfolio-theme');
+if (savedTheme === 'light') {
+    document.body.classList.add('light-mode');
+    if (themeToggleBtn) themeToggleBtn.textContent = '🌙 Dark';
+}
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        const isLight = document.body.classList.contains('light-mode');
+        themeToggleBtn.textContent = isLight ? '🌙 Dark' : '☀️ Light';
+        localStorage.setItem('portfolio-theme', isLight ? 'light' : 'dark');
+    });
+}
 
 // --- Barba.js Seamless Page Routing ---
 if(typeof barba !== "undefined") {

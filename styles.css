@@ -17,10 +17,49 @@
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ─── Light Mode Override ─── */
+body.light-mode {
+    --bg-dark: #f5f5f0;
+    --bg-card: rgba(0, 0, 0, 0.04);
+    --border-color: rgba(0, 0, 0, 0.1);
+    --text-primary: #111111;
+    --text-secondary: #555555;
+    --accent-1: #b45309; /* Warm Gold */
+    --accent-2: #92400e;
+    --accent-gradient: linear-gradient(135deg, #d97706, #b45309);
+    background-color: var(--bg-dark) !important;
+    color: var(--text-primary) !important;
+    cursor: auto;
+}
+body.light-mode .bg-glow { opacity: 0.15; }
+body.light-mode .glass-header {
+    background: rgba(245, 245, 240, 0.85);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+body.light-mode .glass-card {
+    background: rgba(255,255,255,0.7);
+    border-color: rgba(0,0,0,0.1);
+}
+body.light-mode .glass-noise { opacity: 0; }
+
+/* ─── Theme Toggle Button ─── */
+#theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.4rem 0.9rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    white-space: nowrap;
+}
+#theme-toggle:hover {
+    border-color: var(--accent-1);
+    color: var(--accent-1);
 }
 
 html, body {
