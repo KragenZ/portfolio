@@ -12,7 +12,9 @@
         .sy-canvas { z-index: 5 !important; border-radius: 16px 16px 0 0 !important; }
     </style>
 </head>
-<body>
+<body data-barba="wrapper">
+    <!-- PERSISTENT HUD ELEMENTS (Never reloaded during Barba Transitions) -->
+    <div class="barba-wipe"></div>
     <!-- Cinematic Neural Net Preloader -->
     <div id="preloader">
         <div class="preloader-content">
@@ -27,8 +29,10 @@
     <div class="bg-glow glow-1"></div>
     <div class="bg-glow glow-2"></div>
 
-    <!-- Active Vector Neural Spine -->
+    <!-- Active Vector Neural Spine HUD -->
     <div id="neural-spine"></div>
+
+    <main data-barba="container" data-barba-namespace="home">
 
     <!-- Custom Cursor -->
 
@@ -44,9 +48,14 @@
         </nav>
     </header>
 
-    <main>
+    
         <!-- Hero Section -->
         <section id="hero" class="hero-section">
+            <!-- Spline 3D Viewer Mesh -->
+            <div class="spline-container">
+                <spline-viewer url="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode"></spline-viewer>
+            </div>
+            
             <div class="hero-content">
                 <div class="mobile-warning">⚠️ Note: Due to heavy WebGL rendering and physics arrays, this site is best experienced on a Desktop browser.</div>
                 <span class="greeting">Srijit Kumar Roy</span>
@@ -132,20 +141,19 @@
                 <!-- Project 1 -->
                 <div class="project-card glass-card hover-target">
                     <div class="project-image" style="padding: 0;">
-                        <img src="assets/ai_property.png" class="glsl-img" alt="AI Property Assistant">
+                        <img src="assets/ai_property.webp" class="glsl-img" alt="AI Property Assistant">
                     </div>
                     <div class="project-info">
                         <h3>AI Property Assistant</h3>
-                        <p>An intelligent RAG-based assistant that enables users to semantically query property listings using the Gemini API and a FAISS vector database. Deployed with blazing inference speeds on Streamlit Cloud.</p>
+                        <p>Fully conversational Real Estate AI agent utilizing dynamic RAG architectures and FAISS vector embedding retrievals.</p>
                         <div class="tags">
-                            <span>Python</span>
-                            <span>Streamlit</span>
+                            <span>LangChain</span>
                             <span>FAISS</span>
-                            <span>LLM / Gemini</span>
+                            <span>Streamlit</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://ai-property-assistant-rag-8za8yz32sjafid8qigpxdc.streamlit.app/" target="_blank" rel="noopener" class="link-primary hover-target">Deploy Demo</a>
-                            <a href="https://github.com/KragenZ/ai-property-assistant-rag" target="_blank" rel="noopener" class="link-secondary hover-target">Source</a>
+                            <a href="case_study_pa.html" class="btn link-primary hover-target">Case Study</a>
+                            <a href="https://github.com/KragenZ/portfolio" target="_blank" class="btn link-secondary hover-target">View Code</a>
                         </div>
                     </div>
                 </div>
@@ -153,7 +161,7 @@
                 <!-- Project 2 -->
                 <div class="project-card glass-card hover-target">
                     <div class="project-image" style="padding: 0;">
-                        <img src="assets/house_price.png" class="glsl-img" alt="House Price Predictor">
+                        <img src="assets/house_price.webp" class="glsl-img" alt="House Price Predictor">
                     </div>
                     <div class="project-info">
                         <h3>House Price Predictor ML</h3>
@@ -215,7 +223,7 @@
                 </div>
             </div>
         </section>
-    </main>
+    
 
     <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.05); color: #64748b; font-size: 0.85rem; position: relative; z-index: 10;">
         <p>Architected & Built by Srijit Kumar Roy &copy; 2026</p>
@@ -242,8 +250,11 @@
     <audio id="bg-music" loop>
         <source src="assets/custom_music.mp3" type="audio/mpeg">
     </audio>
+    </main>
 
     <!-- Core Physics & Animation Plugins -->
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.5/build/spline-viewer.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>

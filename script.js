@@ -2,6 +2,40 @@ if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
 
+// --- Barba.js Seamless Page Routing ---
+if(typeof barba !== "undefined") {
+    barba.init({
+        transitions: [{
+            name: 'gsap-wipe',
+            leave(data) {
+                // Cinematic drop-down
+                return gsap.to('.barba-wipe', {
+                    top: 0,
+                    duration: 0.6,
+                    ease: "power3.inOut"
+                });
+            },
+            enter(data) {
+                // Wipe curtain away upwards
+                gsap.to('.barba-wipe', {
+                    top: "-100%",
+                    duration: 0.6,
+                    ease: "power3.inOut",
+                    onComplete: () => {
+                        gsap.set('.barba-wipe', { top: '100%' }); // reset for next trans
+                    }
+                });
+                
+                // Hard reset coordinates so new page isn't scrolled down
+                window.scrollTo(0, 0);
+                if(typeof lenis !== "undefined") {
+                    lenis.scrollTo(0, {immediate: true});
+                }
+            }
+        }]
+    });
+}
+
 // --- Lenis Super Smooth Scroll Engine ---
 const lenis = new Lenis({
     duration: 1.2,

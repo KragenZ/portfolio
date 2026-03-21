@@ -78,6 +78,18 @@ header, main, footer {
     opacity: 0.8;
 }
 
+/* --- Barba GSAP Transition --- */
+.barba-wipe {
+    position: fixed;
+    top: 100%; left: 0;
+    width: 100vw; height: 100vh;
+    background: var(--bg-dark);
+    border-top: 5px solid var(--accent-1);
+    z-index: 999999;
+    pointer-events: none;
+    box-shadow: 0 -20px 50px rgba(192, 132, 252, 0.4);
+}
+
 .glass-noise {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
@@ -163,7 +175,21 @@ section {
 .hero-section {
     padding-top: 180px;
     align-items: flex-start;
+    position: relative;
 }
+
+/* 3D Spline Component */
+.spline-container {
+    position: absolute;
+    top: 50%; right: 0;
+    transform: translateY(-50%);
+    width: 600px;
+    height: 600px;
+    z-index: 0;
+    pointer-events: auto; 
+    opacity: 0.8;
+}
+
 .hero-content {
     max-width: 900px;
     position: relative;
