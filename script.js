@@ -104,7 +104,7 @@ window.addEventListener('mouseout', function() {
 });
 
 function connect() {
-    for (let i = 0; i < particlesArray., length; i++) {
+    for (let i = 0; i < particlesArray.length; i++) {
         for (let j = i; j < particlesArray.length; j++) {
             const dx = particlesArray[i].x - particlesArray[j].x;
             const dy = particlesArray[i].y - particlesArray[j].y;
