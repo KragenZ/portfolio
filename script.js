@@ -158,31 +158,33 @@ window.addEventListener('resize', () => {
 // --- GSAP Horizontal Timeline & BOOM BAM Effects ---
 const horizontalContainer = document.querySelector('.horizontal-container');
 if(horizontalContainer) {
+    const getScrollAmount = () => horizontalContainer.scrollWidth - window.innerWidth;
+
     const scrollTween = gsap.to(horizontalContainer, {
-        x: () => -(horizontalContainer.scrollWidth - window.innerWidth),
+        x: () => -getScrollAmount(),
         ease: "none",
         scrollTrigger: {
             trigger: ".horizontal-section",
             start: "top top",
-            end: () => "+=" + horizontalContainer.scrollWidth,
+            end: () => `+=${getScrollAmount()}`,
             scrub: 1, 
             pin: true
         }
     });
 
-    // Animate the tracking line fill
+    // Animate the tracking line fill flawlessly relative to exact panel bounds
     gsap.to('.timeline-progress-fill', {
         width: "100%",
         ease: "none",
         scrollTrigger: {
             trigger: ".horizontal-section",
             start: "top top",
-            end: () => "+=" + horizontalContainer.scrollWidth,
+            end: () => `+=${getScrollAmount()}`,
             scrub: 1
         }
     });
 
-    // Roll tracking ball seamlessly
+    // Roll tracking ball seamlessly to absolute 100% position
     gsap.to('.timeline-rolling-ball', {
         left: "100%",
         rotation: 1080, 
@@ -190,29 +192,28 @@ if(horizontalContainer) {
         scrollTrigger: {
             trigger: ".horizontal-section",
             start: "top top",
-            end: () => "+=" + horizontalContainer.scrollWidth,
+            end: () => `+=${getScrollAmount()}`,
             scrub: 1
         }
     });
 
     // THE BOOM BAM Container Animations!
-    // Triggers insanely heavy 3D skewed entry animations when scrolling *horizontally*
     gsap.utils.toArray('.timeline-panel').forEach((panel, i) => {
         gsap.from(panel, {
             scrollTrigger: {
                 trigger: panel,
-                containerAnimation: scrollTween, // Magic GSAP sub-trigger
-                start: "left 90%", // Trigger exactly as it slides into view horizontally
+                containerAnimation: scrollTween, 
+                start: "left 90%", // Entry pop trigger
                 toggleActions: "play none none reverse"
             },
-            z: 800, // Absolute 3D popout towards the camera
-            rotationY: -60, // Slams into place like a heavy 3D vault door
-            rotationX: 30, // Skewed perspective
+            z: 800, 
+            rotationY: -60, 
+            rotationX: 30, 
             scale: 0.1,
             opacity: 0,
             duration: 2.5,
-            ease: "elastic.out(1, 0.3)", // Explosive rubber-band wobble
-            boxShadow: "0 0 150px rgba(192, 132, 252, 1)" // Giant neon flash on entry that fades
+            ease: "elastic.out(1, 0.3)", 
+            boxShadow: "0 0 150px rgba(192, 132, 252, 1)" 
         });
     });
 }
@@ -282,21 +283,33 @@ class Typewriter {
         this.str = '';
         this.i = 0;
         this.running = false;
+        this.timeout = null;
     }
     start() {
         if(this.running) return;
         this.running = true;
+        this.el.style.opacity = 1;
         this.type();
     }
     type() {
+        if(!this.running) return;
         if (this.i < this.text.length) {
             this.str += this.text.charAt(this.i);
             this.el.innerHTML = this.str + '<span class="cursor">_</span>';
             this.i++;
-            setTimeout(() => this.type(), 30 + Math.random() * 80);
+            this.timeout = setTimeout(() => this.type(), 30 + Math.random() * 80);
         } else {
             this.el.innerHTML = this.str; 
+            this.running = false;
         }
+    }
+    reset() {
+        this.running = false;
+        clearTimeout(this.timeout);
+        this.str = '';
+        this.i = 0;
+        this.el.innerHTML = '';
+        this.el.style.opacity = 0;
     }
 }
 
@@ -348,10 +361,10 @@ rawSkills.forEach((skill, i) => {
     
     // Create physical body layer
     const body = Bodies.circle(x, y, radius, {
-        restitution: 1.05, // OVER 1.0! This makes them EXTREMELY explosive when bouncing
-        friction: 0.001,
-        frictionAir: 0.01,
-        density: 0.03,
+        restitution: 0.9, // Professional bounce without endless noise
+        friction: 0.005,
+        frictionAir: 0.015,
+        density: 0.05,
         render: { visible: false } 
     });
     
@@ -385,10 +398,10 @@ Matter.Events.on(engine, 'beforeUpdate', function() {
             const dy = body.position.y - hoverMouseY;
             const distSq = dx * dx + dy * dy;
             
-            // If mouse triggers massive field (Radius of 250px)
-            if (distSq < 60000) {
-                // Apply a MASSIVE repulsion force outward
-                const forceMagnitude = 0.0006 * (60000 - distSq);
+            // If mouse triggers massive field (Radius of 150px)
+            if (distSq < 22500) {
+                // Apply a controlled repulsion force outward
+                const forceMagnitude = 0.00015 * (22500 - distSq);
                 Matter.Body.applyForce(body, body.position, {
                     x: (dx / Math.sqrt(distSq)) * forceMagnitude,
                     y: (dy / Math.sqrt(distSq)) * forceMagnitude
@@ -454,10 +467,12 @@ const scrambler = new TextScramble(aboutTitle);
 ScrollTrigger.create({
     trigger: aboutTitle,
     start: "top 85%",
-    once: true,
     onEnter: () => {
         aboutTitle.style.opacity = 1;
         scrambler.setText(aboutTitle.dataset.text);
+    },
+    onLeaveBack: () => {
+        aboutTitle.style.opacity = 0;
     }
 });
 
@@ -469,17 +484,22 @@ const typer = new Typewriter(skillsTitle);
 ScrollTrigger.create({
     trigger: '#skills',
     start: "top 60%", 
-    once: true,
     onEnter: () => {
-        skillsTitle.style.opacity = 1;
         typer.start();
+    },
+    onLeaveBack: () => {
+        typer.reset();
     }
 });
 
-// 4. Projects - Giant Fade Up with Skew
+// 4. Projects - Fallback
 const projectsTitle = document.querySelector('#projects .section-title');
 gsap.from(projectsTitle, {
-    scrollTrigger: { trigger: projectsTitle, start: "top 85%", once: true },
+    scrollTrigger: { 
+        trigger: projectsTitle, 
+        start: "top 85%",
+        toggleActions: "play none none reset"
+    },
     y: 100,
     opacity: 0,
     rotationX: -45,
@@ -489,7 +509,11 @@ gsap.from(projectsTitle, {
 
 document.querySelectorAll('.project-card').forEach((card, i) => {
     gsap.from(card, {
-        scrollTrigger: { trigger: card, start: "top 85%", once: true },
+        scrollTrigger: { 
+            trigger: card, 
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+        },
         y: 100, 
         opacity: 0, 
         duration: 1.5, 
@@ -498,7 +522,7 @@ document.querySelectorAll('.project-card').forEach((card, i) => {
     });
 });
 
-// 5. Contact - Slow Letter by Letter fade
+// 5. Contact - Slow Letter by Letter fade forever replayable
 const contactTitle = document.querySelector('.contact-content h2');
 const contactText = contactTitle.innerText;
 contactTitle.innerHTML = '';
@@ -509,7 +533,11 @@ contactText.split('').forEach(char => {
 });
 
 gsap.from('.contact-content h2 span', {
-    scrollTrigger: { trigger: contactTitle, start: "top 85%", once: true },
+    scrollTrigger: { 
+        trigger: contactTitle, 
+        start: "top 85%",
+        toggleActions: "play none none reset" 
+    },
     opacity: 0,
     y: 20,
     filter: "blur(10px)",
@@ -519,7 +547,11 @@ gsap.from('.contact-content h2 span', {
 });
 
 gsap.from('.contact-content p, .contact-content .btn, .social-links', {
-    scrollTrigger: { trigger: contactTitle, start: "top 70%", once: true },
+    scrollTrigger: { 
+        trigger: contactTitle, 
+        start: "top 70%",
+        toggleActions: "play none none reset" 
+    },
     y: 50,
     opacity: 0,
     duration: 1.5,

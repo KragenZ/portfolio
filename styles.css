@@ -273,13 +273,10 @@ section {
 
 /* GSAP Horizontal Timeline */
 .horizontal-section {
-    height: 300vh; 
     padding: 0 !important; 
     display: block;
 }
 .sticky-wrapper {
-    position: sticky;
-    top: 0;
     height: 100vh;
     width: 100%;
     overflow: hidden;
@@ -289,13 +286,12 @@ section {
 }
 .horizontal-container {
     display: flex;
-    width: 300vw;
-    padding: 0 10vw;
+    width: max-content;
     align-items: center;
 }
 .timeline-panel {
-    width: 70vw;
-    margin: 0 5vw;
+    width: 80vw;
+    margin: 0 10vw;
     padding: 6rem 4rem;
     position: relative;
     border-radius: 40px;
@@ -333,7 +329,7 @@ section {
     position: absolute;
     bottom: 15%;
     left: 10%;
-    right: 10%;
+    width: 80%;
     height: 2px;
     background: rgba(255,255,255,0.1);
 }
