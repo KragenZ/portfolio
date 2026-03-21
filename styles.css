@@ -217,16 +217,16 @@ section {
     position: relative;
 }
 
-/* 3D Spline Component */
-.spline-container {
+/* Three.js Hero Canvas */
+#hero-canvas {
     position: absolute;
-    top: 50%; right: 0;
+    top: 50%; right: -5%;
     transform: translateY(-50%);
     width: 600px;
     height: 600px;
     z-index: 0;
-    pointer-events: auto; 
-    opacity: 0.8;
+    pointer-events: none;
+    opacity: 0.85;
 }
 
 .hero-content {

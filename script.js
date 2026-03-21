@@ -53,6 +53,66 @@ if(typeof barba !== "undefined") {
     });
 }
 
+// --- Custom Three.js Hero Particle Sphere ---
+(function() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas || typeof THREE === 'undefined' || window.innerWidth <= 768) return;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(600, 600);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+    camera.position.z = 3.2;
+
+    // Build particle sphere
+    const count = 2500;
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+    const colorA = new THREE.Color('#c084fc'); // purple
+    const colorB = new THREE.Color('#facc15'); // gold
+
+    for (let i = 0; i < count; i++) {
+        const theta = Math.random() * Math.PI * 2;
+        const phi   = Math.acos(2 * Math.random() - 1);
+        const r     = 1.2 + (Math.random() - 0.5) * 0.3;
+        positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+        positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+        positions[i * 3 + 2] = r * Math.cos(phi);
+        const mix = Math.random();
+        colors[i * 3]     = colorA.r * (1 - mix) + colorB.r * mix;
+        colors[i * 3 + 1] = colorA.g * (1 - mix) + colorB.g * mix;
+        colors[i * 3 + 2] = colorA.b * (1 - mix) + colorB.b * mix;
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const mat = new THREE.PointsMaterial({
+        size: 0.018,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.9,
+        sizeAttenuation: true,
+    });
+
+    const sphere = new THREE.Points(geo, mat);
+    scene.add(sphere);
+
+    // Render loop
+    let time = 0;
+    function animate() {
+        requestAnimationFrame(animate);
+        time += 0.004;
+        sphere.rotation.y = time;
+        sphere.rotation.x = Math.sin(time * 0.4) * 0.3;
+        renderer.render(scene, camera);
+    }
+    animate();
+})();
+
 // --- Lenis Super Smooth Scroll Engine ---
 const lenis = new Lenis({
     duration: 1.2,
