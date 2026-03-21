@@ -147,6 +147,18 @@ section {
     position: relative;
     z-index: 10;
 }
+.mobile-warning {
+    display: none;
+    background: rgba(192, 132, 252, 0.05);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+    color: var(--accent-1);
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.85rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
 .greeting {
     font-family: 'Inter', sans-serif;
     font-size: 1.25rem;
@@ -696,6 +708,7 @@ section {
     .nav-links a { font-size: 0.85rem; padding: 0.3rem 0.5rem; }
     
     /* Rigorous Typography Clamping */
+    .mobile-warning { display: block !important; }
     .title { font-size: 3rem !important; line-height: 1.1; margin-bottom: 2rem; word-break: break-word; } 
     .greeting { font-size: 1rem; }
     .subtitle { font-size: 1rem !important; }
