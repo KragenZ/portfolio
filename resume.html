@@ -8,160 +8,141 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
         :root {
+            --bg-outer: #f3f4f6;
+            --bg-inner: #ffffff;
             --primary: #111827;
             --secondary: #4b5563;
-            --accent: #2563eb; /* Professional blue for ATS */
-            --light-gray: #e5e7eb;
+            --accent: #2563eb;
+            --border: #e5e7eb;
+            --shadow: rgba(0,0,0,0.1);
+            --highlight-bg: rgba(37, 99, 235, 0.05);
+            --highlight-border: #2563eb;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body.dark-mode {
+            --bg-outer: #0a0a0a;
+            --bg-inner: #171717;
+            --primary: #f3f4f6;
+            --secondary: #9ca3af;
+            --accent: #60a5fa;
+            --border: #333333;
+            --shadow: rgba(0,0,0,0.8);
+            --highlight-bg: rgba(96, 165, 250, 0.1);
+            --highlight-border: #60a5fa;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #f3f4f6; /* Gray background outside A4 */
+            background-color: var(--bg-outer);
             color: var(--primary);
             line-height: 1.5;
             display: flex;
             justify-content: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
         }
 
-        /* FAANG/Harvard Standard A4 Container */
+        /* Controls */
+        .resume-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+        .control-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            padding: 0.8rem 1.2rem;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+        .control-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+        body.dark-mode .control-btn { background: rgba(0,0,0,0.4); color: white; border-color: rgba(255,255,255,0.2); }
+        body.dark-mode .control-btn:hover { background: var(--accent); }
+
         .resume-container {
             width: 8.5in; 
             min-height: 11in; 
-            background: white;
+            background: var(--bg-inner);
             padding: 0.8in;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px var(--shadow);
+            border-radius: 4px;
         }
 
-        /* Typography */
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin-bottom: 0.15rem;
-            letter-spacing: -0.03em;
-            color: #0f172a;
-        }
-
+        h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 0.15rem; letter-spacing: -0.03em; color: var(--primary); }
         h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 0.2rem;
-            margin-top: 1.25rem;
-            margin-bottom: 0.75rem;
+            font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+            color: var(--primary); border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.2rem; margin-top: 1.25rem; margin-bottom: 0.75rem;
+        }
+        h3 { font-size: 1.05rem; font-weight: 700; color: var(--primary); display: flex; justify-content: space-between; align-items: baseline; }
+        
+        .subtitle { font-size: 0.95rem; color: var(--primary); font-weight: 600; margin-bottom: 0.25rem; display: flex; justify-content: space-between; align-items: baseline; font-style: italic; }
+        .date { font-size: 0.9rem; color: var(--secondary); font-weight: 500; font-style: normal; }
+        p, li { font-size: 0.95rem; color: var(--secondary); margin-bottom: 0.4rem; list-style-position: outside; margin-left: 1.2rem; }
+        ul { margin-bottom: 0.5rem; }
+
+        .header-info { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-bottom: 1rem; font-size: 0.95rem; color: var(--secondary); font-weight: 500; }
+        .header-info a { color: var(--accent); text-decoration: none; }
+        .header-info a:hover { text-decoration: underline; }
+
+        .section-content { margin-bottom: 1rem; padding: 0.5rem; border-left: 3px solid transparent; border-radius: 0 8px 8px 0; transition: all 0.4s ease; }
+        
+        /* Interactive Highlight State */
+        .section-content.highlight {
+            background-color: var(--highlight-bg);
+            border-left: 3px solid var(--highlight-border);
+            padding-left: 1rem;
         }
 
-        h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #0f172a;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+        .skills-grid { display: grid; grid-template-columns: 140px 1fr; gap: 0.25rem; margin-bottom: 0.3rem; }
+        .skill-category { font-weight: 700; color: var(--primary); font-size: 0.95rem; }
+        .skill-list { color: var(--secondary); font-size: 0.95rem; }
+        
+        /* Interactive Skill Nodes */
+        .skill-node {
+            cursor: pointer;
+            border-bottom: 1px dashed var(--secondary);
+            transition: color 0.2s, border-color 0.2s;
         }
-
-        .subtitle {
-            font-size: 0.95rem;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            font-style: italic;
-        }
-
-        .date {
-            font-size: 0.9rem;
-            color: var(--secondary);
-            font-weight: 500;
-            font-style: normal;
-        }
-
-        p, li {
-            font-size: 0.95rem;
-            color: #334155;
-            margin-bottom: 0.4rem;
-        }
-
-        /* Header Layout */
-        .header-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.2rem;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-            color: var(--secondary);
-            font-weight: 500;
-        }
-
-        .header-info a {
+        .skill-node:hover {
             color: var(--accent);
-            text-decoration: none;
+            border-bottom: 1px solid var(--accent);
         }
 
-        .header-info a:hover {
-            color: #1e40af;
-            text-decoration: underline;
-        }
-
-        .section-content {
-            margin-bottom: 1rem;
-        }
-
-        /* Lists */
-        ul {
-            padding-left: 1.25rem;
-            margin-bottom: 0.5rem;
-        }
-
-        li {
-            margin-bottom: 0.25rem;
-        }
-
-        /* Skills Layout */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 140px 1fr;
-            gap: 0.25rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .skill-category {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 0.95rem;
-        }
-
-        .skill-list {
-            color: #334155;
-            font-size: 0.95rem;
-        }
-
-        /* Print formatting */
         @media print {
             @page { margin: 0; }
-            body { background: white; padding: 0; -webkit-print-color-adjust: exact; }
-            .resume-container { box-shadow: none; padding: 0.8in; width: 100%; min-height: auto; }
+            body { background: white; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body.dark-mode { 
+                --bg-outer: white; --bg-inner: white; --primary: #111827; --secondary: #4b5563; --accent: #2563eb; --border: #e5e7eb; 
+            } /* Force light mode on print */
+            .resume-controls { display: none !important; }
+            .resume-container { box-shadow: none; padding: 0.8in; width: 100%; min-height: auto; border-radius: 0; }
             a { text-decoration: none !important; color: black !important; }
+            .section-content { padding: 0; border: none; }
+            .skill-node { border: none; }
         }
     </style>
 </head>
 <body>
 
+<div class="resume-controls">
+    <button class="control-btn" id="theme-toggle">🌙 Dark Mode</button>
+    <button class="control-btn" id="export-btn">📄 Export PDF</button>
+</div>
+
 <div class="resume-container">
     <header>
         <h1>Srijit Roy</h1>
-        <div class="subtitle" style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #475569; font-style: normal; font-weight: 500;">
+        <div class="subtitle" style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--secondary); font-style: normal; font-weight: 500;">
             AI & ML Undergraduate | KIIT University
         </div>
         <div class="header-info">
@@ -174,31 +155,31 @@
 
     <section>
         <h2>Profile</h2>
-        <p>Second-year Computer Science (AI & ML) student with hands-on experience in building end-to-end machine learning and LLM-powered systems. Strong focus on real-world problem solving, operational deployment, and AI product architecture. Proven ability to translate complex data infrastructures into scalable, user-facing intelligence applications.</p>
+        <p style="margin-left:0;">Second-year Computer Science (AI & ML) student with hands-on experience in building end-to-end machine learning and LLM-powered systems. Strong focus on real-world problem solving, operational deployment, and AI product architecture. Proven ability to translate complex data infrastructures into scalable, user-facing intelligence applications.</p>
     </section>
 
     <section>
         <h2>Technical Skills</h2>
-        <div class="section-content">
+        <div class="section-content" style="padding:0; border:none;">
             <div class="skills-grid">
                 <div class="skill-category">Languages:</div>
                 <div class="skill-list">Python, JavaScript, TypeScript, HTML, CSS</div>
             </div>
             <div class="skills-grid">
                 <div class="skill-category">AI / ML:</div>
-                <div class="skill-list">Machine Learning Pipelines, NLP, RAG, LLM Evaluation</div>
+                <div class="skill-list">Machine Learning Pipelines, NLP, <span class="skill-node" data-target="proj-pa">RAG</span>, LLM Evaluation</div>
             </div>
             <div class="skills-grid">
                 <div class="skill-category">Frameworks:</div>
-                <div class="skill-list">Scikit-learn, XGBoost, LangChain, GSAP, WebGL (Three.js)</div>
+                <div class="skill-list"><span class="skill-node" data-target="proj-hp">Scikit-learn</span>, <span class="skill-node" data-target="proj-hp">XGBoost</span>, <span class="skill-node" data-target="proj-pa">LangChain</span>, GSAP, WebGL</div>
             </div>
             <div class="skills-grid">
                 <div class="skill-category">Tools & Tech:</div>
-                <div class="skill-list">FAISS, Streamlit, Git, GitHub, API Orchestration</div>
+                <div class="skill-list"><span class="skill-node" data-target="proj-pa">FAISS</span>, Streamlit, Git, GitHub, API Orchestration</div>
             </div>
             <div class="skills-grid">
                 <div class="skill-category">Data Libraries:</div>
-                <div class="skill-list">Pandas, NumPy, Matplotlib, Seaborn</div>
+                <div class="skill-list"><span class="skill-node" data-target="proj-hp">Pandas</span>, NumPy, Matplotlib, Seaborn</div>
             </div>
         </div>
     </section>
@@ -206,7 +187,7 @@
     <section>
         <h2>Projects</h2>
         
-        <div class="section-content">
+        <div class="section-content" id="proj-pa">
             <h3>AI Property Assistant (LLM + RAG) <a href="https://github.com/KragenZ/portfolio" target="_blank" style="font-size:0.85rem; font-weight:normal; margin-left:10px;">[Live Application]</a></h3>
             <div class="subtitle">Conversational Real Estate Search Engine</div>
             <ul>
@@ -217,7 +198,7 @@
             </ul>
         </div>
 
-        <div class="section-content">
+        <div class="section-content" id="proj-hp">
             <h3>House Price Prediction System (ML) <a href="https://github.com/KragenZ/portfolio" target="_blank" style="font-size:0.85rem; font-weight:normal; margin-left:10px;">[Live Application]</a></h3>
             <div class="subtitle">End-to-End Predictive Analytics Pipeline</div>
             <ul>
@@ -231,7 +212,7 @@
 
     <section>
         <h2>Education</h2>
-        <div class="section-content">
+        <div class="section-content" style="padding:0; border:none;">
             <h3>BTech in Computer Science (AI & ML) <span class="date">2024 – 2028</span></h3>
             <div class="subtitle">KIIT University <span class="date" style="font-style: normal;">Current status: Second-year undergraduate</span></div>
         </div>
@@ -239,7 +220,7 @@
 
     <section>
         <h2>Activities & Engagement</h2>
-        <div class="section-content">
+        <div class="section-content" style="padding:0; border:none;">
             <ul>
                 <li>Actively participate in competitive hackathons, continuously conceptualizing and rapidly prototyping custom AI-driven applications leveraging cutting-edge API orchestration.</li>
                 <li>Consistently evaluate and integrate state-of-the-art AI developer tooling (Copilot, autonomous IDE agents) to mathematically accelerate system problem-solving and deployment workflows.</li>
@@ -249,6 +230,40 @@
     </section>
 
 </div>
+
+<script>
+    // Theme Toggle Logic
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        if(document.body.classList.contains('dark-mode')) {
+            themeBtn.innerText = '☀️ Light Mode';
+        } else {
+            themeBtn.innerText = '🌙 Dark Mode';
+        }
+    });
+
+    // PDF Export Logic
+    const exportBtn = document.getElementById('export-btn');
+    exportBtn.addEventListener('click', () => {
+        window.print();
+    });
+
+    // Skill Interactive Mapping Logic
+    const skillNodes = document.querySelectorAll('.skill-node');
+    skillNodes.forEach(node => {
+        const targetId = node.getAttribute('data-target');
+        const targetElement = document.getElementById(targetId);
+        
+        node.addEventListener('mouseenter', () => {
+            if(targetElement) targetElement.classList.add('highlight');
+        });
+        
+        node.addEventListener('mouseleave', () => {
+            if(targetElement) targetElement.classList.remove('highlight');
+        });
+    });
+</script>
 
 </body>
 </html>
