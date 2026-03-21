@@ -142,6 +142,39 @@ window.addEventListener('resize', () => {
 // --- GSAP Advanced Scroll Animations ---
 gsap.registerPlugin(ScrollTrigger);
 
+// --- 3D ENVIRONMENT MORPHING ON SCROLL ---
+ScrollTrigger.create({
+    trigger: "#about",
+    start: "top center",
+    onEnter: () => gsap.to(camera.position, { z: 6, duration: 1.5, ease: "power3.inOut" }),
+    onLeaveBack: () => gsap.to(camera.position, { z: 12, duration: 1.5, ease: "power3.inOut" })
+});
+
+ScrollTrigger.create({
+    trigger: "#skills",
+    start: "top center",
+    onEnter: () => {
+        gsap.to(particleMesh.scale, { x: 3, y: 3, z: 3, duration: 2.5, ease: "power2.out" });
+        gsap.to(particleMesh.rotation, { x: Math.PI / 2, duration: 2 });
+    },
+    onLeaveBack: () => {
+        gsap.to(particleMesh.scale, { x: 1, y: 1, z: 1, duration: 2.5, ease: "power2.inOut" });
+        gsap.to(particleMesh.rotation, { x: 0, duration: 2 });
+    }
+});
+
+ScrollTrigger.create({
+    trigger: "#projects",
+    start: "top center",
+    onEnter: () => {
+        gsap.to(camera.position, { z: 20, duration: 3, ease: "power4.out" });
+        gsap.to(particleMesh.rotation, { y: "+=3.14", duration: 3, ease: "expo.out" });
+    },
+    onLeaveBack: () => {
+        gsap.to(camera.position, { z: 6, duration: 2 });
+    }
+});
+
 // Hero intro
 gsap.from(".hero-content > *", {
     y: 50,
