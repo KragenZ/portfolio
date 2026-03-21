@@ -1,3 +1,8 @@
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 // --- Lenis Super Smooth Scroll Engine ---
 const lenis = new Lenis({
     duration: 1.2,
@@ -22,45 +27,6 @@ gsap.ticker.add((time)=>{
 gsap.ticker.lagSmoothing(0, 0);
 
 lenis.stop(); // Freeze scrolling until preloader validates!
-
-// --- Web Audio API Cinematic Sound Design Engine ---
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioCtx;
-let isAudioInitialized = false;
-
-// Audio context requires user interaction to unlock (autoplay policy)
-window.addEventListener('click', () => {
-    if(!isAudioInitialized) {
-        audioCtx = new AudioContext();
-        isAudioInitialized = true;
-    }
-}, {once: true});
-
-function playBassDrop() {
-    if(!audioCtx || audioCtx.state === 'suspended') return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(60, audioCtx.currentTime); 
-    osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.5); 
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime); 
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-}
-
-function playGlassClink(velocity) {
-    if(!audioCtx || audioCtx.state === 'suspended' || velocity < 1.0) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(1000 + Math.random()*500, audioCtx.currentTime); 
-    const volume = Math.min(velocity * 0.008, 0.04); 
-    gain.gain.setValueAtTime(volume, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); 
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-}
 
 // --- Cinematic Neural Preloader ---
 const loaderTexts = ["INITIALIZING NEURAL NET", "ALLOCATING TENSORS", "LOADING VECTOR DECK", "BYPASSING MAINFRAME", "BOOTING AI CORE"];
@@ -285,8 +251,7 @@ if(horizontalContainer) {
                 trigger: panel,
                 containerAnimation: scrollTween, 
                 start: "left 90%", // Entry pop trigger
-                toggleActions: "play none none reverse",
-                onEnter: () => playBassDrop() // Synthesize heavy bass on visual slam
+                toggleActions: "play none none reverse"
             },
             z: 800, 
             rotationY: -60, 
@@ -505,20 +470,6 @@ render.mouse = mouse;
 // Do not intercept native page scrolling
 mouseConstraint.mouse.element.removeEventListener("mousewheel", mouseConstraint.mouse.mousewheel);
 mouseConstraint.mouse.element.removeEventListener("DOMMouseScroll", mouseConstraint.mouse.mousewheel);
-
-// Intercept Collisions for Sound Architecture
-Matter.Events.on(engine, 'collisionStart', function(event) {
-    const pairs = event.pairs;
-    for (let i = 0; i < pairs.length; i++) {
-        const bodyA = pairs[i].bodyA;
-        const bodyB = pairs[i].bodyB;
-        if(bodyA.isStatic || bodyB.isStatic) continue; // Only play when balls hit each other
-        const relVelocityX = bodyA.velocity.x - bodyB.velocity.x;
-        const relVelocityY = bodyA.velocity.y - bodyB.velocity.y;
-        const speed = Math.sqrt(relVelocityX * relVelocityX + relVelocityY * relVelocityY);
-        playGlassClink(speed);
-    }
-});
 
 Matter.Runner.run(engine);
 
