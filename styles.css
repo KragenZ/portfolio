@@ -31,6 +31,8 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     cursor: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 /* Background blob effects */
