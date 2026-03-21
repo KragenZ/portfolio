@@ -58,7 +58,7 @@ document.querySelectorAll('.glass-card').forEach(card => {
 // --- 3D Vanilla Tilt Cards ---
 try {
     VanillaTilt.init(document.querySelectorAll(".glass-card"), {
-        max: 5, // Subtle for elegance
+        max: 5, 
         speed: 600,
         glare: true,
         "max-glare": 0.1,
@@ -69,7 +69,7 @@ try {
     console.warn("VanillaTilt failed:", e);
 }
 
-// --- Hacker Text Scramble Effect ---
+// --- Text Scramble & Typewriter Classes ---
 class TextScramble {
     constructor(el) {
         this.el = el;
@@ -124,7 +124,6 @@ class TextScramble {
     }
 }
 
-// --- Typewriter Effect Class ---
 class Typewriter {
     constructor(el) {
         this.el = el;
@@ -146,12 +145,53 @@ class Typewriter {
             this.i++;
             setTimeout(() => this.type(), 30 + Math.random() * 80);
         } else {
-            this.el.innerHTML = this.str; // Clean up cursor
+            this.el.innerHTML = this.str; 
         }
     }
 }
 
-// --- Matter.js Physics Container ---
+// --- GSAP Horizontal Timeline Animation ---
+const horizontalContainer = document.querySelector('.horizontal-container');
+if(horizontalContainer) {
+    gsap.to(horizontalContainer, {
+        x: () => -(horizontalContainer.scrollWidth - window.innerWidth),
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".horizontal-section",
+            start: "top top",
+            end: () => "+=" + horizontalContainer.scrollWidth,
+            scrub: 1, 
+            pin: true
+        }
+    });
+
+    // Animate the tracking line fill
+    gsap.to('.timeline-progress-fill', {
+        width: "100%",
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".horizontal-section",
+            start: "top top",
+            end: () => "+=" + horizontalContainer.scrollWidth,
+            scrub: 1
+        }
+    });
+
+    // Roll tracking ball identically
+    gsap.to('.timeline-rolling-ball', {
+        left: "100%",
+        rotation: 1080, 
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".horizontal-section",
+            start: "top top",
+            end: () => "+=" + horizontalContainer.scrollWidth,
+            scrub: 1
+        }
+    });
+}
+
+// --- Matter.js Physics Invisible Jar & Hover Repulsion ---
 const Engine = Matter.Engine,
       Render = Matter.Render,
       Runner = Matter.Runner,
@@ -161,7 +201,7 @@ const Engine = Matter.Engine,
       Bodies = Matter.Bodies;
 
 const engine = Engine.create();
-engine.world.gravity.y = 1;
+engine.world.gravity.y = 0.8; // Slightly floatier feeling
 
 const container = document.getElementById('physics-canvas-container');
 let cWidth = container.clientWidth;
@@ -179,12 +219,13 @@ const render = Render.create({
     }
 });
 
-// Walls
+// The Invisible Jar Walls
 const wallOptions = { isStatic: true, render: { visible: false } };
 let ground = Bodies.rectangle(cWidth / 2, cHeight + 50, cWidth + 200, 100, wallOptions);
+let ceiling = Bodies.rectangle(cWidth / 2, -50, cWidth + 200, 100, wallOptions); // The LID
 let leftWall = Bodies.rectangle(-50, cHeight / 2, 100, cHeight * 2, wallOptions);
 let rightWall = Bodies.rectangle(cWidth + 50, cHeight / 2, 100, cHeight * 2, wallOptions);
-World.add(engine.world, [ground, leftWall, rightWall]);
+World.add(engine.world, [ground, ceiling, leftWall, rightWall]);
 
 // Skill Balls Data
 const rawSkills = ['Python', 'C++', 'SQL', 'TensorFlow', 'PyTorch', 'Scikit', 'Docker', 'AWS', 'FastAPI', 'Pandas', 'NumPy', 'Git'];
@@ -194,16 +235,15 @@ const skillBodies = [];
 rawSkills.forEach((skill, i) => {
     const radius = 45 + Math.random() * 20;
     const x = Math.random() * (cWidth - 100) + 50;
-    // Start them way high up off screen so they drop beautifully when activated
-    const y = -200 - (i * 120); 
+    const y = 100 + Math.random() * (cHeight - 200); 
     
     // Create physical body layer
     const body = Bodies.circle(x, y, radius, {
-        restitution: 0.8, // Bouncy
-        friction: 0.005,
-        density: 0.04,
-        isStatic: true, // Freeze until scrolled to
-        render: { visible: false } // We use DOM elements instead
+        restitution: 0.9, // Very Bouncy!
+        friction: 0.001,
+        frictionAir: 0.01,
+        density: 0.05,
+        render: { visible: false } 
     });
     
     // Create DOM element overlay
@@ -216,47 +256,76 @@ rawSkills.forEach((skill, i) => {
     World.add(engine.world, body);
 });
 
-// Mouse Interaction constraints
+// Add Hover Repulsion (Invisible magnetic field from mouse)
+let hoverMouseX = null;
+let hoverMouseY = null;
+container.addEventListener('mousemove', (e) => {
+    const rect = container.getBoundingClientRect();
+    hoverMouseX = e.clientX - rect.left;
+    hoverMouseY = e.clientY - rect.top;
+});
+container.addEventListener('mouseleave', () => {
+    hoverMouseX = null;
+    hoverMouseY = null;
+});
+
+Matter.Events.on(engine, 'beforeUpdate', function() {
+    if (hoverMouseX !== null && hoverMouseY !== null) {
+        skillBodies.forEach(({ body }) => {
+            const dx = body.position.x - hoverMouseX;
+            const dy = body.position.y - hoverMouseY;
+            const distSq = dx * dx + dy * dy;
+            
+            // If mouse is near the ball (approx 200px radius)
+            if (distSq < 40000) {
+                // Apply a powerful repulsion force outward
+                const forceMagnitude = 0.0004 * (40000 - distSq);
+                Matter.Body.applyForce(body, body.position, {
+                    x: (dx / Math.sqrt(distSq)) * forceMagnitude,
+                    y: (dy / Math.sqrt(distSq)) * forceMagnitude
+                });
+            }
+        });
+    }
+});
+
+// Add pure physical dragging as fallback!
 const mouse = Mouse.create(render.canvas);
 const mouseConstraint = MouseConstraint.create(engine, {
     mouse: mouse,
-    constraint: { stiffness: 0.2, render: { visible: false } }
+    constraint: { stiffness: 0.1, render: { visible: false } }
 });
 World.add(engine.world, mouseConstraint);
 render.mouse = mouse; 
 
-// Make sure scrolling through the canvas works without getting stuck on it
+// Do not intercept native page scrolling
 mouseConstraint.mouse.element.removeEventListener("mousewheel", mouseConstraint.mouse.mousewheel);
 mouseConstraint.mouse.element.removeEventListener("DOMMouseScroll", mouseConstraint.mouse.mousewheel);
 
 Matter.Runner.run(engine);
 
-// Synchronize DOM elements to Physics Engine every tick
+// Sync Physics with DOM
 Matter.Events.on(engine, 'afterUpdate', function() {
     skillBodies.forEach(({ body, elem, radius }) => {
-        // Clamp bounds just in case they fly off screen out of walls
-        if(body.position.y > cHeight + 200) {
-            Matter.Body.setPosition(body, { x: cWidth/2, y: -100 });
-            Matter.Body.setVelocity(body, { x: 0, y: 0 });
-        }
-
         elem.style.width = `${radius * 2}px`;
         elem.style.height = `${radius * 2}px`;
         elem.style.transform = `translate(${body.position.x - radius}px, ${body.position.y - radius}px) rotate(${body.angle}rad)`;
     });
 });
 
-// Resizing
+// Resizing Canvas physics bounds dynamically
 window.addEventListener('resize', () => {
     cWidth = container.clientWidth;
     cHeight = container.clientHeight;
     render.canvas.width = cWidth;
     render.canvas.height = cHeight;
     Matter.Body.setPosition(ground, { x: cWidth / 2, y: cHeight + 50 });
+    Matter.Body.setPosition(ceiling, { x: cWidth / 2, y: -50 });
     Matter.Body.setPosition(rightWall, { x: cWidth + 50, y: cHeight / 2 });
 });
 
-// --- GSAP Unique Section Animations ---
+
+// --- GSAP Individual Section Reveals ---
 
 // 1. Hero Reveal
 gsap.from(".hero-content > *", {
@@ -283,25 +352,18 @@ ScrollTrigger.create({
     }
 });
 
-// 3. Skills - Physics Ball Drop trigger & Typewriter heading
+// 3. Skills - Typewriter heading
 const skillsTitle = document.querySelector('#skills .section-title');
 skillsTitle.style.opacity = 0;
 const typer = new Typewriter(skillsTitle);
 
 ScrollTrigger.create({
     trigger: '#skills',
-    start: "top 60%", // Triggers when container is somewhat centralized
+    start: "top 60%", 
     once: true,
     onEnter: () => {
         skillsTitle.style.opacity = 1;
         typer.start();
-        
-        // UNFREEZE gravity so they pour into the container!
-        skillBodies.forEach((sb, i) => {
-            setTimeout(() => {
-                Matter.Body.setStatic(sb.body, false);
-            }, i * 100); // Stagger drop
-        });
     }
 });
 

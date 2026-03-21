@@ -263,6 +263,85 @@ section {
     letter-spacing: 0.05em;
 }
 
+/* GSAP Horizontal Timeline */
+.horizontal-section {
+    height: 300vh; /* Scroll length */
+    padding: 0 !important; 
+    display: block;
+}
+.sticky-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.horizontal-container {
+    display: flex;
+    width: 300vw;
+    padding: 0 10vw;
+    align-items: center;
+}
+.timeline-panel {
+    width: 100vw;
+    padding: 0 5vw;
+    position: relative;
+}
+.timeline-year {
+    font-size: clamp(8rem, 20vw, 15rem);
+    font-family: 'Playfair Display', serif;
+    color: rgba(255,255,255,0.03);
+    font-weight: 700;
+    position: absolute;
+    top: -50%;    
+    left: 5%;
+    z-index: 0;
+}
+.timeline-title {
+    font-size: 3.5rem;
+    color: var(--accent-1);
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+.timeline-panel p {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 500px;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+}
+
+.timeline-progress-track {
+    position: absolute;
+    bottom: 15%;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: rgba(255,255,255,0.1);
+}
+.timeline-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--text-primary);
+}
+.timeline-rolling-ball {
+    width: 24px;
+    height: 24px;
+    background: var(--accent-1);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px rgba(192, 132, 252, 0.8), inset 2px 2px 5px rgba(255,255,255,0.5);
+}
+
 /* Physics Settings */
 #physics-canvas-container {
     width: 100%;
@@ -270,32 +349,25 @@ section {
     border-radius: 32px;
     overflow: hidden;
     position: relative;
-    cursor: grab;
-    background: #050505;
-    border: 1px solid rgba(255,255,255,0.06);
-    box-shadow: inset 0 20px 50px rgba(0,0,0,0.8);
-}
-#physics-canvas-container:active {
-    cursor: grabbing;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.05);
 }
 .skill-ball {
     position: absolute;
     top: 0; left: 0;
     border-radius: 50%;
-    /* Gradient sphere styling for 3D realism */
-    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 40%), var(--bg-card);
-    border: 1px solid rgba(255,255,255,0.15);
-    backdrop-filter: blur(10px);
+    background: #050505;
+    border: 1px solid rgba(255,255,255,0.2);
     color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    font-size: 1.2rem;
+    font-weight: 500;
+    font-size: 1.1rem;
     font-family: 'Inter', sans-serif;
-    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.8), 10px 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     user-select: none;
-    pointer-events: none; /* Crucial: lets mouse click the actual canvas behind */
+    pointer-events: none; /* Crucial: lets mouse interact with the matter.js canvas directly underneath */
     letter-spacing: -0.02em;
 }
 
