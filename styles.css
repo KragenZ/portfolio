@@ -27,11 +27,12 @@ html, body {
     overflow-x: hidden !important; 
     width: 100%;
     position: relative;
+    background-color: var(--bg-dark) !important;
 }
 
 body {
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
+    background-color: var(--bg-dark) !important;
+    color: var(--text-primary) !important;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     cursor: none;
