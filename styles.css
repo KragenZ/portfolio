@@ -38,9 +38,13 @@ body {
     position: fixed;
     border-radius: 50%;
     filter: blur(120px);
-    z-index: -2;
-    opacity: 0.4;
+    z-index: 0;
+    opacity: 0.6;
     pointer-events: none;
+}
+header, main, footer {
+    position: relative;
+    z-index: 10;
 }
 .glow-1 {
     top: -10%; left: -10%;
