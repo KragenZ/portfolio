@@ -207,6 +207,14 @@ section {
     opacity: 0.7;
 }
 
+.cursor {
+    animation: blink 1s step-end infinite;
+    color: var(--accent-2);
+}
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
 .glass-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
