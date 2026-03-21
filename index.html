@@ -163,6 +163,33 @@
                     </div>
                 </div>
 
+                <!-- Project 3: Sandbox -->
+                <div class="project-card glass-card hover-target">
+                    <div class="project-content" style="padding: 2.5rem;">
+                        <div class="sandbox-tag">LIVE INFERENCE SANDBOX</div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-1);">Local Linear Regression</h3>
+                        <p style="margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">Adjust parameters below to trigger browser-side multiple linear regression execution natively without backend APIs.</p>
+                        <div class="ml-sandbox">
+                            <div class="sandbox-input">
+                                <label>Square Footage: <span id="val-sqft">2000</span></label>
+                                <input type="range" id="slider-sqft" min="500" max="6000" value="2000" step="50">
+                            </div>
+                            <div class="sandbox-input">
+                                <label>Bedrooms: <span id="val-beds">3</span></label>
+                                <input type="range" id="slider-beds" min="1" max="8" value="3" step="1">
+                            </div>
+                            <div class="sandbox-input">
+                                <label>Property Age (Yrs): <span id="val-age">15</span></label>
+                                <input type="range" id="slider-age" min="0" max="100" value="15" step="1">
+                            </div>
+                            <div class="sandbox-output">
+                                <div>Predicted Valuation Matrix</div>
+                                <div id="ml-prediction">$500,000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
