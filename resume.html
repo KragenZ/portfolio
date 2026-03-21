@@ -8,27 +8,27 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
         :root {
-            --bg-outer: #f3f4f6;
+            --bg-outer: #0a0a0a;
+            --bg-inner: #121212;
+            --primary: #f3f4f6;
+            --secondary: #9ca3af;
+            --accent: #c084fc; /* Portfolio Purple */
+            --border: #333333;
+            --shadow: rgba(0,0,0,0.8);
+            --highlight-bg: rgba(192, 132, 252, 0.1);
+            --highlight-border: #c084fc;
+        }
+
+        body.light-mode {
+            --bg-outer: #f9fafb;
             --bg-inner: #ffffff;
             --primary: #111827;
             --secondary: #4b5563;
-            --accent: #2563eb;
+            --accent: #d97706; /* Elegant Light Gold */
             --border: #e5e7eb;
             --shadow: rgba(0,0,0,0.1);
-            --highlight-bg: rgba(37, 99, 235, 0.05);
-            --highlight-border: #2563eb;
-        }
-
-        body.dark-mode {
-            --bg-outer: #0a0a0a;
-            --bg-inner: #171717;
-            --primary: #f3f4f6;
-            --secondary: #9ca3af;
-            --accent: #60a5fa;
-            --border: #333333;
-            --shadow: rgba(0,0,0,0.8);
-            --highlight-bg: rgba(96, 165, 250, 0.1);
-            --highlight-border: #60a5fa;
+            --highlight-bg: rgba(217, 119, 6, 0.08);
+            --highlight-border: #d97706;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
@@ -65,8 +65,9 @@
             box-shadow: 0 4px 15px var(--shadow);
         }
         .control-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
-        body.dark-mode .control-btn { background: rgba(0,0,0,0.4); color: white; border-color: rgba(255,255,255,0.2); }
-        body.dark-mode .control-btn:hover { background: var(--accent); }
+        .control-btn { background: rgba(0,0,0,0.4); color: white; border-color: rgba(255,255,255,0.2); }
+        body.light-mode .control-btn { background: rgba(255,255,255,0.8); color: var(--primary); border-color: var(--border); }
+        body.light-mode .control-btn:hover { background: var(--accent); color: white; }
 
         .resume-container {
             width: 8.5in; 
@@ -121,9 +122,9 @@
         @media print {
             @page { margin: 0; }
             body { background: white; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            body.dark-mode { 
-                --bg-outer: white; --bg-inner: white; --primary: #111827; --secondary: #4b5563; --accent: #2563eb; --border: #e5e7eb; 
-            } /* Force light mode on print */
+            :root, body.light-mode { 
+                --bg-outer: white; --bg-inner: white; --primary: #111827; --secondary: #4b5563; --border: #cccccc; 
+            } /* Force light variables on print, but retains the active --accent color */
             .resume-controls { display: none !important; }
             .resume-container { box-shadow: none; padding: 0.8in; width: 100%; min-height: auto; border-radius: 0; }
             a { text-decoration: none !important; color: black !important; }
@@ -135,7 +136,7 @@
 <body>
 
 <div class="resume-controls">
-    <button class="control-btn" id="theme-toggle">🌙 Dark Mode</button>
+    <button class="control-btn" id="theme-toggle">☀️ Light Mode</button>
     <button class="control-btn" id="export-btn">📄 Export PDF</button>
 </div>
 
@@ -235,11 +236,11 @@
     // Theme Toggle Logic
     const themeBtn = document.getElementById('theme-toggle');
     themeBtn.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        if(document.body.classList.contains('dark-mode')) {
-            themeBtn.innerText = '☀️ Light Mode';
-        } else {
+        document.body.classList.toggle('light-mode');
+        if(document.body.classList.contains('light-mode')) {
             themeBtn.innerText = '🌙 Dark Mode';
+        } else {
+            themeBtn.innerText = '☀️ Light Mode';
         }
     });
 
