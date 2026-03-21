@@ -7,23 +7,16 @@
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=flat&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=flat&logo=javascript&logoColor=%23F7DF1E)
 
-## ✨ Features
-- **Interactive Neural Network Canvas:** An HTML5 Canvas background where particle nodes dynamically physically connect to each other and magnetically react to the user's custom cursor.
-- **Glassmorphism Design:** Sleek, modern frosted-glass layout cards utilizing advanced CSS `backdrop-filter`.
-- **Dark AI Aesthetic:** Custom dark theme with neon cyan and deep purple accents associated with state-of-the-art AI systems.
-- **Scroll Reveal Animations:** Smooth `IntersectionObserver` triggered reveal animations for individual sections as the user scrolls.
-- **100% Vanilla Tech Stack:** Built exclusively with pure HTML, CSS, and JavaScript for maximum performance with **zero** bloated dependencies.
-
-## 🛠️ Sections Included
-- **Hero Section:** High-impact introduction specifically for an ML Engineer.
-- **About Me:** Brief biography and coding statistics.
-- **AI/ML Arsenal:** Skills matrix perfectly categorized for Data Scientists (Languages, Frameworks, Data Science, Deployment).
-- **Featured Work:** Project cards highlighting real-world ML applications, including Streamlit cloud deployments and RAG infrastructure.
-- **Let's Collaborate:** Secure fast-action email and social profile links.
+## ✨ Elite Tech Architecture
+- **Shery.js WebGL Fluid Distortions:** Project thumbnails natively run through custom GLSL fragment shaders to simulate heavy liquid displacement upon interactivity.
+- **GSAP Geometric Navigation:** Elements decouple from the main DOM flow to magnetically snap to the user's velocity-mapped custom cursor tracking.
+- **Matter.js Physics Sandbox:** Interactive 2D gravity simulation allowing technical skills to bounce and collide as interactive physical entities.
+- **Live ML Sandbox Inference:** An interactive client-side machine learning array that computes multiple linear regression probabilities for housing prices instantaneously.
+- **Cinematic Dark WebGL Aesthetic:** Ultra-premium glassmorphic containers mapped over Torus 3D glows and global fractal noise film grain overlays.
 
 ## 🚀 Live Demo
-You can view the live portfolio deployed natively right here: 
-👉 **[View Live Portfolio](https://KragenZ.github.io/portfolio/)**
+You can experience the live WebGL portfolio deployed directly to Netlify here: 
+👉 **[View Live Portfolio](https://srijitroy-portfolio.netlify.app/)**
 
 ## 💻 Local Setup
 Since this project uses vanilla web technologies, there are zero complex build steps or missing dependencies. 
