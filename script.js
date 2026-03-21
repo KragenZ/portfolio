@@ -27,14 +27,18 @@ interactives.forEach(el => {
 });
 
 // --- 3D Vanilla Tilt Cards ---
-VanillaTilt.init(document.querySelectorAll(".glass-card"), {
-    max: 12,
-    speed: 400,
-    glare: true,
-    "max-glare": 0.15,
-    perspective: 1000,
-    scale: 1.02
-});
+try {
+    VanillaTilt.init(document.querySelectorAll(".glass-card"), {
+        max: 12,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.15,
+        perspective: 1000,
+        scale: 1.02
+    });
+} catch (e) {
+    console.warn("VanillaTilt failed to load:", e);
+}
 
 // --- Three.js 3D Particle Sphere ---
 const scene = new THREE.Scene();
