@@ -1,7 +1,6 @@
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
-window.scrollTo(0, 0);
 
 // --- Lenis Super Smooth Scroll Engine ---
 const lenis = new Lenis({
@@ -10,6 +9,16 @@ const lenis = new Lenis({
     direction: 'vertical',
     gestureDirection: 'vertical',
     smooth: true,
+});
+
+// Hard-force exact origin immediately upon boot, overriding browser cache
+window.scrollTo(0, 0);
+lenis.scrollTo(0, {immediate: true});
+
+// Force wipe scroll position before page unloads
+window.addEventListener('beforeunload', () => {
+    window.scrollTo(0, 0);
+    lenis.scrollTo(0, {immediate: true});
 });
 
 function raf(time) {
