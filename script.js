@@ -56,136 +56,7 @@ if(typeof barba !== "undefined") {
     });
 }
 
-// --- Custom Three.js Hero Particle Sphere ---
-(function() {
-    const canvas = document.getElementById('hero-canvas');
-    if (!canvas || typeof THREE === 'undefined' || window.innerWidth <= 768) return;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setSize(700, 700);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
-    camera.position.z = 35;
-
-    // Render loop
-    // ─── Nexus Core Geometry (The "WOW" Artifact) ───
-    const nexusGeometry = new THREE.TorusKnotGeometry(12, 3, 200, 32, 2, 3);
-    
-    // Layer 1: Main Core (Lavender)
-    const nexusMaterial = new THREE.MeshBasicMaterial({ 
-        color: 0xc084fc, 
-        wireframe: true, 
-        transparent: true, 
-        opacity: 0.2,
-        blending: THREE.AdditiveBlending
-    });
-    const nexusCore = new THREE.Mesh(nexusGeometry, nexusMaterial);
-    scene.add(nexusCore);
-
-    // Layer 2: Chromatic Offset (Gold/Yellow)
-    const nexusOffset = new THREE.Mesh(
-        nexusGeometry,
-        new THREE.MeshBasicMaterial({ color: 0xfacc15, wireframe: true, transparent: true, opacity: 0.1, blending: THREE.AdditiveBlending })
-    );
-    nexusOffset.scale.set(1.02, 1.02, 1.02);
-    scene.add(nexusOffset);
-
-    // Data Nodes (Particles on the surface)
-    const nodeCount = 500;
-    const nodeGeo = new THREE.BufferGeometry();
-    const nodePosArray = new Float32Array(nodeCount * 3);
-    const nodeSampler = new THREE.Mesh(nexusGeometry); // Used for sampling positions
-    
-    // For simplicity, just use random points in a torus-like volume or vertex positions
-    const vertices = nexusGeometry.attributes.position.array;
-    for(let i=0; i<nodeCount; i++) {
-        const vIdx = Math.floor(Math.random() * (vertices.length / 3)) * 3;
-        nodePosArray[i*3] = vertices[vIdx];
-        nodePosArray[i*3+1] = vertices[vIdx+1];
-        nodePosArray[i*3+2] = vertices[vIdx+2];
-    }
-    nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodePosArray, 3));
-    const nodeMaterial = new THREE.PointsMaterial({ size: 0.15, color: 0xffffff, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending });
-    const nexusNodes = new THREE.Points(nodeGeo, nodeMaterial);
-    nexusCore.add(nexusNodes);
-
-    // ─── Ambient Data Storm (Global) ───
-    const stormCount = 2000;
-    const stormGeo = new THREE.BufferGeometry();
-    const stormPosArray = new Float32Array(stormCount * 3);
-    for(let i=0; i<stormCount * 3; i++) {
-        stormPosArray[i] = (Math.random() - 0.5) * 150;
-    }
-    stormGeo.setAttribute('position', new THREE.BufferAttribute(stormPosArray, 3));
-    const stormMaterial = new THREE.PointsMaterial({ 
-        size: 0.08, 
-        color: 0x8b5cf6, 
-        transparent: true, 
-        opacity: 0.3,
-        blending: THREE.AdditiveBlending 
-    });
-    const storm = new THREE.Points(stormGeo, stormMaterial);
-    scene.add(storm);
-
-    // Vertical Data Streams
-    const streamCount = 500;
-    const streamGeo = new THREE.BufferGeometry();
-    const streamPosArray = new Float32Array(streamCount * 3);
-    for(let i=0; i<streamCount; i++) {
-        streamPosArray[i*3] = (Math.random() - 0.5) * 100; // X
-        streamPosArray[i*3+1] = (Math.random() - 0.5) * 100; // Y
-        streamPosArray[i*3+2] = (Math.random() - 0.5) * 50; // Z
-    }
-    streamGeo.setAttribute('position', new THREE.BufferAttribute(streamPosArray, 3));
-    const streamMaterial = new THREE.PointsMaterial({ size: 0.05, color: 0xc084fc, transparent: true, opacity: 0.5 });
-    const streams = new THREE.Points(streamGeo, streamMaterial);
-    scene.add(streams);
-
-    // Global Anim State (Restored for Warp)
-    let isWarping = false;
-    let warpMultiplier = 1;
-
-    // Hook into Barba for Warp (I'll add this later in the Barba init block)
-
-    function animate() {
-        requestAnimationFrame(animate);
-        
-        const time = Date.now() * 0.001;
-        const currentMultiplier = isWarping ? 15 : 1;
-        
-        // Nexus Core Rotation
-        nexusCore.rotation.y += 0.002 * currentMultiplier;
-        nexusCore.rotation.z += 0.001 * currentMultiplier;
-        nexusOffset.rotation.y += 0.0021 * currentMultiplier; // Chromatic lag
-        nexusOffset.rotation.z += 0.0011 * currentMultiplier;
-
-        // Subtle Breathing
-        nexusCore.scale.setScalar(1 + Math.sin(time) * 0.05);
-        nexusOffset.scale.setScalar(1.02 + Math.sin(time + 0.5) * 0.05);
-
-        // Data Storm Drift
-        storm.rotation.y += 0.0005 * currentMultiplier;
-        
-        // Data Stream Fall
-        const positions = streamGeo.attributes.position.array;
-        for (let i = 0; i < streamCount; i++) {
-            const i3 = i * 3 + 1;
-            positions[i3] -= (0.1 + Math.random() * 0.1) * currentMultiplier;
-            if(positions[i3] < -50) positions[i3] = 50;
-        }
-        streamGeo.attributes.position.needsUpdate = true;
-
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    // Export warp controls globally for Barba hooks
-    window.triggerNexusWarp = (active) => {
-        isWarping = active;
-    };
-})();
 
 // --- Lenis Super Smooth Scroll Engine ---
 const lenis = new Lenis({
@@ -391,14 +262,13 @@ try {
 }
 
 
-// --- Global Ambient AI Core (The SOUL of the site) ---
+// --- Global Ambient Neural Nexus (The "TRUE" Background) ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 
-// Inject safely at the back of the DOM
 document.body.insertBefore(renderer.domElement, document.body.firstChild);
 renderer.domElement.style.position = 'fixed';
 renderer.domElement.style.top = '0';
@@ -406,35 +276,79 @@ renderer.domElement.style.left = '0';
 renderer.domElement.style.zIndex = '-1';
 renderer.domElement.style.pointerEvents = 'none';
 
-// A massive, intricate Wireframe Torus Knot as the "AI Brain"
-const coreGeometry = new THREE.TorusKnotGeometry(14, 2.5, 300, 20, 3, 5);
-const coreMaterial = new THREE.MeshBasicMaterial({ 
-    color: 0xc084fc, // Lavender Purple Accent
+// ─── Nexus Core Geometry (3D Architecture) ───
+const nexusGeometry = new THREE.TorusKnotGeometry(12, 3, 250, 32, 2, 3);
+
+// Layer 1: Main Core (Lavender)
+const nexusMaterial = new THREE.MeshBasicMaterial({ 
+    color: 0xc084fc, 
     wireframe: true, 
     transparent: true, 
-    opacity: 0.15
+    opacity: 0.18,
+    blending: THREE.AdditiveBlending
 });
-const aiCore = new THREE.Mesh(coreGeometry, coreMaterial);
+const aiCore = new THREE.Mesh(nexusGeometry, nexusMaterial);
 scene.add(aiCore);
-camera.position.z = 35;
 
-// Floating ambient particles for extra cyber-soul
-const ambientParticleGeometry = new THREE.BufferGeometry();
-const ambientParticleCount = 1500;
+// Layer 2: Chromatic Offset (Gold/Yellow)
+const aiCoreOffset = new THREE.Mesh(
+    nexusGeometry,
+    new THREE.MeshBasicMaterial({ color: 0xfacc15, wireframe: true, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending })
+);
+aiCoreOffset.scale.set(1.02, 1.02, 1.02);
+scene.add(aiCoreOffset);
+
+// Data Nodes (Particles on the core surface)
+const nodeCount = 600;
+const nodeGeo = new THREE.BufferGeometry();
+const nodePosArray = new Float32Array(nodeCount * 3);
+const vertices = nexusGeometry.attributes.position.array;
+for(let i=0; i<nodeCount; i++) {
+    const vIdx = Math.floor(Math.random() * (vertices.length / 3)) * 3;
+    nodePosArray[i*3] = vertices[vIdx];
+    nodePosArray[i*3+1] = vertices[vIdx+1];
+    nodePosArray[i*3+2] = vertices[vIdx+2];
+}
+nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodePosArray, 3));
+const nodeMaterial = new THREE.PointsMaterial({ size: 0.15, color: 0xffffff, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
+const nexusNodes = new THREE.Points(nodeGeo, nodeMaterial);
+aiCore.add(nexusNodes);
+
+// Floating ambient particles (Global Storm)
+const ambientParticleCount = 2000;
 const ambientPosArray = new Float32Array(ambientParticleCount * 3);
 for(let i=0; i<ambientParticleCount*3; i++){
-    ambientPosArray[i] = (Math.random() - 0.5) * 120;
+    ambientPosArray[i] = (Math.random() - 0.5) * 150;
 }
+const ambientParticleGeometry = new THREE.BufferGeometry();
 ambientParticleGeometry.setAttribute('position', new THREE.BufferAttribute(ambientPosArray, 3));
 const ambientParticleMaterial = new THREE.PointsMaterial({
-    size: 0.08,
-    color: 0x8b5cf6, // Deep violet
-    transparent: true,
-    opacity: 0.4,
-    blending: THREE.AdditiveBlending
+    size: 0.1, color: 0x8b5cf6, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending
 });
 const ambientParticles = new THREE.Points(ambientParticleGeometry, ambientParticleMaterial);
 scene.add(ambientParticles);
+
+// Vertical Data Streams (falling)
+const streamCount = 400;
+const streamPosArray = new Float32Array(streamCount * 3);
+for(let i=0; i<streamCount; i++) {
+    streamPosArray[i*3] = (Math.random() - 0.5) * 120; // X
+    streamPosArray[i*3+1] = (Math.random() - 0.5) * 120; // Y
+    streamPosArray[i*3+2] = (Math.random() - 0.5) * 60; // Z
+}
+const streamGeo = new THREE.BufferGeometry();
+streamGeo.setAttribute('position', new THREE.BufferAttribute(streamPosArray, 3));
+const streamMaterial = new THREE.PointsMaterial({ size: 0.06, color: 0xc084fc, transparent: true, opacity: 0.4 });
+const streams = new THREE.Points(streamGeo, streamMaterial);
+scene.add(streams);
+
+camera.position.z = 40;
+// Position core to the right for Hero layout balance
+aiCore.position.x = 18; 
+
+// Initial States
+let isWarping = false;
+window.triggerNexusWarp = (active) => { isWarping = active; };
 
 let scrollY = window.scrollY;
 lenis.on('scroll', (e) => { scrollY = e.targetScroll; });
@@ -449,24 +363,37 @@ window.addEventListener('mousemove', (e) => {
 function animateCore() {
     requestAnimationFrame(animateCore);
     
-    // Core auto-spin
-    aiCore.rotation.x += 0.001;
-    aiCore.rotation.y += 0.002;
-    aiCore.rotation.z += 0.0005;
-
-    // Subtle ambient particle spin
-    ambientParticles.rotation.y += 0.0005;
-
-    // React deeply to mouse dragging globally
-    aiCore.rotation.x += globalMouseY * 0.01;
-    aiCore.rotation.y += globalMouseX * 0.01;
-    
-    // Core reacts heavily to timeline scrolling (moves up rapidly as you scroll down)
-    aiCore.position.y = -scrollY * 0.01;
-    
-    // Subtle breathing pulse
     const time = Date.now() * 0.001;
-    aiCore.scale.setScalar(1 + Math.sin(time) * 0.03);
+    const warpSpeed = isWarping ? 15 : 1;
+
+    // Movement: Auto-spin + Mouse reaction
+    aiCore.rotation.x += (0.001 + globalMouseY * 0.005) * warpSpeed;
+    aiCore.rotation.y += (0.002 + globalMouseX * 0.005) * warpSpeed;
+    aiCore.rotation.z += 0.0005 * warpSpeed;
+    
+    aiCoreOffset.rotation.copy(aiCore.rotation);
+    aiCoreOffset.rotation.y += 0.001 * warpSpeed; // Chromatic Lag
+
+    // Parallax & Positioning
+    // Move up as we scroll but at a deep layer (0.04 multiplier)
+    aiCore.position.y = (window.innerWidth < 768) ? 0 : (-scrollY * 0.04);
+    aiCore.position.x = (window.innerWidth < 768) ? 0 : 18; // Center on mobile, right on desktop
+
+    // Ambient Storm Drift
+    ambientParticles.rotation.y += 0.0003 * warpSpeed;
+    
+    // Data Stream Fall logic
+    const streamPos = streamGeo.attributes.position.array;
+    for (let i = 0; i < streamCount; i++) {
+        const i3 = i * 3 + 1;
+        streamPos[i3] -= (0.15 + Math.random() * 0.1) * warpSpeed;
+        if(streamPos[i3] < -60) streamPos[i3] = 60;
+    }
+    streamGeo.attributes.position.needsUpdate = true;
+
+    // Subtle Breathing
+    aiCore.scale.setScalar(1 + Math.sin(time) * 0.04);
+    aiCoreOffset.scale.setScalar(1.02 + Math.sin(time + 0.5) * 0.04);
 
     renderer.render(scene, camera);
 }

@@ -317,19 +317,6 @@ section {
     position: relative;
 }
 
-/* Three.js Hero Canvas (Nexus Core) */
-#hero-canvas {
-    position: absolute;
-    top: 50%; right: -5%;
-    transform: translateY(-50%);
-    width: 700px;
-    height: 700px;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.9;
-    filter: drop-shadow(0 0 30px rgba(192, 132, 252, 0.2));
-}
-
 .hero-content {
     max-width: 900px;
     position: relative;
