@@ -138,14 +138,48 @@ function raf(time) {
 }
 requestAnimationFrame(raf);
 
-// Sync GSAP with Lenis
-gsap.registerPlugin(ScrollTrigger);
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add((time)=>{
-  lenis.raf(time * 1000)
-});
-gsap.ticker.lagSmoothing(0, 0);
+// --- Cinematic Reveal Portfolio Animations ---
+function initMotion() {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // 1. SplitType Character Reveals
+    const splitTitles = new SplitType('.title, .section-title, .hero-content .subtitle', { types: 'chars' });
+    
+    gsap.from(splitTitles.chars, {
+        scrollTrigger: {
+            trigger: '.title, .section-title, .hero-content .subtitle',
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+        },
+        y: 50,
+        opacity: 0,
+        stagger: 0.015,
+        duration: 1,
+        ease: "power4.out"
+    });
 
+    // 2. Ambient Background Parallax
+    lenis.on('scroll', (e) => {
+        ScrollTrigger.update();
+        // Subtle offset based on vertical scroll
+        gsap.to('.glow-1', { y: e.scroll * 0.1, duration: 0.5, ease: "power1.out" });
+        gsap.to('.glow-2', { y: -e.scroll * 0.1, duration: 0.5, ease: "power1.out" });
+    });
+
+    // Sync Tick
+    gsap.ticker.add((time)=>{
+      lenis.raf(time * 1000)
+    });
+    gsap.ticker.lagSmoothing(0, 0);
+
+    // 3. Magnetic Link Refinement
+    if(typeof Shery !== "undefined" && window.innerWidth > 768) {
+        Shery.makeMagnet("#theme-toggle, .nav-links a, .hero-buttons .btn");
+    }
+}
+
+// Initial Kick-off
+initMotion();
 lenis.stop(); // Freeze scrolling until preloader validates!
 
 // --- Cinematic Neural Preloader ---
