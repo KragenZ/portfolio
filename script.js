@@ -19,13 +19,15 @@ if (themeToggleBtn) {
     });
 }
 
+// --- Global Animation States ---
+
 // --- Barba.js Seamless Page Routing ---
 if(typeof barba !== "undefined") {
     barba.init({
         transitions: [{
-            name: 'gsap-wipe',
+            name: 'gsap-warp',
             leave(data) {
-                // Cinematic drop-down
+                if(window.triggerNexusWarp) window.triggerNexusWarp(true);
                 return gsap.to('.barba-wipe', {
                     top: 0,
                     duration: 0.6,
@@ -33,17 +35,18 @@ if(typeof barba !== "undefined") {
                 });
             },
             enter(data) {
-                // Wipe curtain away upwards
+                if(window.triggerNexusWarp) {
+                    setTimeout(() => window.triggerNexusWarp(false), 800);
+                }
                 gsap.to('.barba-wipe', {
                     top: "-100%",
                     duration: 0.6,
                     ease: "power3.inOut",
                     onComplete: () => {
-                        gsap.set('.barba-wipe', { top: '100%' }); // reset for next trans
+                        gsap.set('.barba-wipe', { top: '100%' });
                     }
                 });
                 
-                // Hard reset coordinates so new page isn't scrolled down
                 window.scrollTo(0, 0);
                 if(typeof lenis !== "undefined") {
                     lenis.scrollTo(0, {immediate: true});
@@ -59,58 +62,129 @@ if(typeof barba !== "undefined") {
     if (!canvas || typeof THREE === 'undefined' || window.innerWidth <= 768) return;
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setSize(600, 600);
+    renderer.setSize(700, 700);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
-    camera.position.z = 3.2;
-
-    // Build particle sphere
-    const count = 2500;
-    const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
-    const colorA = new THREE.Color('#c084fc'); // purple
-    const colorB = new THREE.Color('#facc15'); // gold
-
-    for (let i = 0; i < count; i++) {
-        const theta = Math.random() * Math.PI * 2;
-        const phi   = Math.acos(2 * Math.random() - 1);
-        const r     = 1.2 + (Math.random() - 0.5) * 0.3;
-        positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
-        positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-        positions[i * 3 + 2] = r * Math.cos(phi);
-        const mix = Math.random();
-        colors[i * 3]     = colorA.r * (1 - mix) + colorB.r * mix;
-        colors[i * 3 + 1] = colorA.g * (1 - mix) + colorB.g * mix;
-        colors[i * 3 + 2] = colorA.b * (1 - mix) + colorB.b * mix;
-    }
-
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const mat = new THREE.PointsMaterial({
-        size: 0.018,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.9,
-        sizeAttenuation: true,
-    });
-
-    const sphere = new THREE.Points(geo, mat);
-    scene.add(sphere);
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
+    camera.position.z = 35;
 
     // Render loop
-    let time = 0;
+    // ─── Nexus Core Geometry (The "WOW" Artifact) ───
+    const nexusGeometry = new THREE.TorusKnotGeometry(12, 3, 200, 32, 2, 3);
+    
+    // Layer 1: Main Core (Lavender)
+    const nexusMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0xc084fc, 
+        wireframe: true, 
+        transparent: true, 
+        opacity: 0.2,
+        blending: THREE.AdditiveBlending
+    });
+    const nexusCore = new THREE.Mesh(nexusGeometry, nexusMaterial);
+    scene.add(nexusCore);
+
+    // Layer 2: Chromatic Offset (Gold/Yellow)
+    const nexusOffset = new THREE.Mesh(
+        nexusGeometry,
+        new THREE.MeshBasicMaterial({ color: 0xfacc15, wireframe: true, transparent: true, opacity: 0.1, blending: THREE.AdditiveBlending })
+    );
+    nexusOffset.scale.set(1.02, 1.02, 1.02);
+    scene.add(nexusOffset);
+
+    // Data Nodes (Particles on the surface)
+    const nodeCount = 500;
+    const nodeGeo = new THREE.BufferGeometry();
+    const nodePosArray = new Float32Array(nodeCount * 3);
+    const nodeSampler = new THREE.Mesh(nexusGeometry); // Used for sampling positions
+    
+    // For simplicity, just use random points in a torus-like volume or vertex positions
+    const vertices = nexusGeometry.attributes.position.array;
+    for(let i=0; i<nodeCount; i++) {
+        const vIdx = Math.floor(Math.random() * (vertices.length / 3)) * 3;
+        nodePosArray[i*3] = vertices[vIdx];
+        nodePosArray[i*3+1] = vertices[vIdx+1];
+        nodePosArray[i*3+2] = vertices[vIdx+2];
+    }
+    nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodePosArray, 3));
+    const nodeMaterial = new THREE.PointsMaterial({ size: 0.15, color: 0xffffff, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending });
+    const nexusNodes = new THREE.Points(nodeGeo, nodeMaterial);
+    nexusCore.add(nexusNodes);
+
+    // ─── Ambient Data Storm (Global) ───
+    const stormCount = 2000;
+    const stormGeo = new THREE.BufferGeometry();
+    const stormPosArray = new Float32Array(stormCount * 3);
+    for(let i=0; i<stormCount * 3; i++) {
+        stormPosArray[i] = (Math.random() - 0.5) * 150;
+    }
+    stormGeo.setAttribute('position', new THREE.BufferAttribute(stormPosArray, 3));
+    const stormMaterial = new THREE.PointsMaterial({ 
+        size: 0.08, 
+        color: 0x8b5cf6, 
+        transparent: true, 
+        opacity: 0.3,
+        blending: THREE.AdditiveBlending 
+    });
+    const storm = new THREE.Points(stormGeo, stormMaterial);
+    scene.add(storm);
+
+    // Vertical Data Streams
+    const streamCount = 500;
+    const streamGeo = new THREE.BufferGeometry();
+    const streamPosArray = new Float32Array(streamCount * 3);
+    for(let i=0; i<streamCount; i++) {
+        streamPosArray[i*3] = (Math.random() - 0.5) * 100; // X
+        streamPosArray[i*3+1] = (Math.random() - 0.5) * 100; // Y
+        streamPosArray[i*3+2] = (Math.random() - 0.5) * 50; // Z
+    }
+    streamGeo.setAttribute('position', new THREE.BufferAttribute(streamPosArray, 3));
+    const streamMaterial = new THREE.PointsMaterial({ size: 0.05, color: 0xc084fc, transparent: true, opacity: 0.5 });
+    const streams = new THREE.Points(streamGeo, streamMaterial);
+    scene.add(streams);
+
+    // Global Anim State (Restored for Warp)
+    let isWarping = false;
+    let warpMultiplier = 1;
+
+    // Hook into Barba for Warp (I'll add this later in the Barba init block)
+
     function animate() {
         requestAnimationFrame(animate);
-        time += 0.004;
-        sphere.rotation.y = time;
-        sphere.rotation.x = Math.sin(time * 0.4) * 0.3;
+        
+        const time = Date.now() * 0.001;
+        const currentMultiplier = isWarping ? 15 : 1;
+        
+        // Nexus Core Rotation
+        nexusCore.rotation.y += 0.002 * currentMultiplier;
+        nexusCore.rotation.z += 0.001 * currentMultiplier;
+        nexusOffset.rotation.y += 0.0021 * currentMultiplier; // Chromatic lag
+        nexusOffset.rotation.z += 0.0011 * currentMultiplier;
+
+        // Subtle Breathing
+        nexusCore.scale.setScalar(1 + Math.sin(time) * 0.05);
+        nexusOffset.scale.setScalar(1.02 + Math.sin(time + 0.5) * 0.05);
+
+        // Data Storm Drift
+        storm.rotation.y += 0.0005 * currentMultiplier;
+        
+        // Data Stream Fall
+        const positions = streamGeo.attributes.position.array;
+        for (let i = 0; i < streamCount; i++) {
+            const i3 = i * 3 + 1;
+            positions[i3] -= (0.1 + Math.random() * 0.1) * currentMultiplier;
+            if(positions[i3] < -50) positions[i3] = 50;
+        }
+        streamGeo.attributes.position.needsUpdate = true;
+
         renderer.render(scene, camera);
     }
     animate();
+
+    // Export warp controls globally for Barba hooks
+    window.triggerNexusWarp = (active) => {
+        isWarping = active;
+    };
 })();
 
 // --- Lenis Super Smooth Scroll Engine ---
@@ -190,35 +264,42 @@ function initMotion() {
 
     // 4. Project Drawer Logic
     const drawer = document.getElementById('project-drawer');
-    const drawerTitle = drawer.querySelector('.drawer-title');
-    const drawerStack = drawer.querySelector('.stack-list');
-    const drawerDesc = drawer.querySelector('.drawer-description p');
-    const drawerLink = drawer.querySelector('.drawer-link');
-    const closeBtn = drawer.querySelector('.drawer-close');
-    const overlay = drawer.querySelector('.drawer-overlay');
+    if(drawer) {
+        const drawerTitle = drawer.querySelector('.drawer-title');
+        const drawerStack = drawer.querySelector('.stack-list');
+        const drawerDesc = drawer.querySelector('.drawer-description p');
+        const drawerLink = drawer.querySelector('.drawer-link');
+        const closeBtn = drawer.querySelector('.drawer-close');
+        const overlay = drawer.querySelector('.drawer-overlay');
 
-    const openDrawer = (e) => {
-        const card = e.target.closest('.project-card');
-        const { title, stack, details, project } = card.dataset;
-        
-        drawerTitle.innerText = title;
-        drawerStack.innerText = stack;
-        drawerDesc.innerText = details;
-        drawerLink.href = project === 'ai-property' ? 'case_study_pa.html' : 'https://house-price-predictor-ml-nh9zrtguvhpmhwsys9qexr.streamlit.app/';
-        
-        drawer.classList.remove('drawer-hidden');
-        lenis.stop(); // Freeze background scroll
-    };
+        const openDrawer = (e) => {
+            const card = e.target.closest('.project-card');
+            if(!card) return;
+            const { title, stack, details, project } = card.dataset;
+            
+            drawerTitle.innerText = title;
+            drawerStack.innerText = stack;
+            drawerDesc.innerText = details;
+            drawerLink.href = project === 'ai-property' ? 'case_study_pa.html' : 'https://house-price-predictor-ml-nh9zrtguvhpmhwsys9qexr.streamlit.app/';
+            
+            drawer.classList.remove('drawer-hidden');
+            lenis.stop();
+        };
 
-    const closeDrawer = () => {
-        drawer.classList.add('drawer-hidden');
-        lenis.start();
-    };
+        const closeDrawer = () => {
+            drawer.classList.add('drawer-hidden');
+            lenis.start();
+        };
 
-    document.querySelectorAll('.open-drawer').forEach(btn => btn.addEventListener('click', openDrawer));
-    if(closeBtn) closeBtn.addEventListener('click', closeDrawer);
-    if(overlay) overlay.addEventListener('click', closeDrawer);
+        document.querySelectorAll('.open-drawer').forEach(btn => btn.addEventListener('click', openDrawer));
+        if(closeBtn) closeBtn.addEventListener('click', closeDrawer);
+        if(overlay) overlay.addEventListener('click', closeDrawer);
+    }
+
+    // 5. System Cleanup
 }
+
+// Initial Kick-off
 
 // Initial Kick-off
 initMotion();
