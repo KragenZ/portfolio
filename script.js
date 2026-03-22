@@ -273,7 +273,7 @@ document.body.insertBefore(renderer.domElement, document.body.firstChild);
 renderer.domElement.style.position = 'fixed';
 renderer.domElement.style.top = '0';
 renderer.domElement.style.left = '0';
-renderer.domElement.style.zIndex = '-1';
+renderer.domElement.style.zIndex = '1';
 renderer.domElement.style.pointerEvents = 'none';
 
 // ─── Nexus Core Geometry (3D Architecture) ───
