@@ -3,6 +3,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
 
+/* --- Cyber-Scrollbar --- */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.9);
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--accent-1), var(--accent-2));
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--accent-1);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-primary);
+    box-shadow: 0 0 20px var(--accent-1);
+}
+
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -115,10 +133,17 @@ header, main, footer {
     width: 3px;
     height: 0%;
     background: linear-gradient(to bottom, var(--accent-1), var(--accent-2));
-    box-shadow: 0 0 10px var(--accent-1), 0 0 20px var(--accent-2);
+    box-shadow: 0 0 15px var(--accent-1), 0 0 30px var(--accent-2);
     z-index: 10000;
     pointer-events: none;
     opacity: 0.8;
+    animation: spine-pulse 3s infinite alternate;
+    transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+@keyframes spine-pulse {
+    0% { filter: brightness(1) drop-shadow(0 0 5px var(--accent-1)); }
+    100% { filter: brightness(1.5) drop-shadow(0 0 15px var(--accent-1)); }
 }
 
 /* --- Barba GSAP Transition --- */
@@ -519,6 +544,34 @@ section {
     border-radius: 16px 16px 0 0;
     box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
     pointer-events: auto; /* Required for Shery mouse mapping */
+    transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.project-card:hover .glsl-img {
+    filter: brightness(1.2) contrast(1.1) saturate(1.2) hue-rotate(10deg);
+    transform: scale(1.02);
+}
+
+.project-image::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(192, 132, 252, 0.1), transparent);
+    background-size: 100% 200%;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    transition: opacity 0.3s;
+}
+
+.project-card:hover .project-image::after {
+    opacity: 1;
+    animation: scanline 2s linear infinite;
+}
+
+@keyframes scanline {
+    0% { background-position: 0 -100%; }
+    100% { background-position: 0 100%; }
 }
 .project-info {
     padding: 3rem;
@@ -811,9 +864,102 @@ section {
     .about-stats { grid-template-columns: 1fr; }
 }
 
-/* Intermediate Desktop Header Fixes */
-@media (max-width: 1250px) {
-    .glass-header { padding: 1rem 4% !important; }
-    .nav-links { gap: 1.25rem !important; }
-    .glass-header nav { gap: 1.25rem !important; }
+/* --- Project Quick View Drawer --- */
+#project-drawer {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 20000;
+    display: flex;
+    justify-content: flex-end;
+    transition: visibility 0.4s;
+}
+.drawer-hidden { visibility: hidden; pointer-events: none; }
+.drawer-hidden .drawer-content { transform: translateX(100%); }
+.drawer-hidden .drawer-overlay { opacity: 0; }
+
+.drawer-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    transition: opacity 0.4s ease;
+}
+
+.drawer-content {
+    width: 500px;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.9);
+    border-left: 1px solid var(--border-color);
+    border-radius: 0; /* Override glass-card roundness */
+    padding: 4rem 3rem;
+    position: relative;
+    z-index: 10;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer-close {
+    position: absolute;
+    top: 2rem; right: 2rem;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.drawer-subtitle {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.drawer-title {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: var(--accent-1);
+    line-height: 1.1;
+}
+
+.drawer-meta {
+    margin-bottom: 3rem;
+}
+
+.meta-item {
+    margin-bottom: 1.5rem;
+}
+
+.meta-item .label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.stack-list {
+    color: var(--accent-2);
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.drawer-description {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 4rem;
+}
+
+.drawer-footer {
+    margin-top: auto;
+}
+
+/* Base iPad/Mobile Drawer */
+@media (max-width: 768px) {
+    .drawer-content { width: 100%; padding: 2.5rem 1.5rem; }
+    .drawer-title { font-size: 2rem; }
 }

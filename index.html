@@ -138,7 +138,12 @@
             <div class="projects-grid">
                 
                 <!-- Project 1 -->
-                <div class="project-card glass-card hover-target">
+                <div class="project-card glass-card hover-target" 
+                     data-project="ai-property"
+                     data-title="AI Property Assistant"
+                     data-description="Conversational Real Estate agent with RAG architecture."
+                     data-stack="LangChain, FAISS, Streamlit, Gemini LLM"
+                     data-details="Architected an end-to-end conversational AI system utilizing LangChain for orchestration and FAISS for vector similarity search. The system features dynamic context retrieval and sophisticated memory management for high-precision real estate advisory.">
                     <div class="project-image" style="padding: 0;">
                         <img src="assets/ai_property.webp" class="glsl-img" alt="AI Property Assistant">
                     </div>
@@ -152,13 +157,18 @@
                         </div>
                         <div class="project-links">
                             <a href="case_study_pa.html" class="btn link-primary hover-target">Case Study</a>
-                            <a href="https://github.com/KragenZ/portfolio" target="_blank" class="btn link-secondary hover-target">View Code</a>
+                            <button class="btn link-secondary hover-target open-drawer">Quick View</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Project 2 -->
-                <div class="project-card glass-card hover-target">
+                <div class="project-card glass-card hover-target" 
+                     data-project="house-price"
+                     data-title="House Price Predictor ML"
+                     data-description="Advanced regression models for real estate valuation."
+                     data-stack="Scikit-Learn, Pandas, Streamlit, XGBoost"
+                     data-details="Developed a multi-model evaluation pipeline comparing Ridge, Random Forest, and XGBoost. Achieved R² > 0.90 through rigorous feature engineering and cross-validation protocols. Includes an interactive visual analytics dashboard.">
                     <div class="project-image" style="padding: 0;">
                         <img src="assets/house_price.webp" class="glsl-img" alt="House Price Predictor">
                     </div>
@@ -169,11 +179,10 @@
                             <span>Scikit-Learn</span>
                             <span>Pandas</span>
                             <span>Streamlit</span>
-                            <span>Regression</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://house-price-predictor-ml-nh9zrtguvhpmhwsys9qexr.streamlit.app/" target="_blank" rel="noopener" class="link-primary hover-target">Deploy Demo</a>
-                            <a href="https://github.com/KragenZ/house-price-predictor-ml" target="_blank" rel="noopener" class="link-secondary hover-target">Source</a>
+                            <a href="https://house-price-predictor-ml-nh9zrtguvhpmhwsys9qexr.streamlit.app/" target="_blank" class="link-primary hover-target">Deploy Demo</a>
+                            <button class="btn link-secondary hover-target open-drawer">Quick View</button>
                         </div>
                     </div>
                 </div>
@@ -241,6 +250,30 @@
         <div class="terminal-input-line">
             <span class="prompt">guest@portfolio:~$ </span>
             <input type="text" id="terminal-input" autocomplete="off" spellcheck="false">
+        </div>
+    </div>
+
+    <!-- Project Quick View Drawer -->
+    <div id="project-drawer" class="drawer-hidden">
+        <div class="drawer-overlay"></div>
+        <div class="drawer-content glass-card">
+            <button class="drawer-close hover-target">&times;</button>
+            <div class="drawer-body">
+                <span class="drawer-subtitle accent-text">PROJECT DETAILS</span>
+                <h2 class="drawer-title">Project Name</h2>
+                <div class="drawer-meta">
+                    <div class="meta-item">
+                        <span class="label">TECH STACK</span>
+                        <p class="stack-list">LangChain, FAISS</p>
+                    </div>
+                </div>
+                <div class="drawer-description">
+                    <p>Detailed technical breakdown goes here...</p>
+                </div>
+                <div class="drawer-footer">
+                    <a href="#" class="btn primary hover-target drawer-link">Full Case Study</a>
+                </div>
+            </div>
         </div>
     </div>
     </main>

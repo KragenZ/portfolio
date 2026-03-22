@@ -158,9 +158,20 @@ function initMotion() {
         ease: "power4.out"
     });
 
-    // 2. Ambient Background Parallax
+    // 2. Ambient Background & Neural Spine Parallax
+    const neuralSpine = document.getElementById('neural-spine');
+    
     lenis.on('scroll', (e) => {
         ScrollTrigger.update();
+        const scrollPercent = (e.scroll / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        
+        // Update Neural Spine height and intensity
+        if(neuralSpine) {
+            neuralSpine.style.height = `${scrollPercent}%`;
+            const glowIntensity = 15 + (scrollPercent * 0.2); // Intensify glow as you scroll down
+            neuralSpine.style.boxShadow = `0 0 ${glowIntensity}px var(--accent-1), 0 0 ${glowIntensity * 2}px var(--accent-2)`;
+        }
+
         // Subtle offset based on vertical scroll
         gsap.to('.glow-1', { y: e.scroll * 0.1, duration: 0.5, ease: "power1.out" });
         gsap.to('.glow-2', { y: -e.scroll * 0.1, duration: 0.5, ease: "power1.out" });
@@ -174,8 +185,39 @@ function initMotion() {
 
     // 3. Magnetic Link Refinement
     if(typeof Shery !== "undefined" && window.innerWidth > 768) {
-        Shery.makeMagnet("#theme-toggle, .nav-links a, .hero-buttons .btn");
+        Shery.makeMagnet("#theme-toggle, .nav-links a, .hero-buttons .btn, .open-drawer, .drawer-close");
     }
+
+    // 4. Project Drawer Logic
+    const drawer = document.getElementById('project-drawer');
+    const drawerTitle = drawer.querySelector('.drawer-title');
+    const drawerStack = drawer.querySelector('.stack-list');
+    const drawerDesc = drawer.querySelector('.drawer-description p');
+    const drawerLink = drawer.querySelector('.drawer-link');
+    const closeBtn = drawer.querySelector('.drawer-close');
+    const overlay = drawer.querySelector('.drawer-overlay');
+
+    const openDrawer = (e) => {
+        const card = e.target.closest('.project-card');
+        const { title, stack, details, project } = card.dataset;
+        
+        drawerTitle.innerText = title;
+        drawerStack.innerText = stack;
+        drawerDesc.innerText = details;
+        drawerLink.href = project === 'ai-property' ? 'case_study_pa.html' : 'https://house-price-predictor-ml-nh9zrtguvhpmhwsys9qexr.streamlit.app/';
+        
+        drawer.classList.remove('drawer-hidden');
+        lenis.stop(); // Freeze background scroll
+    };
+
+    const closeDrawer = () => {
+        drawer.classList.add('drawer-hidden');
+        lenis.start();
+    };
+
+    document.querySelectorAll('.open-drawer').forEach(btn => btn.addEventListener('click', openDrawer));
+    if(closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    if(overlay) overlay.addEventListener('click', closeDrawer);
 }
 
 // Initial Kick-off
@@ -425,7 +467,7 @@ if(horizontalContainer) {
 class TextScramble {
     constructor(el) {
         this.el = el;
-        this.chars = '!<>-_\\\\/[]{}—=+*^?#________';
+        this.chars = 'アカサタナハマヤラワガザダバパイキシチニヒミリギジヂビピウクスツヌフムユルグズヅブプエケセテネヘメレゲゼデベペオコソトノホモヨロゴゾドボポ10101010';
         this.update = this.update.bind(this);
     }
     setText(newText) {
