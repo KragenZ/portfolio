@@ -3,6 +3,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
 
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 :root {
     --bg-dark: #000000; 
     --bg-card: rgba(255, 255, 255, 0.03);
@@ -154,16 +158,24 @@ h1, h2, h3, .logo {
 /* Header */
 .glass-header {
     position: fixed;
-    top: 0; width: 100%;
-    padding: 1.5rem 8%;
+    top: 0; 
+    left: 0;
+    width: 100%;
+    padding: 1.2rem 6%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
     z-index: 1000;
+}
+
+.glass-header nav {
+    display: flex !important;
+    align-items: center !important;
+    gap: 2.5rem;
 }
 
 .logo {
@@ -179,7 +191,7 @@ h1, h2, h3, .logo {
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 3rem;
+    gap: 2.5rem;
 }
 .nav-links a {
     font-family: 'Inter', sans-serif;
@@ -715,10 +727,10 @@ section {
 .sandbox-input label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.3rem; font-family: 'Space Grotesk', monospace; text-transform: uppercase; }
 .sandbox-input label span { color: var(--accent-1); font-weight:bold; }
 .sandbox-input input[type="range"] { 
-    width: 100%; accent-color: var(--accent-1); cursor: grab; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; outline: none; -webkit-appearance: none;
+    width: 100%; accent-color: var(--accent-1); cursor: grab; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; outline: none; -webkit-appearance: none; appearance: none;
 }
 .sandbox-input input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 14px; height: 14px; background: var(--accent-1); border-radius: 50%; box-shadow: 0 0 10px var(--accent-1); cursor: grabbing;
+    -webkit-appearance: none; width: 14px; height: 14px; background: var(--accent-1); border-radius: 50%; box-shadow: 0 0 10px var(--accent-1); cursor: grabbing; appearance: none;
 }
 .sandbox-output { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center; }
 .sandbox-output div:first-child { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.2rem; }
@@ -792,8 +804,16 @@ section {
     #music-toggle { bottom: 1.2rem; left: 1rem; padding: 0.6rem 1rem; font-size: 0.75rem; }
 }
 
+
 /* Base iPad Fixes */
 @media (max-width: 1024px) {
     .about-container { grid-template-columns: 1fr; }
     .about-stats { grid-template-columns: 1fr; }
+}
+
+/* Intermediate Desktop Header Fixes */
+@media (max-width: 1250px) {
+    .glass-header { padding: 1rem 4% !important; }
+    .nav-links { gap: 1.25rem !important; }
+    .glass-header nav { gap: 1.25rem !important; }
 }
