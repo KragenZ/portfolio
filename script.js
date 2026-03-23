@@ -276,43 +276,35 @@ renderer.domElement.style.left = '0';
 renderer.domElement.style.zIndex = '1';
 renderer.domElement.style.pointerEvents = 'none';
 
-// ─── Nexus Core Geometry (3D Architecture) ───
-const nexusGeometry = new THREE.TorusKnotGeometry(12, 3, 250, 32, 2, 3);
+// ─── The Vector Topology (Interactive Grid) ───
+const vectorRows = 25;
+const vectorCols = 40;
+const vectorSpacing = 4;
+const vectorLength = 0.7;
+const vectors = [];
 
-// Layer 1: Main Core (Lavender)
-const nexusMaterial = new THREE.MeshBasicMaterial({ 
+const vectorMaterial = new THREE.LineBasicMaterial({ 
     color: 0xc084fc, 
-    wireframe: true, 
     transparent: true, 
-    opacity: 0.18,
-    blending: THREE.AdditiveBlending
+    opacity: 0.15,
+    blending: THREE.AdditiveBlending 
 });
-const aiCore = new THREE.Mesh(nexusGeometry, nexusMaterial);
-scene.add(aiCore);
 
-// Layer 2: Chromatic Offset (Gold/Yellow)
-const aiCoreOffset = new THREE.Mesh(
-    nexusGeometry,
-    new THREE.MeshBasicMaterial({ color: 0xfacc15, wireframe: true, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending })
-);
-aiCoreOffset.scale.set(1.02, 1.02, 1.02);
-scene.add(aiCoreOffset);
-
-// Data Nodes (Particles on the core surface)
-const nodeCount = 600;
-const nodeGeo = new THREE.BufferGeometry();
-const nodePosArray = new Float32Array(nodeCount * 3);
-const vertices = nexusGeometry.attributes.position.array;
-for(let i=0; i<nodeCount; i++) {
-    const vIdx = Math.floor(Math.random() * (vertices.length / 3)) * 3;
-    nodePosArray[i*3] = vertices[vIdx];
-    nodePosArray[i*3+1] = vertices[vIdx+1];
-    nodePosArray[i*3+2] = vertices[vIdx+2];
+for (let i = 0; i < vectorRows; i++) {
+    for (let j = 0; j < vectorCols; j++) {
+        const x = (j - vectorCols / 2) * vectorSpacing;
+        const y = (i - vectorRows / 2) * vectorSpacing;
+        
+        const geometry = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0, vectorLength, 0)
+        ]);
+        const line = new THREE.Line(geometry, vectorMaterial);
+        line.position.set(x, y, 0);
+        scene.add(line);
+        vectors.push({ line, origin: new THREE.Vector3(x, y, 0) });
+    }
 }
-nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodePosArray, 3));
-const nodeMaterial = new THREE.PointsMaterial({ size: 0.15, color: 0xffffff, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
-const nexusNodes = new THREE.Points(nodeGeo, nodeMaterial);
-aiCore.add(nexusNodes);
 
 // Floating ambient particles (Global Storm)
 const ambientParticleCount = 2000;
@@ -342,9 +334,7 @@ const streamMaterial = new THREE.PointsMaterial({ size: 0.06, color: 0xc084fc, t
 const streams = new THREE.Points(streamGeo, streamMaterial);
 scene.add(streams);
 
-camera.position.z = 40;
-// Position core to the right for Hero layout balance
-aiCore.position.x = 18; 
+camera.position.z = 50;
 
 // Initial States
 let isWarping = false;
@@ -360,44 +350,50 @@ window.addEventListener('mousemove', (e) => {
     globalMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
 });
 
-function animateCore() {
-    requestAnimationFrame(animateCore);
+function animateVectors() {
+    requestAnimationFrame(animateVectors);
     
     const time = Date.now() * 0.001;
-    const warpSpeed = isWarping ? 15 : 1;
+    const warpSpeed = isWarping ? 12 : 1;
 
-    // Movement: Auto-spin + Mouse reaction
-    aiCore.rotation.x += (0.001 + globalMouseY * 0.005) * warpSpeed;
-    aiCore.rotation.y += (0.002 + globalMouseX * 0.005) * warpSpeed;
-    aiCore.rotation.z += 0.0005 * warpSpeed;
-    
-    aiCoreOffset.rotation.copy(aiCore.rotation);
-    aiCoreOffset.rotation.y += 0.001 * warpSpeed; // Chromatic Lag
+    // Convert mouse screen space to world space target
+    const targetX = globalMouseX * 50;
+    const targetY = globalMouseY * 30;
+    const mouseTarget = new THREE.Vector3(targetX, targetY, 15);
 
-    // Parallax & Positioning
-    // Move up as we scroll but at a deep layer (0.04 multiplier)
-    aiCore.position.y = (window.innerWidth < 768) ? 0 : (-scrollY * 0.04);
-    aiCore.position.x = (window.innerWidth < 768) ? 0 : 18; // Center on mobile, right on desktop
+    vectors.forEach(v => {
+        // Calculate direction to mouse
+        const direction = new THREE.Vector3().subVectors(mouseTarget, v.origin).normalize();
+        
+        // Update line rotation to look at target
+        // We use lookAt but vectors are centered at 0,0,0 inside the line object
+        const targetPos = new THREE.Vector3().addVectors(v.line.position, direction);
+        v.line.lookAt(targetPos);
+        
+        // Add a secondary rotation during warp
+        if (isWarping) {
+            v.line.rotation.z += 0.2;
+        }
 
-    // Ambient Storm Drift
-    ambientParticles.rotation.y += 0.0003 * warpSpeed;
-    
-    // Data Stream Fall logic
+        // Parallax vertical movement
+        v.line.position.y = v.origin.y - (scrollY * 0.03);
+    });
+
+    // Ambient Storm & Stream drift
+    ambientParticles.rotation.y += 0.0002 * warpSpeed;
+    ambientParticles.position.y = -scrollY * 0.01;
+
     const streamPos = streamGeo.attributes.position.array;
     for (let i = 0; i < streamCount; i++) {
         const i3 = i * 3 + 1;
-        streamPos[i3] -= (0.15 + Math.random() * 0.1) * warpSpeed;
+        streamPos[i3] -= (0.1 + Math.random() * 0.05) * warpSpeed;
         if(streamPos[i3] < -60) streamPos[i3] = 60;
     }
     streamGeo.attributes.position.needsUpdate = true;
 
-    // Subtle Breathing
-    aiCore.scale.setScalar(1 + Math.sin(time) * 0.04);
-    aiCoreOffset.scale.setScalar(1.02 + Math.sin(time + 0.5) * 0.04);
-
     renderer.render(scene, camera);
 }
-animateCore();
+animateVectors();
 
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
