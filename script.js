@@ -103,17 +103,17 @@ function initMotion() {
         ease: "power4.out"
     });
 
-    // 2. Ambient Background & Neural Spine Parallax
-    const neuralSpine = document.getElementById('neural-spine');
+    // 2. Ambient Background & Unified Neural Scroller Sync
+    const scrollerFill = document.getElementById('neural-fill');
+    const scrollerHandle = document.getElementById('neural-handle');
     
     lenis.on('scroll', (e) => {
         ScrollTrigger.update();
         const scrollPercent = (e.scroll / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
         
-        // Update Neural Spine height (Zero-Lag)
-        if(neuralSpine) {
-            neuralSpine.style.height = `${scrollPercent}%`;
-        }
+        // Sync custom scroller components
+        if(scrollerFill) scrollerFill.style.height = `${scrollPercent}%`;
+        if(scrollerHandle) scrollerHandle.style.top = `${scrollPercent}%`;
 
         // Subtle offset based on vertical scroll
         gsap.to('.glow-1', { y: e.scroll * 0.1, duration: 0.5, ease: "power1.out" });
