@@ -33,4 +33,4 @@ To run it locally:
 ## 📫 Connect with the Developer
 Created by **Srijit Kumar Roy**
 - **GitHub:** [@KragenZ](https://github.com/KragenZ)
-- **LinkedIn:** [Srijit Roy](https://www.linkedin.com/in/srijit-roy-7840043b8/)
+- **LinkedIn:** [Srijit Roy](https://www.linkedin.com/in/srijit-kumar-roy-7840043b8/)
