@@ -1,270 +1,405 @@
-<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Srijit Roy - ML Engineer Resume</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="shortcut icon" href="favicon.svg">
+    <title>Srijit Kumar Roy - Resume</title>
+    <meta name="description" content="Resume of Srijit Kumar Roy - B.Tech CSE (AI & ML) student at KIIT. Python, Machine Learning, RAG, and SQL/Power BI.">
+        <link rel="canonical" href="https://kragenz.github.io/portfolio/resume.html">
+<link rel="stylesheet" href="styles.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
-        :root {
-            --bg-outer: #0a0a0a;
-            --bg-inner: #121212;
-            --primary: #f3f4f6;
-            --secondary: #9ca3af;
-            --accent: #c084fc; /* Portfolio Purple */
-            --border: #333333;
-            --shadow: rgba(0,0,0,0.8);
-            --highlight-bg: rgba(192, 132, 252, 0.1);
-            --highlight-border: #c084fc;
-        }
-
-        body.light-mode {
-            --bg-outer: #f9fafb;
-            --bg-inner: #ffffff;
-            --primary: #111827;
-            --secondary: #4b5563;
-            --accent: #d97706; /* Elegant Light Gold */
-            --border: #e5e7eb;
-            --shadow: rgba(0,0,0,0.1);
-            --highlight-bg: rgba(217, 119, 6, 0.08);
-            --highlight-border: #d97706;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-outer);
-            color: var(--primary);
-            line-height: 1.5;
+        .resume-page-wrapper {
+            padding: 3rem 1.5rem 5rem 1.5rem;
             display: flex;
-            justify-content: center;
-            padding: 3rem 2rem;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Controls */
         .resume-controls {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
             display: flex;
             gap: 1rem;
-            z-index: 1000;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 8.5in;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
-        .control-btn {
-            background: rgba(255,255,255,0.1);
+
+        .resume-paper {
+            width: 100%;
+            max-width: 680px;
+            background-color: var(--surface);
             border: 1px solid var(--border);
-            padding: 0.8rem 1.2rem;
-            border-radius: 50px;
-            font-family: 'Inter', sans-serif;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            padding: 2.25rem 2.5rem;
+            color: var(--text-primary);
+        }
+
+        .resume-paper p,
+        .resume-paper li,
+        .resume-paper .skill-group {
+            max-width: 55ch;
+            text-wrap: pretty;
+        }
+
+        .resume-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .resume-name {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.35rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .resume-contact-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .resume-contact-bar a {
+            color: var(--brand-text);
+            font-weight: 500;
+        }
+
+        .resume-contact-bar a:hover {
+            text-decoration: underline;
+        }
+
+        .resume-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .resume-section-title {
+            font-size: 0.9375rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            border-bottom: 1.5px solid var(--border);
+            padding-bottom: 0.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .resume-item {
+            margin-bottom: 1rem;
+        }
+
+        .resume-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .item-heading {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .item-subheading {
+            font-size: 0.875rem;
             font-weight: 600;
-            color: var(--primary);
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px var(--shadow);
-        }
-        .control-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
-        .control-btn { background: rgba(0,0,0,0.4); color: white; border-color: rgba(255,255,255,0.2); }
-        body.light-mode .control-btn { background: rgba(255,255,255,0.8); color: var(--primary); border-color: var(--border); }
-        body.light-mode .control-btn:hover { background: var(--accent); color: white; }
-
-        .resume-container {
-            width: 8.5in; 
-            min-height: 11in; 
-            background: var(--bg-inner);
-            padding: 0.8in;
-            box-shadow: 0 10px 30px var(--shadow);
-            border-radius: 4px;
+            color: var(--text-secondary);
         }
 
-        h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 0.15rem; letter-spacing: -0.03em; color: var(--primary); }
-        h2 {
-            font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-            color: var(--primary); border-bottom: 2px solid var(--primary);
-            padding-bottom: 0.2rem; margin-top: 1.25rem; margin-bottom: 0.75rem;
-        }
-        h3 { font-size: 1.05rem; font-weight: 700; color: var(--primary); display: flex; justify-content: space-between; align-items: baseline; }
-        
-        .subtitle { font-size: 0.95rem; color: var(--primary); font-weight: 600; margin-bottom: 0.25rem; display: flex; justify-content: space-between; align-items: baseline; font-style: italic; }
-        .date { font-size: 0.9rem; color: var(--secondary); font-weight: 500; font-style: normal; }
-        p, li { font-size: 0.95rem; color: var(--secondary); margin-bottom: 0.4rem; list-style-position: outside; margin-left: 1.2rem; }
-        ul { margin-bottom: 0.5rem; }
-
-        .header-info { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-bottom: 1rem; font-size: 0.95rem; color: var(--secondary); font-weight: 500; }
-        .header-info a { color: var(--accent); text-decoration: none; }
-        .header-info a:hover { text-decoration: underline; }
-
-        .section-content { margin-bottom: 1rem; padding: 0.5rem; border-left: 3px solid transparent; border-radius: 0 8px 8px 0; transition: all 0.4s ease; }
-        
-        /* Interactive Highlight State */
-        .section-content.highlight {
-            background-color: var(--highlight-bg);
-            border-left: 3px solid var(--highlight-border);
-            padding-left: 1rem;
+        .item-meta {
+            font-family: var(--font-mono);
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            white-space: nowrap;
         }
 
-        .skills-grid { display: grid; grid-template-columns: 140px 1fr; gap: 0.25rem; margin-bottom: 0.3rem; }
-        .skill-category { font-weight: 700; color: var(--primary); font-size: 0.95rem; }
-        .skill-list { color: var(--secondary); font-size: 0.95rem; }
-        
-        /* Interactive Skill Nodes */
-        .skill-node {
-            cursor: pointer;
-            border-bottom: 1px dashed var(--secondary);
-            transition: color 0.2s, border-color 0.2s;
+        .item-stack {
+            font-family: var(--font-mono);
+            font-size: 0.8125rem;
+            color: var(--accent-text);
+            margin-bottom: 0.35rem;
         }
-        .skill-node:hover {
-            color: var(--accent);
-            border-bottom: 1px solid var(--accent);
+
+        .resume-bullets {
+            list-style: disc;
+            margin-left: 1.25rem;
+            margin-top: 0.35rem;
+        }
+
+        .resume-bullets li {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+            line-height: 1.55;
+        }
+
+        .skill-group {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .skill-group strong {
+            color: var(--text-primary);
         }
 
         @media print {
-            @page { margin: 0; }
-            body { background: white; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            :root, body.light-mode { 
-                --bg-outer: white; --bg-inner: white; --primary: #111827; --secondary: #4b5563; --border: #cccccc; 
-            } /* Force light variables on print, but retains the active --accent color */
-            .resume-controls { display: none !important; }
-            .resume-container { box-shadow: none; padding: 0.8in; width: 100%; min-height: auto; border-radius: 0; }
-            a { text-decoration: none !important; color: black !important; }
-            .section-content { padding: 0; border: none; }
-            .skill-node { border: none; }
+            .site-header, .resume-controls, .site-footer {
+                display: none !important;
+            }
+            .resume-page-wrapper {
+                padding: 0 !important;
+            }
+            .resume-paper {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+            }
         }
     </style>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <header class="site-header">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo" aria-label="Srijit Kumar Roy Portfolio">
+                <span>SRIJIT ROY</span>
+                <span class="brand-dot" aria-hidden="true"></span>
+            </a>
 
-<div class="resume-controls">
-    <button class="control-btn" id="theme-toggle">☀️ Light Mode</button>
-    <button class="control-btn" id="export-btn">📄 Export PDF</button>
-</div>
-
-<div class="resume-container">
-    <header>
-        <h1>Srijit Roy</h1>
-        <div class="subtitle" style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--secondary); font-style: normal; font-weight: 500;">
-            AI & ML Undergraduate | KIIT University
-        </div>
-        <div class="header-info">
-            <span>natesonbell@gmail.com</span>
-            <span>+91 8878805690</span>
-            <span><a href="https://github.com/KragenZ" target="_blank">github.com/KragenZ</a></span>
-            <span><a href="https://kragenz.github.io/portfolio/" target="_blank">kragenz.github.io/portfolio</a></span>
+            <div class="nav-actions">
+                <a href="index.html" class="btn btn-secondary btn-sm">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Portfolio
+                </a>
+                <button id="theme-toggle" class="btn-icon" aria-label="Toggle theme">
+                    <svg id="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                    </svg>
+                    <svg id="moon-icon" viewBox="0 0 24 24" style="display: none;" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
     </header>
 
-    <section>
-        <h2>Profile</h2>
-        <p style="margin-left:0;">Second-year Computer Science (AI & ML) student with hands-on experience in building end-to-end machine learning and LLM-powered systems. Strong focus on real-world problem solving, operational deployment, and AI product architecture. Proven ability to translate complex data infrastructures into scalable, user-facing intelligence applications.</p>
-    </section>
-
-    <section>
-        <h2>Technical Skills</h2>
-        <div class="section-content" style="padding:0; border:none;">
-            <div class="skills-grid">
-                <div class="skill-category">Languages:</div>
-                <div class="skill-list">Python, JavaScript, TypeScript, HTML, CSS</div>
-            </div>
-            <div class="skills-grid">
-                <div class="skill-category">AI / ML:</div>
-                <div class="skill-list">Machine Learning Pipelines, NLP, <span class="skill-node" data-target="proj-pa">RAG</span>, LLM Evaluation</div>
-            </div>
-            <div class="skills-grid">
-                <div class="skill-category">Frameworks:</div>
-                <div class="skill-list"><span class="skill-node" data-target="proj-hp">Scikit-learn</span>, <span class="skill-node" data-target="proj-hp">XGBoost</span>, <span class="skill-node" data-target="proj-pa">LangChain</span>, GSAP, WebGL</div>
-            </div>
-            <div class="skills-grid">
-                <div class="skill-category">Tools & Tech:</div>
-                <div class="skill-list"><span class="skill-node" data-target="proj-pa">FAISS</span>, Streamlit, Git, GitHub, API Orchestration</div>
-            </div>
-            <div class="skills-grid">
-                <div class="skill-category">Data Libraries:</div>
-                <div class="skill-list"><span class="skill-node" data-target="proj-hp">Pandas</span>, NumPy, Matplotlib, Seaborn</div>
+    <main class="resume-page-wrapper">
+        <div class="resume-controls">
+            <a href="index.html" class="back-link" style="margin: 0;">
+                â† Back to Portfolio
+            </a>
+            <div style="display: flex; gap: 0.75rem;">
+                <button onclick="window.print()" class="btn btn-secondary btn-sm" aria-label="Print resume">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                        <rect x="6" y="14" width="12" height="8"></rect>
+                    </svg>
+                    Print
+                </button>
+                <a href="assets/Resume.pdf" download="Srijit_Kumar_Roy_Resume.pdf" class="btn btn-primary btn-sm">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download Official Resume.pdf
+                </a>
             </div>
         </div>
-    </section>
 
-    <section>
-        <h2>Projects</h2>
-        
-        <div class="section-content" id="proj-pa">
-            <h3>AI Property Assistant (LLM + RAG) <a href="https://github.com/KragenZ/portfolio" target="_blank" style="font-size:0.85rem; font-weight:normal; margin-left:10px;">[Live Application]</a></h3>
-            <div class="subtitle">Conversational Real Estate Search Engine</div>
-            <ul>
-                <li>Architected an end-to-end conversational AI system utilizing <strong>LangChain</strong>, <strong>FAISS</strong> vector databases, and the <strong>Gemini LLM</strong> for natural language property parsing.</li>
-                <li>Implemented a robust <strong>Retrieval-Augmented Generation (RAG)</strong> pipeline combining dense embeddings with top-k semantic retrieval to guarantee highly context-aware property recommendations.</li>
-                <li>Engineered conversation memory management arrays and rigorously evaluated inference metrics to ensure exceptionally low latency and high query relevance.</li>
-                <li>Designed a production-ready interactive <strong>Streamlit</strong> interface featuring pipeline telemetry visualization and dynamically generated contextual example queries.</li>
-            </ul>
+        <article class="resume-paper">
+            <!-- Header -->
+            <header class="resume-header">
+                <h1 class="resume-name">Srijit Kumar Roy</h1>
+                <div class="resume-contact-bar">
+                    <span>8878805690</span>
+                    <span>|</span>
+                    <a href="mailto:srijitroy2212@gmail.com">srijitroy2212@gmail.com</a>
+                    <span>|</span>
+                    <span>Delhi, India</span>
+                    <span>|</span>
+                    <a href="https://linkedin.com/in/srijit-kumar-roy-7840043b8" target="_blank" rel="noopener noreferrer">linkedin.com/in/srijit-kumar-roy-7840043b8</a>
+                    <span>|</span>
+                    <a href="https://github.com/KragenZ" target="_blank" rel="noopener noreferrer">github.com/KragenZ</a>
+                </div>
+            </header>
+
+            <!-- Professional Summary -->
+            <section class="resume-section">
+                <h2 class="resume-section-title">Professional Summary</h2>
+                <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+                    B.Tech student in Computer Science and Engineering (AI & ML) at KIIT, graduating in 2028, seeking Software Development, Machine Learning, and Data internships. Build end-to-end Python projects spanning retrieval-augmented generation (LangChain, FAISS, Gemini), supervised machine learning (scikit-learn, XGBoost), and SQL/Power BI analytics, delivered as working Streamlit applications. Currently building FraudShield AI, a real-time fraud detection platform.
+                </p>
+            </section>
+
+            <!-- Education -->
+            <section class="resume-section">
+                <h2 class="resume-section-title">Education</h2>
+                
+                <div class="resume-item">
+                    <div class="item-row">
+                        <div class="item-heading">Kalinga Institute of Industrial Technology (KIIT), Bhubaneswar</div>
+                        <div class="item-meta">Jun 2024 "“ Expected 2028</div>
+                    </div>
+                    <div class="item-subheading">B.Tech, Computer Science and Engineering (AI & ML)</div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="item-row">
+                        <div class="item-heading">Bal Bhavan International School, Dwarka, New Delhi</div>
+                        <div class="item-meta">2018 "“ 2022</div>
+                    </div>
+                    <div class="item-subheading">Class XII (10+2)</div>
+                </div>
+            </section>
+
+            <!-- Technical Skills -->
+            <section class="resume-section">
+                <h2 class="resume-section-title">Technical Skills</h2>
+                <div class="skill-group">
+                    <strong>Languages:</strong> Python, SQL, HTML
+                </div>
+                <div class="skill-group">
+                    <strong>Machine Learning & Data:</strong> scikit-learn, XGBoost, pandas, NumPy, matplotlib, Feature Engineering, Cross-Validation
+                </div>
+                <div class="skill-group">
+                    <strong>LLM & Applications:</strong> RAG, LangChain, FAISS, HuggingFace Embeddings, Gemini, FastAPI, Streamlit
+                </div>
+                <div class="skill-group">
+                    <strong>Databases & BI:</strong> MySQL, Power BI
+                </div>
+            </section>
+
+            <!-- Technical Projects -->
+            <section class="resume-section">
+                <h2 class="resume-section-title">Technical Projects</h2>
+
+                <!-- Project 1 -->
+                <div class="resume-item">
+                    <div class="item-row">
+                        <div class="item-heading">AI Property Assistant — RAG</div>
+                        <a href="https://github.com/KragenZ/ai-property-assistant-rag" target="_blank" rel="noopener noreferrer" class="item-meta" style="color: var(--brand-text);">github.com/KragenZ/ai-property-assistant-rag</a>
+                    </div>
+                    <div class="item-stack">Python, LangChain, FAISS, HuggingFace MiniLM, Gemini, Streamlit</div>
+                    <ul class="resume-bullets">
+                        <li>Built a RAG chatbot that answers natural-language property searches (e.g., "3-bedroom houses under $200k") over 500 listings from the Ames Housing dataset.</li>
+                        <li>Embedded listings with a HuggingFace MiniLM model, retrieved the top 5 matches from a FAISS vector index, and passed them to Gemini to generate answers explaining why each property fits.</li>
+                        <li>Added follow-up question memory, a retrieved-results panel, and per-query relevance score and latency display; deployed the app on Streamlit.</li>
+                    </ul>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="resume-item">
+                    <div class="item-row">
+                        <div class="item-heading">House Price Predictor — Machine Learning</div>
+                        <a href="https://github.com/KragenZ/house-price-predictor-ml" target="_blank" rel="noopener noreferrer" class="item-meta" style="color: var(--brand-text);">github.com/KragenZ/house-price-predictor-ml</a>
+                    </div>
+                    <div class="item-stack">Python, scikit-learn, XGBoost, Streamlit</div>
+                    <ul class="resume-bullets">
+                        <li>Built an end-to-end pipeline on the Ames Housing dataset (about 1,500 homes, 80 features): data cleaning, 10 engineered features (e.g., total area, house age), and a log-transformed target.</li>
+                        <li>Compared Ridge, Random Forest, and XGBoost using 5-fold cross-validation; XGBoost performed best (R-squared about 0.91, MAE about $12,800 on the test set).</li>
+                        <li>Built a Streamlit app that shows which features pushed each predicted price up or down.</li>
+                    </ul>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="resume-item">
+                    <div class="item-row">
+                        <div class="item-heading">FraudShield AI — Real-Time Fraud Detection (IN PROGRESS)</div>
+                        <div class="item-meta" style="color: var(--accent-text);">In Progress</div>
+                    </div>
+                    <div class="item-stack">Python, XGBoost, FastAPI, React, PaySim dataset</div>
+                    <ul class="resume-bullets">
+                        <li>Developing a real-time fraud detection platform on the PaySim dataset using an XGBoost model, evaluated with precision, recall, F1, and PR-AUC rather than accuracy because fraud is highly imbalanced.</li>
+                        <li>Planned architecture: model served through a FastAPI backend to a React dashboard.</li>
+                    </ul>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="resume-item">
+                    <div class="item-row">
+                        <div class="item-heading">Target E-commerce Business Case — SQL & Power BI</div>
+                        <div class="item-meta">Completed Project</div>
+                    </div>
+                    <div class="item-stack">MySQL, Power BI</div>
+                    <ul class="resume-bullets">
+                        <li>Loaded Target order data into MySQL and defined table relationships for order, order value, and freight analysis.</li>
+                        <li>Built Power BI KPI measures for total orders, order value, freight, and average order value.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Training and Certifications -->
+            <section class="resume-section">
+                <h2 class="resume-section-title">Training and Certifications</h2>
+
+                <div class="resume-item">
+                    <div class="item-row">
+                        <div class="item-heading">Power BI Training (Online) — Kudu Training</div>
+                        <div class="item-meta">Training</div>
+                    </div>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                        Completed online training and applied it to the Target e-commerce business case above.
+                    </div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="item-row">
+                        <div class="item-heading">Python (Basic) — HackerRank</div>
+                        <div class="item-meta">May 2026</div>
+                    </div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="item-row">
+                        <div class="item-heading">SQL (Basic) and SQL (Intermediate) — HackerRank</div>
+                        <div class="item-meta">Verified</div>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <p class="footer-copy">
+                &copy; 2026 Srijit Kumar Roy · Verified Resume Document
+            </p>
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Portfolio Home</a>
+                <a href="assets/Resume.pdf" download="Srijit_Kumar_Roy_Resume.pdf" class="footer-link">Download PDF</a>
+                <a href="case_study_pa.html" class="footer-link">Case Study</a>
+            </div>
         </div>
+    </footer>
 
-        <div class="section-content" id="proj-hp">
-            <h3>House Price Prediction System (ML) <a href="https://github.com/KragenZ/portfolio" target="_blank" style="font-size:0.85rem; font-weight:normal; margin-left:10px;">[Live Application]</a></h3>
-            <div class="subtitle">End-to-End Predictive Analytics Pipeline</div>
-            <ul>
-                <li>Developed a comprehensive Machine Learning pipeline orchestrating advanced data preprocessing, missing value imputation, and complex feature engineering to prepare structured housing datasets.</li>
-                <li>Benchmarked multiple algorithmic models including Ridge Regression, Random Forest, and <strong>XGBoost</strong>, ultimately achieving an outstanding <strong>R² score > 0.90</strong> with heavily proven generalization capabilities.</li>
-                <li>Deployed an active scalable <strong>Streamlit</strong> web application that handles real-time market predictions paired directly with integrated Explainable AI (XAI) feature correlations.</li>
-                <li>Built a fully interactive analytics dashboard rendering automated feature importance charts and advanced statistical distribution visualizations using Seaborn.</li>
-            </ul>
-        </div>
-    </section>
-
-    <section>
-        <h2>Education</h2>
-        <div class="section-content" style="padding:0; border:none;">
-            <h3>BTech in Computer Science (AI & ML) <span class="date">2024 – 2028</span></h3>
-            <div class="subtitle">KIIT University <span class="date" style="font-style: normal;">Current status: Second-year undergraduate</span></div>
-        </div>
-    </section>
-
-    <section>
-        <h2>Activities & Engagement</h2>
-        <div class="section-content" style="padding:0; border:none;">
-            <ul>
-                <li>Actively participate in competitive hackathons, continuously conceptualizing and rapidly prototyping custom AI-driven applications leveraging cutting-edge API orchestration.</li>
-                <li>Consistently evaluate and integrate state-of-the-art AI developer tooling (Copilot, autonomous IDE agents) to mathematically accelerate system problem-solving and deployment workflows.</li>
-                <li>Competed in competitive chess and structured football tournaments at high levels, cultivating proven strategic decision-making, adaptive execution, and cross-functional team communication logic.</li>
-            </ul>
-        </div>
-    </section>
-
-</div>
-
-<script>
-    // Theme Toggle Logic
-    const themeBtn = document.getElementById('theme-toggle');
-    themeBtn.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        if(document.body.classList.contains('light-mode')) {
-            themeBtn.innerText = '🌙 Dark Mode';
-        } else {
-            themeBtn.innerText = '☀️ Light Mode';
-        }
-    });
-
-    // PDF Export Logic
-    const exportBtn = document.getElementById('export-btn');
-    exportBtn.addEventListener('click', () => {
-        window.print();
-    });
-
-    // Skill Interactive Mapping Logic
-    const skillNodes = document.querySelectorAll('.skill-node');
-    skillNodes.forEach(node => {
-        const targetId = node.getAttribute('data-target');
-        const targetElement = document.getElementById(targetId);
-        
-        node.addEventListener('mouseenter', () => {
-            if(targetElement) targetElement.classList.add('highlight');
-        });
-        
-        node.addEventListener('mouseleave', () => {
-            if(targetElement) targetElement.classList.remove('highlight');
-        });
-    });
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
+
+
+
+

@@ -1,68 +1,362 @@
-<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Srijit Kumar Roy | AI Property Assistant</title>
-    <meta name="description" content="Case Study: AI Property Assistant Architecture">
-    <link rel="stylesheet" href="styles.css?v=6">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="shortcut icon" href="favicon.svg">
+    <title>AI Property Assistant Case Study | Srijit Kumar Roy</title>
+    <meta name="description" content="Technical Case Study: Building a RAG-based real estate conversational assistant using LangChain, FAISS, HuggingFace MiniLM, and Gemini.">
+        <link rel="canonical" href="https://kragenz.github.io/portfolio/case_study_pa.html">
+<link rel="stylesheet" href="styles.css">
+    <style>
+        .case-hero {
+            padding: 5rem 0 3.5rem 0;
+            background: radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.08) 0%, transparent 60%);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--brand-text);
+            margin-bottom: 1.5rem;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .case-title {
+            font-size: clamp(2.25rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+        .case-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 72ch;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .case-meta-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem 3rem;
+            padding: 1.5rem;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+        .case-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .case-meta-item .label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .case-meta-item .value {
+            font-weight: 600;
+            font-size: 0.9375rem;
+            color: var(--text-primary);
+        }
+        .case-content {
+            padding: 4.5rem 0;
+        }
+        .case-section {
+            margin-bottom: 4rem;
+        }
+        .case-section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+        }
+        .case-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+        .diagram-container {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+        .diagram-container svg {
+            width: 100%;
+            height: auto;
+            min-width: 600px;
+        }
+        .key-takeaway-box {
+            background-color: var(--surface-raised);
+            border: 1px solid var(--border);
+            padding: 1.75rem;
+            border-radius: var(--radius-md);
+            margin: 0;
+        }
+        .key-takeaway-box h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .key-takeaway-box p {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        @media (max-width: 768px) {
+            .case-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
 </head>
-<body data-barba="wrapper">
-    <!-- PERSISTENT HUD ELEMENTS -->
-    <div class="barba-wipe"></div>
-    <div class="glass-noise"></div>
-    <div class="bg-glow glow-1"></div>
-    <div class="bg-glow glow-2"></div>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <header class="site-header">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo" aria-label="Srijit Kumar Roy Portfolio">
+                <span>SRIJIT ROY</span>
+                <span class="brand-dot" aria-hidden="true"></span>
+            </a>
 
-    <main data-barba="container" data-barba-namespace="case-study">
-        <header class="glass-header" style="position: relative; border-bottom: none; background: transparent; backdrop-filter: none;">
-            <a href="index.html" class="logo">SRIJIT<span>.</span></a>
-            <ul class="nav-links">
-                <li><a href="index.html" class="hover-target">Back to Home</a></li>
-            </ul>
-        </header>
+            <div class="nav-actions">
+                <a href="index.html" class="btn btn-secondary btn-sm">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Portfolio
+                </a>
+                <button id="theme-toggle" class="btn-icon" aria-label="Toggle theme">
+                    <svg id="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                    </svg>
+                    <svg id="moon-icon" viewBox="0 0 24 24" style="display: none;" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
 
-        <section class="hero-section" style="min-height: 40vh; padding-top: 100px;">
-            <div class="hero-content" style="max-width: 1000px; margin: 0 auto; text-align: center;">
-                <span class="greeting">Case Study</span>
-                <h1 class="title" style="font-size: clamp(3rem, 7vw, 6rem);">AI Property<br><i style="color: var(--accent-1); font-weight: 500;">Assistant.</i></h1>
-                <p class="subtitle" style="margin: 0 auto;">An intelligent RAG-based conversational agent built natively with LangChain, FAISS, and Gemini.</p>
+    <main id="main-content">
+        <!-- Hero Header -->
+        <section class="case-hero">
+            <div class="container">
+                <a href="index.html" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Home
+                </a>
+
+                <h1 class="case-title">AI Property Assistant — RAG Architecture</h1>
+                <p class="case-subtitle">
+                    How I engineered a conversational property search chatbot over 500 Ames Housing records using LangChain, HuggingFace MiniLM, FAISS vector retrieval, and Gemini reasoning.
+                </p>
+
+                <div class="case-meta-bar">
+                    <div class="case-meta-item">
+                        <span class="label">Project Type</span>
+                        <span class="value">Retrieval-Augmented Generation</span>
+                    </div>
+                    <div class="case-meta-item">
+                        <span class="label">Primary Dataset</span>
+                        <span class="value">500 Ames Housing Listings</span>
+                    </div>
+                    <div class="case-meta-item">
+                        <span class="label">Embeddings Model</span>
+                        <span class="value">HuggingFace MiniLM</span>
+                    </div>
+                    <div class="case-meta-item">
+                        <span class="label">Vector Store</span>
+                        <span class="value">FAISS (Top-5 Retrieval)</span>
+                    </div>
+                    <div class="case-meta-item">
+                        <span class="label">LLM Reasoning</span>
+                        <span class="value">Gemini (Context Grounded)</span>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section style="padding-top: 0; min-height: auto;">
-            <div class="glass-card" style="max-width: 1200px; margin: 0 auto; padding: 4rem; display: flex; flex-direction: column; gap: 3rem;">
-                <img src="assets/ai_property.webp" alt="AI Property Dashboard" style="width: 100%; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
-                    <div>
-                        <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--accent-1);">The Problem</h2>
-                        <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8;">Modern real estate portals force users to manually filter deeply nested databases. I built an AI agent to abstract all database logic, allowing users to simply type natural language queries like "Find me a 3BHK under $500K with a pool" and immediately receive hyper-relevant results.</p>
+        <!-- Case Body -->
+        <div class="case-content">
+            <div class="container">
+                <!-- Section 1: Overview & Problem -->
+                <section class="case-section">
+                    <h2 class="case-section-title">The Challenge</h2>
+                    <div class="case-grid">
+                        <div>
+                            <p>
+                                Traditional real estate platforms rely strictly on relational database queries and rigid dropdown UI filters (e.g., exact square footage brackets, discrete bedroom selectors, fixed price bands). When buyers search with nuanced natural language — such as <em>"A charming 3-bedroom home under $200k with good yard space"</em> — keyword-matching engines frequently fail because they cannot capture semantic intent.
+                            </p>
+                            <p>
+                                Conversely, asking a standard large language model (LLM) about property listings results in hallucinations, fabricated inventory, or outdated pricing. 
+                            </p>
+                        </div>
+                        <div class="key-takeaway-box">
+                            <h3>Engineering Objective</h3>
+                            <p>
+                                Build an end-to-end Retrieval-Augmented Generation (RAG) system that indexes real listing data, executes millisecond vector similarity queries, and produces strictly grounded responses with transparent relevance scoring and latency telemetry.
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--accent-1);">The Architecture</h2>
-                        <ul style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8; list-style-position: inside;">
-                            <li style="margin-bottom: 0.8rem;"><strong>Embeddings:</strong> Chunked property data into dense mathematical vectors using SentenceTransformers.</li>
-                            <li style="margin-bottom: 0.8rem;"><strong>Vector Store:</strong> Stored millions of multi-dimensional vectors inside a local memory-bound FAISS index.</li>
-                            <li style="margin-bottom: 0.8rem;"><strong>Generation:</strong> Passed top-K retrieved properties dynamically into the Gemini LLM for conversational wrapping.</li>
-                        </ul>
-                    </div>
-                </div>
+                </section>
 
-                <div style="text-align: center; margin-top: 2rem;">
-                    <a href="https://github.com/KragenZ/portfolio" target="_blank" class="btn link-primary hover-target" style="padding: 1.5rem 4rem; font-size: 1.2rem;">View Code Repository</a>
-                </div>
+                <!-- Section 2: Architecture Diagram -->
+                <section class="case-section">
+                    <h2 class="case-section-title">System Architecture</h2>
+                    <p>
+                        The architecture is separated into an Ingestion Pipeline (offline vector generation) and an Inference Pipeline (online user query handling):
+                    </p>
+
+                    <div class="diagram-container">
+                        <svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" aria-label="System Architecture Diagram">
+                            <!-- Offline Ingestion Flow -->
+                            <rect x="20" y="30" width="860" height="110" rx="8" fill="#111827" stroke="#283548" stroke-dasharray="4"/>
+                            <text x="35" y="55" fill="#94a3b8" font-family="monospace" font-size="12" font-weight="600">OFFLINE INGESTION PIPELINE</text>
+                            
+                            <!-- Box 1: Dataset -->
+                            <rect x="50" y="70" width="160" height="50" rx="6" fill="#1e293b" stroke="#3b82f6"/>
+                            <text x="130" y="93" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="600" text-anchor="middle">Ames Housing Data</text>
+                            <text x="130" y="110" fill="#cbd5e1" font-family="sans-serif" font-size="11" text-anchor="middle">500 Cleaned Listings</text>
+
+                            <!-- Arrow 1 -->
+                            <line x1="210" y1="95" x2="260" y2="95" stroke="#3b82f6" stroke-width="2"/>
+
+                            <!-- Box 2: Embedding -->
+                            <rect x="260" y="70" width="180" height="50" rx="6" fill="#1e293b" stroke="#3b82f6"/>
+                            <text x="350" y="93" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="600" text-anchor="middle">HuggingFace MiniLM</text>
+                            <text x="350" y="110" fill="#cbd5e1" font-family="sans-serif" font-size="11" text-anchor="middle">Dense Vectorization</text>
+
+                            <!-- Arrow 2 -->
+                            <line x1="440" y1="95" x2="490" y2="95" stroke="#3b82f6" stroke-width="2"/>
+
+                            <!-- Box 3: Vector Store -->
+                            <rect x="490" y="70" width="170" height="50" rx="6" fill="#1e293b" stroke="#10b981"/>
+                            <text x="575" y="93" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="600" text-anchor="middle">FAISS Vector Index</text>
+                            <text x="575" y="110" fill="#34d399" font-family="sans-serif" font-size="11" text-anchor="middle">Indexed Property Vectors</text>
+
+                            <!-- Online Inference Flow -->
+                            <rect x="20" y="170" width="860" height="120" rx="8" fill="#111827" stroke="#283548"/>
+                            <text x="35" y="195" fill="#94a3b8" font-family="monospace" font-size="12" font-weight="600">ONLINE QUERY & GENERATION PIPELINE</text>
+
+                            <!-- Step 1: Query -->
+                            <rect x="50" y="215" width="140" height="55" rx="6" fill="#1e293b" stroke="#3b82f6"/>
+                            <text x="120" y="240" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="600" text-anchor="middle">User Natural Query</text>
+                            <text x="120" y="258" fill="#cbd5e1" font-family="sans-serif" font-size="11" text-anchor="middle">"3-bed under $200k"</text>
+
+                            <!-- Line to FAISS -->
+                            <line x1="190" y1="242" x2="260" y2="242" stroke="#3b82f6" stroke-width="2"/>
+
+                            <!-- Step 2: Vector Search -->
+                            <rect x="260" y="215" width="160" height="55" rx="6" fill="#1e293b" stroke="#3b82f6"/>
+                            <text x="340" y="240" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="600" text-anchor="middle">FAISS Retrieval</text>
+                            <text x="340" y="258" fill="#cbd5e1" font-family="sans-serif" font-size="11" text-anchor="middle">Top 5 Nearest Vectors</text>
+
+                            <!-- Line to LLM -->
+                            <line x1="420" y1="242" x2="490" y2="242" stroke="#3b82f6" stroke-width="2"/>
+
+                            <!-- Step 3: Prompt & LLM -->
+                            <rect x="490" y="215" width="180" height="55" rx="6" fill="#1e293b" stroke="#f59e0b"/>
+                            <text x="580" y="240" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="600" text-anchor="middle">Gemini LLM Reasoner</text>
+                            <text x="580" y="258" fill="#fbbf24" font-family="sans-serif" font-size="11" text-anchor="middle">Grounded Explanations</text>
+
+                            <!-- Line to Output -->
+                            <line x1="670" y1="242" x2="720" y2="242" stroke="#3b82f6" stroke-width="2"/>
+
+                            <!-- Step 4: Streamlit UI -->
+                            <rect x="720" y="215" width="140" height="55" rx="6" fill="#1e293b" stroke="#10b981"/>
+                            <text x="790" y="240" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="600" text-anchor="middle">Streamlit App</text>
+                            <text x="790" y="258" fill="#34d399" font-family="sans-serif" font-size="11" text-anchor="middle">Score & Latency HUD</text>
+                        </svg>
+                    </div>
+                </section>
+
+                <!-- Section 3: Technical Implementation Details -->
+                <section class="case-section">
+                    <h2 class="case-section-title">Implementation Highlights</h2>
+                    <div class="case-grid">
+                        <div class="about-card">
+                            <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);">
+                                1. Vector Search with FAISS
+                            </h3>
+                            <p style="font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.6;">
+                                Converted 500 tabular property records into dense text passages containing neighborhood traits, square footage, bedroom/bathroom configurations, and historical sale prices. Used HuggingFace's <code>all-MiniLM-L6-v2</code> to produce 384-dimensional embeddings, loaded into an in-memory FAISS vector index for sub-15ms nearest-neighbor queries.
+                            </p>
+                        </div>
+
+                        <div class="about-card">
+                            <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);">
+                                2. Context Grounding with Gemini
+                            </h3>
+                            <p style="font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.6;">
+                                Engineered structured prompt templates via LangChain that restrict Gemini's response strictly to retrieved facts from the top 5 candidates. The system details why each candidate matches the buyer's query, highlights trade-offs, and retains conversational context for follow-up inquiries.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4: Telemetry & Evaluation -->
+                <section class="case-section">
+                    <h2 class="case-section-title">Telemetry & UI Explainability</h2>
+                    <p>
+                        To give users transparency into the RAG pipeline's internal operations, the Streamlit interface incorporates real-time diagnostic telemetry:
+                    </p>
+                    <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.8;">
+                        <li><strong>Per-Query Relevance Scoring:</strong> Displays the cosine similarity distance between the user query embedding and each retrieved candidate.</li>
+                        <li><strong>Latency Telemetry:</strong> Breaks down total response latency into vector search time vs. LLM token generation time.</li>
+                        <li><strong>Retrieved Context Inspector:</strong> Allows users to expand the exact raw data chunk provided to the LLM to verify factual accuracy.</li>
+                    </ul>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                        <a href="https://github.com/KragenZ/ai-property-assistant-rag" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                            </svg>
+                            View Repository on GitHub
+                        </a>
+                        <a href="index.html#projects" class="btn btn-secondary">
+                            View Other Projects
+                        </a>
+                    </div>
+                </section>
             </div>
-        </section>
-
-        <footer style="text-align: center; padding: 4rem 2rem; color: #64748b;">
-            <a href="index.html" style="color: var(--accent-1); text-decoration: none; font-size: 1.2rem; font-weight: bold;">← Return Protocol</a>
-        </footer>
+        </div>
     </main>
 
-    <!-- Essential Scripts for Case Study standalone loading -->
-    <script src="https://unpkg.com/@barba/core"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="script.js?v=8"></script>
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <p class="footer-copy">
+                &copy; 2026 Srijit Kumar Roy · AI Property Assistant Architecture Case Study
+            </p>
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Portfolio Home</a>
+                <a href="assets/Resume.pdf" download="Srijit_Kumar_Roy_Resume.pdf" class="footer-link">Resume PDF</a>
+                <a href="https://github.com/KragenZ/ai-property-assistant-rag" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repo</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
+
+
+

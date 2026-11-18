@@ -1,297 +1,764 @@
-<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Srijit Kumar Roy | ML Engineer</title>
-    <meta name="description" content="Srijit Kumar Roy - AI/ML Engineer Portfolio">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sheryjs/dist/Shery.css" />
-    <link rel="stylesheet" href="styles.css?v=10">
-    <style>
-        /* Specific override for WebGL canvas z-banding issues */
-        .sy-canvas { z-index: 5 !important; border-radius: 16px 16px 0 0 !important; }
-    </style>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="shortcut icon" href="favicon.svg">
+    <title>Srijit Kumar Roy | AI & Machine Learning Engineer</title>
+    <meta name="description" content="Portfolio of Srijit Kumar Roy - B.Tech CSE (AI & ML) student at KIIT. Projects in RAG, LangChain, FAISS, scikit-learn, XGBoost, and SQL/Power BI analytics.">
+    <meta name="author" content="Srijit Kumar Roy">
+    
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="Srijit Kumar Roy | AI & Machine Learning Engineer">
+    <meta property="og:description" content="B.Tech CSE (AI & ML) student at KIIT. End-to-end projects in RAG systems, supervised machine learning, and data analytics.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/KragenZ">
+
+    <!-- Stylesheets -->
+        <link rel="canonical" href="https://kragenz.github.io/portfolio/">
+<link rel="stylesheet" href="styles.css">
 </head>
-<body data-barba="wrapper">
-    <!-- PERSISTENT HUD ELEMENTS (Never reloaded during Barba Transitions) -->
-    <div class="barba-wipe"></div>
-    <!-- Cinematic Neural Net Preloader -->
-    <div id="preloader">
-        <div class="preloader-content">
-            <div class="preloader-text">INITIALIZING CORE...</div>
-            <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
-            <div class="preloader-progress">0%</div>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <!-- Site Header & Navigation -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <a href="#hero" class="brand-logo" aria-label="Srijit Kumar Roy Home">
+                <span>SRIJIT ROY</span>
+                <span class="brand-dot" aria-hidden="true"></span>
+            </a>
+
+            <nav aria-label="Main Navigation">
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#skills" class="nav-link">Skills</a></li>
+                    <li><a href="#education" class="nav-link">Education</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="assets/Resume.pdf" download="Srijit_Kumar_Roy_Resume.pdf" class="btn btn-primary btn-sm" aria-label="Download Resume PDF">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Resume</span>
+                </a>
+
+                <button id="theme-toggle" class="btn-icon" aria-label="Toggle light and dark theme">
+                    <svg id="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg id="moon-icon" viewBox="0 0 24 24" style="display: none;" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+
+                <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
         </div>
-    </div>
-
-    <!-- Background Ambient Soul & Texture -->
-    <div class="glass-noise"></div>
-    <div class="bg-glow glow-1"></div>
-    <div class="bg-glow glow-2"></div>
-
-    <!-- Unified Neural Scroller Entity (Track + Fill + Handle) -->
-    <div id="neural-scroller">
-        <div id="neural-fill"></div>
-        <div id="neural-handle"></div>
-    </div>
-
-
-    <main data-barba="container" data-barba-namespace="home">
-
-    <!-- Custom Cursor -->
-
-    <header class="glass-header">
-        <a href="#" class="logo">SRIJIT<span>.</span></a>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#about" class="hover-target">About</a></li>
-                <li><a href="#timeline" class="hover-target">Journey</a></li>
-                <li><a href="#skills" class="hover-target">Expertise</a></li>
-                <li><a href="#projects" class="hover-target">Work</a></li>
-            </ul>
-            <button id="theme-toggle" class="hover-target">☀️ Light</button>
-        </nav>
     </header>
 
-    
+    <main id="main-content">
         <!-- Hero Section -->
         <section id="hero" class="hero-section">
-            
-            <div class="hero-content">
-                <div class="mobile-warning">⚠️ Note: Due to heavy WebGL rendering and physics arrays, this site is best experienced on a Desktop browser.</div>
-                <span class="greeting">Srijit Kumar Roy</span>
-                <h1 class="title">Machine<br>Learning<br><i style="color: var(--accent-1); font-weight: 500;">Engineer.</i></h1>
-                <p class="subtitle">Architecting scalable AI infrastructure and building intelligent analytical systems with explosive high-end aesthetics.</p>
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn primary hover-target">View Projects</a>
-                    <a href="#about" class="btn secondary hover-target">Learn More</a>
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <div class="hero-status-pill">
+                        <span class="status-dot" aria-hidden="true"></span>
+                        <span>Seeking Software Dev, Machine Learning & Data Internships</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        Srijit Kumar Roy
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        B.Tech student in Computer Science & Engineering (AI & ML) at KIIT, graduating in 2028. I build verifiable, end-to-end Python applications spanning retrieval-augmented generation (LangChain, FAISS, Gemini), supervised machine learning (scikit-learn, XGBoost), and SQL/Power BI analytics, delivered as working Streamlit deployments.
+                    </p>
+
+                    <div class="hero-highlights">
+                        <div class="hero-meta-item">
+                            <span class="meta-label">Degree & Specialization</span>
+                            <span class="meta-value">B.Tech CSE (AI & ML)</span>
+                        </div>
+                        <div class="hero-meta-item">
+                            <span class="meta-label">Institution</span>
+                            <span class="meta-value">KIIT, Bhubaneswar</span>
+                        </div>
+                        <div class="hero-meta-item">
+                            <span class="meta-label">Graduation</span>
+                            <span class="meta-value">June 2024 "“ Expected 2028</span>
+                        </div>
+                        <div class="hero-meta-item">
+                            <span class="meta-label">Location</span>
+                            <span class="meta-value">Delhi, India</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a href="#projects" class="btn btn-primary btn-lg">View Technical Projects</a>
+                        <a href="assets/Resume.pdf" download="Srijit_Kumar_Roy_Resume.pdf" class="btn btn-secondary btn-lg">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download Resume.pdf
+                        </a>
+                        <a href="case_study_pa.html" class="btn btn-secondary btn-lg">AI Property Case Study</a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- About Section -->
+        <!-- About & Core Engineering Focus -->
         <section id="about">
-            <h2 class="section-title">Who am I?</h2>
-            <div class="about-container">
-                <div class="about-text glass-card" style="padding: 3rem;">
-                    <p>I am a passionate computer science undergraduate specializing in <strong>Artificial Intelligence and Machine Learning</strong>. My focus lies in traversing the gap between complex mathematical algorithms and tangible real-world solutions.</p>
-                    <p>When I'm not designing neural networks or fine-tuning language models, I immerse myself in the latest research across deep learning, computer vision, and high-performance computing.</p>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">About & Focus</h2>
+                    <p class="section-lead">
+                        Bridging algorithmic rigor with practical application delivery.
+                    </p>
                 </div>
-                <div class="about-stats">
-                    <div class="stat glass-card hover-target">
-                        <h3 class="gradient-text">2+</h3>
-                        <p>Years Dev Experience</p>
+
+                <div class="about-grid">
+                    <div class="about-narrative">
+                        <p>
+                            I am an undergraduate in Computer Science and Engineering specializing in <strong>Artificial Intelligence & Machine Learning</strong> at the Kalinga Institute of Industrial Technology (KIIT), Bhubaneswar.
+                        </p>
+                        <p>
+                            My work is focused on creating complete, working software solutions: from data exploration, feature engineering, and model evaluation to production deployment. I place emphasis on measurable evaluation metrics — whether verifying RÂ² and MAE on predictive regression pipelines or tracking retrieval relevance and latency in RAG architectures.
+                        </p>
+                        <p>
+                            I am currently engineering <strong>FraudShield AI</strong>, a real-time financial fraud detection platform leveraging XGBoost with precision-recall optimization on highly imbalanced transaction streams.
+                        </p>
                     </div>
-                    <div class="stat glass-card hover-target">
-                        <h3 class="gradient-text">10+</h3>
-                        <p>Projects Shipped</p>
+
+                    <div class="about-card">
+                        <h3 class="about-card-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                            Engineering Focus Areas
+                        </h3>
+                        <div class="focus-list">
+                            <div class="focus-item">
+                                <span class="focus-num">01.</span>
+                                <div class="focus-text">
+                                    <h4>Retrieval-Augmented Generation (RAG)</h4>
+                                    <p>Vector indexing with FAISS, dense semantic embeddings, and LLM reasoning grounded in custom datasets.</p>
+                                </div>
+                            </div>
+                            <div class="focus-item">
+                                <span class="focus-num">02.</span>
+                                <div class="focus-text">
+                                    <h4>Supervised Machine Learning</h4>
+                                    <p>Feature engineering, 5-fold cross-validation, and multi-model benchmarking (Ridge, Random Forest, XGBoost).</p>
+                                </div>
+                            </div>
+                            <div class="focus-item">
+                                <span class="focus-num">03.</span>
+                                <div class="focus-text">
+                                    <h4>Relational Analytics & Business Intelligence</h4>
+                                    <p>Relational database schema modeling in MySQL and interactive KPI reporting in Power BI.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- GSAP Horizontal Scroll Timeline Section -->
-        <section id="timeline" class="horizontal-section">
-            <div class="sticky-wrapper">
-                <div class="horizontal-container">
-                    <div class="timeline-panel glass-card hover-target">
-                        <span class="timeline-year">2024</span>
-                        <div class="timeline-content-wrapper">
-                            <h3 class="timeline-title">Inception</h3>
-                            <p>Began fundamentally deep-diving into Machine Learning architectures, probability matrices, and robust algorithmic fundamentals.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-panel glass-card hover-target">
-                        <span class="timeline-year">2025</span>
-                        <div class="timeline-content-wrapper">
-                            <h3 class="timeline-title">Evolution</h3>
-                            <p>Architected complex Retrieval-Augmented Generation (RAG) systems, vector databases, and high-accuracy Computer Vision pipelines.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-panel glass-card hover-target">
-                        <span class="timeline-year">2026</span>
-                        <div class="timeline-content-wrapper">
-                            <h3 class="timeline-title">Present</h3>
-                            <p>Currently architecting scalable AI infrastructure and pushing the rigorous boundaries of deep-learning aesthetic experiences.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- The Interactive Timeline Track -->
-                <div class="timeline-progress-track">
-                    <div class="timeline-progress-fill"></div>
-                    <div class="timeline-rolling-ball"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Technical Arsenal Section -->
-        <section id="skills" class="skills-section">
-            <h2 class="section-title">Technical Arsenal</h2>
-            <div id="physics-canvas-container" class="hover-target" style="min-height: 400px; position: relative; border-radius: 20px; overflow: hidden; background: rgba(0,0,0,0.2);">
-                <!-- Matter.js Canvas injects here -->
-            </div>
-            <p style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">[ Hover to magnetically scatter the nodes / Drag to throw ]</p>
-        </section>
-
-        <!-- Projects Section -->
+        <!-- Technical Projects Showcase -->
         <section id="projects">
-            <h2 class="section-title">Select Work</h2>
-            <div class="projects-grid">
-                
-                <!-- Project 1 -->
-                <div class="project-card glass-card hover-target" 
-                     data-project="ai-property"
-                     data-title="AI Property Assistant"
-                     data-description="Conversational Real Estate agent with RAG architecture."
-                     data-stack="LangChain, FAISS, Streamlit, Gemini LLM"
-                     data-details="Architected an end-to-end conversational AI system utilizing LangChain for orchestration and FAISS for vector similarity search. The system features dynamic context retrieval and sophisticated memory management for high-precision real estate advisory.">
-                    <div class="project-image" style="padding: 0;">
-                        <img src="assets/ai_property.webp" class="glsl-img" alt="AI Property Assistant">
-                    </div>
-                    <div class="project-info">
-                        <h3>AI Property Assistant</h3>
-                        <p>Fully conversational Real Estate AI agent utilizing dynamic RAG architectures and FAISS vector embedding retrievals.</p>
-                        <div class="tags">
-                            <span>LangChain</span>
-                            <span>FAISS</span>
-                            <span>Streamlit</span>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Technical Projects</h2>
+                    <p class="section-lead">
+                        End-to-end systems built with Python, LangChain, scikit-learn, XGBoost, and SQL.
+                    </p>
+                </div>
+
+                <div class="projects-grid">
+                    <!-- Project 1: AI Property Assistant -->
+                    <article class="project-card">
+                        <div class="project-media">
+                            <img src="assets/ai_property.webp" alt="AI Property Assistant Interface showing natural language property search" loading="lazy">
                         </div>
-                        <div class="project-links">
-                            <a href="case_study_pa.html" class="btn link-primary hover-target">Case Study</a>
-                            <button class="btn link-secondary hover-target open-drawer">Quick View</button>
+                        <div class="project-body">
+                            <div>
+                                <div class="project-header-top">
+                                    <span class="badge badge-verified">Verified Project · Deployed</span>
+                                    <span class="mono" style="font-size: 0.8125rem; color: var(--text-muted);">Ames Housing Dataset</span>
+                                </div>
+                                <h3 class="project-title">AI Property Assistant — RAG</h3>
+                                <p class="project-description">
+                                    Built a RAG chatbot that answers natural-language property queries (e.g., "3-bedroom houses under $200k") over 500 listings from the Ames Housing dataset. Embedded property records with HuggingFace MiniLM, retrieved top 5 matches from a FAISS vector index, and passed them to Gemini to generate contextual explanations.
+                                </p>
+
+                                <div class="project-specs">
+                                    <div class="spec-list">
+                                        <div class="spec-item">
+                                            <span>Dataset:</span>
+                                            <strong>500 Ames Listings</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Embeddings:</span>
+                                            <strong>HuggingFace MiniLM</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Vector Index:</span>
+                                            <strong>FAISS (Top-5 Retrieval)</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>LLM Orchestration:</span>
+                                            <strong>LangChain + Gemini</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tags-list">
+                                    <span class="tag-pill">Python</span>
+                                    <span class="tag-pill">LangChain</span>
+                                    <span class="tag-pill">FAISS</span>
+                                    <span class="tag-pill">HuggingFace MiniLM</span>
+                                    <span class="tag-pill">Gemini</span>
+                                    <span class="tag-pill">Streamlit</span>
+                                </div>
+                            </div>
+
+                            <div class="project-actions">
+                                <a href="case_study_pa.html" class="btn btn-primary btn-sm">Read Architectural Case Study</a>
+                                <a href="https://github.com/KragenZ/ai-property-assistant-rag" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                    </svg>
+                                    GitHub Repo
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Project 2: House Price Predictor -->
+                    <article class="project-card">
+                        <div class="project-media">
+                            <img src="assets/house_price.webp" alt="House Price Predictor Dashboard with feature contribution metrics" loading="lazy">
+                        </div>
+                        <div class="project-body">
+                            <div>
+                                <div class="project-header-top">
+                                    <span class="badge badge-verified">Verified Project · Live App</span>
+                                    <span class="mono" style="font-size: 0.8125rem; color: var(--text-muted);">Ames Housing (~1,500 Homes)</span>
+                                </div>
+                                <h3 class="project-title">House Price Predictor — Machine Learning</h3>
+                                <p class="project-description">
+                                    Built an end-to-end regression pipeline on the Ames Housing dataset (~1,500 homes, 80 features). Conducted rigorous data cleaning, built 10 engineered features (e.g., total living area, house age), and log-transformed the target variable. Compared Ridge, Random Forest, and XGBoost using 5-fold cross-validation; XGBoost achieved ~0.91 RÂ² and ~$12,800 test MAE. Built an interactive Streamlit app explaining feature contributions.
+                                </p>
+
+                                <div class="project-specs">
+                                    <div class="spec-list">
+                                        <div class="spec-item">
+                                            <span>Best Model:</span>
+                                            <strong>XGBoost (RÂ² â‰ˆ 0.91)</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Test Error:</span>
+                                            <strong>MAE â‰ˆ $12,800</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Validation:</span>
+                                            <strong>5-Fold Cross-Validation</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Engineered Features:</span>
+                                            <strong>10 Custom Features</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tags-list">
+                                    <span class="tag-pill">Python</span>
+                                    <span class="tag-pill">scikit-learn</span>
+                                    <span class="tag-pill">XGBoost</span>
+                                    <span class="tag-pill">pandas</span>
+                                    <span class="tag-pill">NumPy</span>
+                                    <span class="tag-pill">Streamlit</span>
+                                </div>
+                            </div>
+
+                            <div class="project-actions">
+                                <a href="https://house-price-predictor-ml-nh9zrtguvhpmhwsys9qexr.streamlit.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                    Launch Streamlit App
+                                </a>
+                                <a href="https://github.com/KragenZ/house-price-predictor-ml" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                    </svg>
+                                    GitHub Repo
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Project 3: FraudShield AI (IN PROGRESS) -->
+                    <article class="project-card">
+                        <div class="project-media" style="flex-direction: column; padding: 2rem; text-align: center; gap: 1rem;">
+                            <div style="width: 56px; height: 56px; border-radius: var(--radius-md); background: var(--accent-subtle); color: var(--accent-text); display: flex; align-items: center; justify-content: center;">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                            </div>
+                            <span class="mono" style="font-size: 0.8125rem; color: var(--accent-text); font-weight: 600;">ACTIVE DEVELOPMENT</span>
+                            <p style="font-size: 0.8125rem; color: var(--text-muted); max-width: 28ch;">PaySim Financial Transaction Stream Architecture</p>
+                        </div>
+                        <div class="project-body">
+                            <div>
+                                <div class="project-header-top">
+                                    <span class="badge badge-progress">
+                                        <span class="badge-progress-dot" aria-hidden="true"></span>
+                                        In Progress · Engineering Phase
+                                    </span>
+                                    <span class="mono" style="font-size: 0.8125rem; color: var(--text-muted);">PaySim Dataset</span>
+                                </div>
+                                <h3 class="project-title">FraudShield AI — Real-Time Fraud Detection</h3>
+                                <p class="project-description">
+                                    Developing a real-time fraud detection platform on the synthetic PaySim financial transaction dataset using an XGBoost classification model. Because fraudulent transactions represent a fraction of total activity, the pipeline is strictly evaluated using Precision, Recall, F1-Score, and PR-AUC rather than deceptive accuracy metrics.
+                                </p>
+
+                                <div class="project-specs">
+                                    <div class="spec-list">
+                                        <div class="spec-item">
+                                            <span>Dataset:</span>
+                                            <strong>PaySim Synthetic Financials</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Evaluation Focus:</span>
+                                            <strong>Precision, Recall, PR-AUC</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Classifier:</span>
+                                            <strong>XGBoost (Class-Weighted)</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Planned Stack:</span>
+                                            <strong>FastAPI + React Dashboard</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tags-list">
+                                    <span class="tag-pill">Python</span>
+                                    <span class="tag-pill">XGBoost</span>
+                                    <span class="tag-pill">FastAPI</span>
+                                    <span class="tag-pill">React</span>
+                                    <span class="tag-pill">PaySim Dataset</span>
+                                </div>
+                            </div>
+
+                            <div class="project-actions">
+                                <span class="badge badge-progress">
+                                    Active Engineering: Model serving via FastAPI in progress
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Project 4: Target E-commerce Business Case -->
+                    <article class="project-card">
+                        <div class="project-media" style="flex-direction: column; padding: 2rem; text-align: center; gap: 1rem;">
+                            <div style="width: 56px; height: 56px; border-radius: var(--radius-md); background: var(--brand-subtle); color: var(--brand-text); display: flex; align-items: center; justify-content: center;">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                </svg>
+                            </div>
+                            <span class="mono" style="font-size: 0.8125rem; color: var(--text-primary); font-weight: 600;">RELATIONAL ANALYTICS</span>
+                            <p style="font-size: 0.8125rem; color: var(--text-muted); max-width: 28ch;">SQL Entity Relationships & Power BI KPI Measures</p>
+                        </div>
+                        <div class="project-body">
+                            <div>
+                                <div class="project-header-top">
+                                    <span class="badge badge-verified">Verified Analytical Project</span>
+                                    <span class="mono" style="font-size: 0.8125rem; color: var(--text-muted);">Target Order Dataset</span>
+                                </div>
+                                <h3 class="project-title">Target E-commerce Business Case — SQL & Power BI</h3>
+                                <p class="project-description">
+                                    Loaded extensive Target order transaction records into a MySQL relational database. Defined explicit table relationships and normalization schemas to analyze order volumes, transaction value, and shipping freight economics. Designed interactive Power BI reporting views calculating core e-commerce KPI measures.
+                                </p>
+
+                                <div class="project-specs">
+                                    <div class="spec-list">
+                                        <div class="spec-item">
+                                            <span>Database:</span>
+                                            <strong>MySQL (Relational Schema)</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>BI Tool:</span>
+                                            <strong>Power BI</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Key Metrics:</span>
+                                            <strong>Orders, Total Value, Freight, AOV</strong>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Training Applied:</span>
+                                            <strong>Kudu Online Training</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tags-list">
+                                    <span class="tag-pill">MySQL</span>
+                                    <span class="tag-pill">Power BI</span>
+                                    <span class="tag-pill">SQL</span>
+                                    <span class="tag-pill">Data Modeling</span>
+                                    <span class="tag-pill">KPI Engineering</span>
+                                </div>
+                            </div>
+
+                            <div class="project-actions">
+                                <span class="badge badge-verified">
+                                    Applied Training Project · Verified Schema & Measures
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Skills Section -->
+        <section id="skills">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Technical Skills</h2>
+                    <p class="section-lead">
+                        Verified competencies based strictly on demonstrated project implementation.
+                    </p>
+                </div>
+
+                <div class="skills-container">
+                    <!-- Languages -->
+                    <div class="skill-category-card">
+                        <div class="category-header">
+                            <h3 class="category-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                    <polyline points="8 6 2 12 8 18"></polyline>
+                                </svg>
+                                <span>Languages</span>
+                            </h3>
+                        </div>
+                        <div class="skill-tokens">
+                            <span class="skill-token">Python</span>
+                            <span class="skill-token">SQL</span>
+                            <span class="skill-token">HTML</span>
+                        </div>
+                    </div>
+
+                    <!-- Machine Learning & Data -->
+                    <div class="skill-category-card">
+                        <div class="category-header">
+                            <h3 class="category-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                </svg>
+                                <span>Machine Learning & Data</span>
+                            </h3>
+                        </div>
+                        <div class="skill-tokens">
+                            <span class="skill-token">scikit-learn</span>
+                            <span class="skill-token">XGBoost</span>
+                            <span class="skill-token">pandas</span>
+                            <span class="skill-token">NumPy</span>
+                            <span class="skill-token">matplotlib</span>
+                            <span class="skill-token">Feature Engineering</span>
+                            <span class="skill-token">Cross-Validation</span>
+                        </div>
+                    </div>
+
+                    <!-- LLM & Applications -->
+                    <div class="skill-category-card">
+                        <div class="category-header">
+                            <h3 class="category-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                                <span>LLM & Applications</span>
+                            </h3>
+                        </div>
+                        <div class="skill-tokens">
+                            <span class="skill-token">RAG</span>
+                            <span class="skill-token">LangChain</span>
+                            <span class="skill-token">FAISS</span>
+                            <span class="skill-token">HuggingFace Embeddings</span>
+                            <span class="skill-token">Gemini</span>
+                            <span class="skill-token">FastAPI</span>
+                            <span class="skill-token">Streamlit</span>
+                        </div>
+                    </div>
+
+                    <!-- Databases & BI -->
+                    <div class="skill-category-card">
+                        <div class="category-header">
+                            <h3 class="category-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                                <span>Databases & BI</span>
+                            </h3>
+                        </div>
+                        <div class="skill-tokens">
+                            <span class="skill-token">MySQL</span>
+                            <span class="skill-token">Power BI</span>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Project 2 -->
-                <div class="project-card glass-card hover-target" 
-                     data-project="house-price"
-                     data-title="House Price Predictor ML"
-                     data-description="Advanced regression models for real estate valuation."
-                     data-stack="Scikit-Learn, Pandas, Streamlit, XGBoost"
-                     data-details="Developed a multi-model evaluation pipeline comparing Ridge, Random Forest, and XGBoost. Achieved R² > 0.90 through rigorous feature engineering and cross-validation protocols. Includes an interactive visual analytics dashboard.">
-                    <div class="project-image" style="padding: 0;">
-                        <img src="assets/house_price.webp" class="glsl-img" alt="House Price Predictor">
-                    </div>
-                    <div class="project-info">
-                        <h3>House Price Predictor ML</h3>
-                        <p>A sophisticated web application predicting real estate valuation through multidimensional features. Utilizes robust regression models paired with interactive visual analytics for superior data interpretability.</p>
-                        <div class="tags">
-                            <span>Scikit-Learn</span>
-                            <span>Pandas</span>
-                            <span>Streamlit</span>
+        <!-- Education & Certifications Section -->
+        <section id="education">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Education & Credentials</h2>
+                    <p class="section-lead">
+                        Academic background and verified technical training.
+                    </p>
+                </div>
+
+                <div class="edu-cert-grid">
+                    <!-- Education Column -->
+                    <div class="edu-column">
+                        <h3 class="column-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                            </svg>
+                            Education
+                        </h3>
+
+                        <div class="entry-card">
+                            <div class="entry-header">
+                                <h4 class="entry-title">B.Tech in Computer Science and Engineering (AI & ML)</h4>
+                                <span class="entry-time">Jun 2024 "“ Expected 2028</span>
+                            </div>
+                            <div class="entry-institution">Kalinga Institute of Industrial Technology (KIIT), Bhubaneswar</div>
+                            <p class="entry-detail">
+                                Specializing in Artificial Intelligence and Machine Learning with coursework covering algorithmic fundamentals, data structures, machine learning architectures, and statistical analysis.
+                            </p>
                         </div>
-                        <div class="project-links">
-                            <a href="https://house-price-predictor-ml-nh9zrtguvhpmhwsys9qexr.streamlit.app/" target="_blank" class="link-primary hover-target">Deploy Demo</a>
-                            <button class="btn link-secondary hover-target open-drawer">Quick View</button>
+
+                        <div class="entry-card">
+                            <div class="entry-header">
+                                <h4 class="entry-title">Class XII (10+2)</h4>
+                                <span class="entry-time">2018 "“ 2022</span>
+                            </div>
+                            <div class="entry-institution">Bal Bhavan International School, Dwarka, New Delhi</div>
+                            <p class="entry-detail">
+                                Completed Senior Secondary education with a focus on Mathematics, Science, and foundational Computer Science principles.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Certifications Column -->
+                    <div class="cert-column">
+                        <h3 class="column-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="8" r="7"></circle>
+                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                            </svg>
+                            Training & Certifications
+                        </h3>
+
+                        <div class="entry-card">
+                            <div class="entry-header">
+                                <h4 class="entry-title">Power BI Training (Online)</h4>
+                                <span class="entry-time">Kudu Training</span>
+                            </div>
+                            <div class="entry-institution">Applied Business Intelligence</div>
+                            <p class="entry-detail">
+                                Completed comprehensive online coursework on DAX, dimensional modeling, and interactive reporting; applied directly to the Target e-commerce business case.
+                            </p>
+                        </div>
+
+                        <div class="entry-card">
+                            <div class="entry-header">
+                                <h4 class="entry-title">Python (Basic)</h4>
+                                <span class="entry-time">HackerRank · May 2026</span>
+                            </div>
+                            <div class="entry-institution">Verified Skill Certification</div>
+                            <p class="entry-detail">
+                                Verified competency in Python fundamentals, core data structures, and algorithmic logic.
+                            </p>
+                        </div>
+
+                        <div class="entry-card">
+                            <div class="entry-header">
+                                <h4 class="entry-title">SQL (Basic) and SQL (Intermediate)</h4>
+                                <span class="entry-time">HackerRank</span>
+                            </div>
+                            <div class="entry-institution">Verified Skill Certification</div>
+                            <p class="entry-detail">
+                                Verified proficiency in relational database queries, JOIN operations, subqueries, aggregations, and data filtering.
+                            </p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Project 3: Sandbox -->
-                <div class="project-card glass-card hover-target">
-                    <div class="project-content" style="padding: 2.5rem;">
-                        <div class="sandbox-tag">LIVE INFERENCE SANDBOX</div>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-1);">Local Linear Regression</h3>
-                        <p style="margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">Adjust parameters below to trigger browser-side multiple linear regression execution natively without backend APIs.</p>
-                        <div class="ml-sandbox">
-                            <div class="sandbox-input">
-                                <label>Square Footage: <span id="val-sqft">2000</span></label>
-                                <input type="range" id="slider-sqft" min="500" max="6000" value="2000" step="50">
-                            </div>
-                            <div class="sandbox-input">
-                                <label>Bedrooms: <span id="val-beds">3</span></label>
-                                <input type="range" id="slider-beds" min="1" max="8" value="3" step="1">
-                            </div>
-                            <div class="sandbox-input">
-                                <label>Property Age (Yrs): <span id="val-age">15</span></label>
-                                <input type="range" id="slider-age" min="0" max="100" value="15" step="1">
-                            </div>
-                            <div class="sandbox-output">
-                                <div>Predicted Valuation Matrix</div>
-                                <div id="ml-prediction">$500,000</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
 
         <!-- Contact Section -->
         <section id="contact" class="contact-section">
-            <div class="contact-content">
-                <h2 class="section-title">Let's build the future.</h2>
-                <p>I am perpetually exploring new domains in artificial intelligence. Whether you have a project or just want to discuss ML architectures, my inbox is open.</p>
-                <a href="mailto:natesonbell@gmail.com" class="btn primary hover-target">natesonbell@gmail.com</a>
-                
-                <div class="social-links">
-                    <a href="https://github.com/KragenZ" target="_blank" rel="noopener" class="hover-target">GitHub</a>
-                    <a href="https://www.linkedin.com/in/srijit-roy-7840043b8/" target="_blank" rel="noopener" class="hover-target">LinkedIn</a>
-                    <a href="#" class="hover-target">Kaggle</a>
+            <div class="container">
+                <div class="contact-card">
+                    <div>
+                        <h2 class="contact-title">Let's Connect.</h2>
+                        <p class="contact-lead">
+                            I am actively seeking Software Development, Machine Learning, and Data internship opportunities. I welcome conversations about AI engineering, RAG architectures, and predictive modeling.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="mailto:srijitroy2212@gmail.com" class="btn btn-primary btn-lg">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                Send Email
+                            </a>
+                            <button id="copy-email-btn" class="btn btn-secondary btn-lg" aria-label="Copy email address to clipboard">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy Email
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="contact-methods">
+                        <a href="mailto:srijitroy2212@gmail.com" class="contact-item">
+                            <div class="contact-icon" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="contact-text-group">
+                                <span class="contact-label">Email</span>
+                                <span class="contact-val">srijitroy2212@gmail.com</span>
+                            </div>
+                        </a>
+
+                        <div class="contact-item">
+                            <div class="contact-icon" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                            </div>
+                            <div class="contact-text-group">
+                                <span class="contact-label">Phone</span>
+                                <span class="contact-val">+91 8878805690</span>
+                            </div>
+                        </div>
+
+                        <a href="https://github.com/KragenZ" target="_blank" rel="noopener noreferrer" class="contact-item">
+                            <div class="contact-icon" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                </svg>
+                            </div>
+                            <div class="contact-text-group">
+                                <span class="contact-label">GitHub</span>
+                                <span class="contact-val">github.com/KragenZ</span>
+                            </div>
+                        </a>
+
+                        <a href="https://linkedin.com/in/srijit-kumar-roy-7840043b8" target="_blank" rel="noopener noreferrer" class="contact-item">
+                            <div class="contact-icon" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                    <rect x="2" y="9" width="4" height="12"></rect>
+                                    <circle cx="4" cy="4" r="2"></circle>
+                                </svg>
+                            </div>
+                            <div class="contact-text-group">
+                                <span class="contact-label">LinkedIn</span>
+                                <span class="contact-val">linkedin.com/in/srijit-kumar-roy-7840043b8</span>
+                            </div>
+                        </a>
+
+                        <div class="contact-item">
+                            <div class="contact-icon" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div class="contact-text-group">
+                                <span class="contact-label">Location</span>
+                                <span class="contact-val">Delhi, India</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-    
-
-    <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.05); color: #64748b; font-size: 0.85rem; position: relative; z-index: 10;">
-        <p>Architected & Built by Srijit Kumar Roy &copy; 2026</p>
-    </footer>
-
-    <!-- Terminal Easter Egg -->
-    <div class="terminal-btn hover-target">&gt;_</div>
-    <div id="terminal-modal" class="terminal-hidden">
-        <div class="terminal-header">
-            <div class="terminal-dots"><span></span><span></span><span></span></div>
-            <div class="terminal-title">srijit@ai-core: ~</div>
-        </div>
-        <div class="terminal-body" id="terminal-output">
-            <p>SrijitOS (v1.0.0) - Type 'help' to see available commands.</p>
-        </div>
-        <div class="terminal-input-line">
-            <span class="prompt">guest@portfolio:~$ </span>
-            <input type="text" id="terminal-input" autocomplete="off" spellcheck="false">
-        </div>
-    </div>
-
-    <!-- Project Quick View Drawer -->
-    <div id="project-drawer" class="drawer-hidden">
-        <div class="drawer-overlay"></div>
-        <div class="drawer-content glass-card">
-            <button class="drawer-close hover-target">&times;</button>
-            <div class="drawer-body">
-                <span class="drawer-subtitle accent-text">PROJECT DETAILS</span>
-                <h2 class="drawer-title">Project Name</h2>
-                <div class="drawer-meta">
-                    <div class="meta-item">
-                        <span class="label">TECH STACK</span>
-                        <p class="stack-list">LangChain, FAISS</p>
-                    </div>
-                </div>
-                <div class="drawer-description">
-                    <p>Detailed technical breakdown goes here...</p>
-                </div>
-                <div class="drawer-footer">
-                    <a href="#" class="btn primary hover-target drawer-link">Full Case Study</a>
-                </div>
-            </div>
-        </div>
-    </div>
     </main>
 
-    <!-- Core Physics & Animation Plugins -->
-    <script src="https://unpkg.com/split-type"></script>
-    <script src="https://unpkg.com/@barba/core"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sheryjs/dist/Shery.js"></script>
-    
-    <!-- Custom Application Logic -->
-    <script src="script.js?v=10"></script>
+    <!-- Site Footer -->
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <p class="footer-copy">
+                &copy; 2026 Srijit Kumar Roy · Built with semantic HTML5, CSS3 & vanilla JS
+            </p>
+            <div class="footer-links">
+                <a href="assets/Resume.pdf" download="Srijit_Kumar_Roy_Resume.pdf" class="footer-link">Resume PDF</a>
+                <a href="resume.html" class="footer-link">Web Resume</a>
+                <a href="case_study_pa.html" class="footer-link">AI Property Case Study</a>
+                <a href="https://github.com/KragenZ" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+                <a href="https://linkedin.com/in/srijit-kumar-roy-7840043b8" target="_blank" rel="noopener noreferrer" class="footer-link">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification for Actions -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
 </body>
 </html>
+
+
+
